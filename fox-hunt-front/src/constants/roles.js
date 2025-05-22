@@ -1,0 +1,5 @@
+export const PARTICIPANT = 'PARTICIPANT';
+export const COACH = 'TRAINER';
+export const ADMIN = 'ORGANIZATION_ADMIN';
+
+export const ROLES_BY_RIGHTS_LEVEL = [ADMIN, COACH, PARTICIPANT];

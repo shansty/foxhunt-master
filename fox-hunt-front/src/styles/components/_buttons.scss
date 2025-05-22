@@ -1,0 +1,29 @@
+.btn-link {
+  &.success {
+    color: $success-color;
+
+    &:hover {
+      color: $success-color;
+    }
+  }
+
+  &.danger {
+    color: $danger-color;
+
+    &:hover {
+      color: $danger-color;
+    }
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.btn-group {
+  padding-top: 20px;
+  & > .btn {
+    position: initial;
+    margin-bottom: 10px;
+  }
+}

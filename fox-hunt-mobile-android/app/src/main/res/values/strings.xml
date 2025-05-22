@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">foxes</string>
+
+    <!-- login screen -->
+    <string name="login_email_label">Email:</string>
+    <string name="login_email_hint">Enter your email</string>
+    <string name="login_password_label">Password:</string>
+    <string name="login_password_hint">Enter your password</string>
+    <string name="login_domain_label">Domain:</string>
+    <string name="login_domain_hint">Enter your domain</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_sign_up">Sign up</string>
+    <string name="login_help">Click for help</string>
+
+    <!-- onboarding screen -->
+    <string name="onboarding_welcome">Welcome to</string>
+    <string name="onboarding_description">You cam participate in existing competitions with your commands or create competition for yourself and play in at any time!</string>
+    <string name="onboarding_next">Try now</string>
+    <string name="onboarding_held">Need some help?</string>
+
+    <!-- game screen -->
+    <string name="game_title">Game</string>
+    <string name="game_frequency">Frequency</string>
+    <string name="game_volume">Volume</string>
+    <string name="game_foxes">Foxes</string>
+    <string name="game_finish">Finish participation</string>
+    <string name="game_debug">Debug mode</string>
+    <string name="game_permission_needed">Please, provide GPS permission. Otherwise result of the game may not be predictable</string>
+    <string name="game_time_remaining">%1$02d:%2$02d:%3$02d</string>
+
+    <!-- settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_try">Try now</string>
+    <string name="settings_results">Results</string>
+    <string name="settings_settings">General settings</string>
+    <string name="settings_privacy">Privacy policy</string>
+    <string name="settings_feedback">App feedback</string>
+    <string name="settings_sign_out">Sign out</string>
+
+    <!-- competitions -->
+    <string name="competitions_title">Competitions</string>
+
+    <!-- game settings -->
+    <string name="game_settings_title">Customize game settings</string>
+    <string name="game_settings_duration_text">Duration of competition</string>
+    <string name="game_settings_duration">%1$d min</string>
+    <string name="game_settings_foxes_count_text">Amount of foxes</string>
+    <string name="game_settings_distance_text">Search area distance</string>
+    <string name="game_settings_distance">%1$d m</string>
+    <string name="game_settings_frequency">Frequency of transmitter</string>
+    <string name="game_settings_frequency_1">3.5 MGz</string>
+    <string name="game_settings_frequency_2">144.0 MGz</string>
+    <string name="game_settings_sound_duration_text">Fox sound duration</string>
+    <string name="game_settings_sound_duration">%1$d sec</string>
+    <string name="game_settings_is_silence">Will there be period of silence?</string>
+    <string name="game_settings_start">Start</string>
+
+    <!-- game difficulty -->
+    <string name="game_difficulty_easy">Easy</string>
+    <string name="game_difficulty_normal">Normal</string>
+    <string name="game_difficulty_hard">Hard</string>
+    <string name="game_difficulty_advanced">Advanced</string>
+    <string name="game_difficulty_custom">Custom</string>
+
+
+    <!-- competition detail -->
+    <string name="competition_detail_description">Description</string>
+    <string name="competition_detail_name">Name:</string>
+    <string name="competition_detail_location">Location:</string>
+    <string name="competition_detail_coach">Coach:</string>
+    <string name="competition_detail_silence_period">Will there be a period of silence?</string>
+    <string name="competition_detail_settings">Settings</string>
+    <string name="competition_detail_foxes_count">Number of foxes:</string>
+    <string name="competition_detail_duration">Duration:</string>
+    <string name="competition_detail_duration_min">%1$s sec</string>
+    <string name="competition_detail_participants">Participants:</string>
+    <string name="competition_detail_date">Date:</string>
+    <string name="competition_detail_time">Approximate time:</string>
+    <string name="competition_detail_map">Map</string>
+    <string name="competition_detail_decline">Decline</string>
+    <string name="competition_detail_join">Join</string>
+    <string name="competition_detail_alert_success">Success</string>
+
+    <!-- result screen -->
+    <string name="result">Your result is:</string>
+    <string name="result_foxes">Found foxes: %1$d/%2$d</string>
+    <string name="result_time">Time in the game: %1$s</string>
+    <string name="result_thanks">Thanks for participation</string>
+    <string name="result_close">close</string>
+</resources>

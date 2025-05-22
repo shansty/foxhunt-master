@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "623623458252",
+    "project_id": "key-range-303113",
+    "storage_bucket": "key-range-303113.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623623458252:android:294149e91f1338cdc72169",
+        "android_client_info": {
+          "package_name": "com.foxes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623623458252-7qhnjjstk3s50nhgbvd7310kcd0287gr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk_aO-YPQziT-xqMtBWqDY1oj-aNGZmqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623623458252-7qhnjjstk3s50nhgbvd7310kcd0287gr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

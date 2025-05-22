@@ -1,0 +1,40 @@
+{
+  "scripts": {
+    "compile:all.sh": "npm run install:all && npm run start:all.sh",
+    "compile:all.bat": "npm run install:all && npm run start:all.bat",
+    "storybook": "concurrently npm:storybook:common-front npm:storybook:fox-hunt*",
+    "install:all": "npm i && concurrently npm:install:common-front && concurrently npm:install:fox-hunt*",
+    "start:all.sh": "concurrently npm:start:admin-backend.sh npm:start:fox-hunt*",
+    "start:all.bat": "concurrently npm:start:admin-backend.bat npm:start:fox-hunt*",
+    "start:all:NODE": "concurrently npm:start:fox-hunt*",
+    "start:back:NODE": "concurrently npm:start:fox-hunt-organization-backend npm:start:fox-hunt-feature-service npm:start:fox-hunt-api-gateway",
+    "start:front:NODE": "concurrently npm:start:fox-hunt-front npm:start:fox-hunt-organization-front",
+    "delete:nm:all": "concurrently npm:delete:nm:fox-hunt* npm:delete:nm:common-front",
+    "install:fox-hunt-front": "cd fox-hunt-front && npm i && cd ..",
+    "install:fox-hunt-organization-front": "cd fox-hunt-organization-front && npm i && cd ..",
+    "install:fox-hunt-organization-backend": "cd fox-hunt-organization-backend && npm i && cd ..",
+    "install:fox-hunt-feature-service": "cd fox-hunt-feature-service && npm i && cd ..",
+    "install:fox-hunt-api-gateway": "cd fox-hunt-api-gateway && npm i && cd ..",
+    "install:common-front": "cd common-front/bin && npm run compile && cd ../..",
+    "delete:nm:fox-hunt-front": "cd fox-hunt-front && rimraf node_modules && cd ..",
+    "delete:nm:fox-hunt-organization-front": "cd fox-hunt-organization-front && rimraf node_modules && cd ..",
+    "delete:nm:fox-hunt-organization-backend": "cd fox-hunt-organization-backend && rimraf node_modules && cd ..",
+    "delete:nm:fox-hunt-feature-service": "cd fox-hunt-feature-service && rimraf node_modules && cd ..",
+    "delete:nm:fox-hunt-api-gateway": "cd fox-hunt-api-gateway && rimraf node_modules && cd ..",
+    "delete:nm:common-front": "cd common-front/bin && rimraf node_modules && cd ../..",
+    "start:fox-hunt-front": "cd fox-hunt-front && npm run start:dev && cd ..",
+    "start:fox-hunt-organization-front": "cd fox-hunt-organization-front && npm run start:dev && cd ..",
+    "start:fox-hunt-organization-backend": "cd fox-hunt-organization-backend && npm run start:dev && cd ..",
+    "start:fox-hunt-feature-service": "cd fox-hunt-feature-service && npm run start:dev && cd ..",
+    "start:fox-hunt-api-gateway": "cd fox-hunt-api-gateway && npm run start:dev && cd ..",
+    "start:admin-backend.bat": "run.bat admin_b",
+    "start:admin-backend.sh": "sh ./run.sh admin_b",
+    "storybook:common-front": "cd common-front/bin && npm run storybook && cd ../..",
+    "storybook:fox-hunt-organization-front": "cd fox-hunt-organization-front && npm run storybook && cd ..",
+    "storybook:fox-hunt-front": "cd fox-hunt-front && npm run storybook && cd .."
+  },
+  "dependencies": {
+    "concurrently": "^7.4.0",
+    "rimraf": "^3.0.2"
+  }
+}

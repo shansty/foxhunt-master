@@ -1,0 +1,32 @@
+templates:
+  - templateId: 1
+    name: "TEST 3.5"
+    notes: "Template competition"
+    locationName: "Зеленое"
+    isPrivate: false
+    foxAmount: 5
+    distanceTypeName: "M5"
+    foxDuration: 60
+    hasSilenceInterval: true
+    frequency: 3.5
+    participantEmails:
+      - "Anton.Zavalski@foxhunt.com"
+      - "Nikolai.Grushevski@foxhunt.com"
+      - "Ilya.kuzminovich@foxhunt.com"
+      - "Boris.Frolov@foxhunt.com"
+
+  - templateId: 2
+    name: "TEST 144"
+    notes: "Template competition"
+    locationName: "Детская Железная Дорога"
+    isPrivate: false
+    foxAmount: 4
+    distanceTypeName: "W5"
+    foxDuration: 45
+    hasSilenceInterval: false
+    frequency: 144
+    participantEmails:
+      - "Anna.Grumenko@foxhunt.com"
+      - "Larisa.Astavets@foxhunt.com"
+      - "Vita.Simonovich@foxhunt.com"
+      - "Irina.Veznovets@foxhunt.com"

@@ -1,0 +1,22 @@
+service: serverless-fox-hunt-api-gateway-aurora
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-common-excludes
+  - serverless-plugin-include-dependencies
+
+provider:
+  name: aws
+  region: eu-west-3
+  runtime: nodejs18.x
+
+functions:
+  main:
+    handler: dist/serverless.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: /{any+}

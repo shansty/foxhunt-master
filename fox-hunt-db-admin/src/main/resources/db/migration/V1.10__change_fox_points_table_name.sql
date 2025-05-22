@@ -1,0 +1,1 @@
+ALTER TABLE fh_admin.fox_points RENAME TO fox_point;

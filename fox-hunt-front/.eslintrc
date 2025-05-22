@@ -1,0 +1,62 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react/recommended",
+    "google",
+    "prettier"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true,
+    "es6": true
+  },
+  "plugins": ["react", "jsx-a11y", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    }
+  },
+  "rules": {
+    "require-jsdoc": "off",
+    "react/prop-types": "off",
+    "no-case-declarations": "off",
+    "react/display-name": "off",
+    "jsx-a11y/no-autofocus": "off",
+    "valid-jsdoc": "off",
+    "new-cap": "off",
+    "prettier/prettier": ["error"],
+    "no-unused-vars": "off",
+    "max-len": [
+      1,
+      150,
+      2,
+      {
+        "ignorePattern": "^import\\s.+\\sfrom\\s.+;$",
+        "ignoreUrls": true,
+        "ignoreStrings": true
+      }
+    ],
+    "linebreak-style": "off",
+    "indent": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "./internals/webpack/webpack.prod.babel.js"
+      }
+    },
+    "react": {
+      "pragma": "React",
+      "version": "17.0.2"
+    }
+  }
+}

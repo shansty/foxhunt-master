@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id "io.qameta.allure" version "2.11.2"
+}
+group = "com.itechart.foxhunt"
+version = "1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation      'org.testng:testng:7.7.0'
+    testImplementation      'org.seleniumhq.selenium:selenium-java:4.7.2'
+    testImplementation      'io.github.bonigarcia:webdrivermanager:5.3.1'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.apache.logging.log4j:log4j-core:2.19.0'
+    testImplementation      'org.apache.logging.log4j:log4j-api:2.19.0'
+    testImplementation      'org.aspectj:aspectjweaver:1.9.7'
+    testImplementation      'io.qameta.allure:allure-testng:2.19.0'
+    testImplementation      'io.qameta.allure:allure-commandline:2.19.0'
+    testImplementation      'io.qameta.allure:allure-assertj:2.19.0'
+    testImplementation      'io.qameta.allure:allure-java-commons:2.19.0'
+    testImplementation      'io.qameta.allure:allure-rest-assured:2.19.0'
+    testImplementation      'io.rest-assured:rest-assured:4.5.1'
+
+
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+test {
+    useTestNG()
+}

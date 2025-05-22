@@ -1,0 +1,1 @@
+ALTER TABLE location.locations ADD COLUMN is_cloned BOOLEAN default false;

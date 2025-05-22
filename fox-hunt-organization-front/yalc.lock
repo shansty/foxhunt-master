@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "common-front": {
+      "signature": "a7250d0e1c4af0730b85f4e06c655e50",
+      "replaced": "file:.yalc/common-front"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+types {
+    image/svg+xml svg svgz;
+    text/html html htm shtml;
+    text/css css;
+    application/javascript js;
+    image/jpeg jpeg jpg;
+    image/png png;
+}

@@ -1,0 +1,21 @@
+const COLORS = {
+  blueBackground: '#4C63A0',
+  greyBackground: '#060c17',
+  headerBackground: '#384c82',
+  errorText: '#F87E7E',
+  pink: '#fe73d52b',
+  orange: '#f4772e',
+  red: '#f83245',
+  green: '#16a236',
+  white: '#fff',
+  black: '#000',
+  lightBlack: '#161b2d',
+  lightGrey: '#E7E7E7',
+  lavender: '#7289da',
+  grey: '#a7a7a7',
+  pickerItem: '#212d4c',
+  pickerActiveItem: '#181f35',
+  yellow: '#ffd742',
+  tooltipColor: '#585858',
+};
+export default COLORS;

@@ -1,0 +1,3 @@
+ALTER TABLE fh_admin.app_user
+DROP COLUMN IF EXISTS login,
+DROP COLUMN IF EXISTS password;

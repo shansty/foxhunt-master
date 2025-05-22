@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/game_settings_nav_graph"
+    app:startDestination="@id/gameDifficultyFragment">
+
+    <fragment
+        android:id="@+id/gameDifficultyFragment"
+        android:name="com.foxes.main.presentation.game.difficulty.GameDifficultyFragment"
+        android:label="GameDifficultyFragment"
+        tools:layout="@layout/fragment_game_difficulty">
+        <action
+            android:id="@+id/action_gameDifficultyFragment_to_gameSettingsFragment"
+            app:destination="@id/gameSettingsFragment" />
+        <action
+            android:id="@+id/action_game_difficulty_to_bottom_nav_fragment"
+            app:destination="@id/bottomNavigationFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_pop_up_game_difficulty_to_bottom_nav_fragment"
+            app:destination="@id/bottomNavigationFragment"
+            app:popUpTo="@id/bottomNavigationFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameSettingsFragment"
+        android:name="com.foxes.main.presentation.game.settings.GameSettingsFragment"
+        android:label="GameSettingsFragment"
+        tools:layout="@layout/fragment_game_settings">
+        <action
+            android:id="@+id/action_game_settings_to_bottom_nav_fragment"
+            app:destination="@id/bottomNavigationFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_pop_up_game_settings_to_bottom_nav_fragment"
+            app:destination="@id/bottomNavigationFragment"
+            app:popUpTo="@id/bottomNavigationFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

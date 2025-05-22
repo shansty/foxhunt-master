@@ -1,0 +1,16 @@
+@import '../variables';
+
+.user-avatar {
+  @extend %centered-both-flex-container;
+
+  border-radius: 35px;
+  background-color: $person-unknown-color;
+
+  &.person-gender-male {
+    background-color: $person-man-color;
+  }
+
+  &.person-gender-female {
+    background-color: $person-woman-color;
+  }
+}

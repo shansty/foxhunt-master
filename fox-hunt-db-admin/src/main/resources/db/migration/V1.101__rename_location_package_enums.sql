@@ -1,0 +1,2 @@
+ALTER TYPE fh_admin.location_package_creation_type RENAME TO location_package_assignment_type;
+ALTER TYPE fh_admin.location_package_type RENAME TO location_package_access_type;

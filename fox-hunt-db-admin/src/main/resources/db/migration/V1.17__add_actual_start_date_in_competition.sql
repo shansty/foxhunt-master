@@ -1,0 +1,1 @@
+ALTER TABLE fh_admin.competition ADD COLUMN actual_start_date TIMESTAMP;

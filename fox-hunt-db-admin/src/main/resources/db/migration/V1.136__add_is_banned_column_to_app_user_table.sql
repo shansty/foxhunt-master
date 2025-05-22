@@ -1,0 +1,1 @@
+ALTER TABLE fh_admin.app_user ADD COLUMN IF NOT EXISTS is_banned BOOLEAN NOT NULL DEFAULT false;

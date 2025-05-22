@@ -1,0 +1,1 @@
+UPDATE fh_admin.system_admin SET email = 'abelyaev.itechart@gmail.com' WHERE email = 'Alexander.Belyaev@itechart-group.com'

@@ -1,0 +1,21 @@
+.dx-scheduler-work-space-month {
+  .dx-scheduler-date-table-row {
+    .dx-scheduler-first-group-cell,
+    .dx-scheduler-last-group-cell {
+      background-color: rgba(0, 0, 0, 0.07);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+}
+
+.dx-list:not(.dx-list-select-decorator-enabled) {
+  .dx-state-focused,
+  .dx-state-active {
+    background-color: unset !important;
+  }
+}
+
+.dx-overlay-wrapper {
+  z-index: 1000 !important;
+}

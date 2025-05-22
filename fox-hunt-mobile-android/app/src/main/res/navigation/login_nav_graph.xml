@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.foxes.main.presentation.onboarding.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/action_onboardingFragment_to_bottomNavigationFragment"
+            app:destination="@id/bottomNavigationFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_onboardingFragment_to_game_settings_nav_graph"
+            app:destination="@id/game_settings_nav_graph" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.foxes.main.presentation.login.LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bottomNavigationFragment"
+        android:name="com.foxes.main.presentation.BottomNavigationFragment"
+        android:label="BottomNavigationFragment"
+        tools:layout="@layout/fragment_bottom_navigation">
+        <action
+            android:id="@+id/action_bottomNavigationFragment_to_competitionDetailFragment"
+            app:destination="@id/competitionDetailFragment" />
+        <action
+            android:id="@+id/action_bottomNavigationFragment_to_game_settings_nav_graph"
+            app:destination="@id/game_settings_nav_graph" />
+        <action
+            android:id="@+id/action_bottomNavigationFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/bottomNavigationFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_bottomNavigationFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/competitionDetailFragment"
+        android:name="com.foxes.main.presentation.competitions.details.CompetitionDetailsFragment"
+        android:label="CompetitionDetailFragment"
+        tools:layout="@layout/fragment_competition_detail" >
+        <argument
+            android:name="data"
+            app:argType="com.foxes.main.presentation.competitions.Competition" />
+    </fragment>
+    <include app:graph="@navigation/game_settings_nav_graph" />
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.foxes.main.presentation.result.ResultFragment"
+        android:label="ResultFragment"
+        tools:layout="@layout/fragment_result" >
+        <action
+            android:id="@+id/action_resultFragment_to_bottomNavigationFragment"
+            app:destination="@id/bottomNavigationFragment"
+            app:popUpTo="@id/bottomNavigationFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+</navigation>

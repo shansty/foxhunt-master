@@ -1,0 +1,2 @@
+export const OUT_OF_POLYGON_NOTIFICATION = 'USER_IS_OUT_OF_POLYGON';
+export const FOX_FOUND = 'FOX_FOUND';

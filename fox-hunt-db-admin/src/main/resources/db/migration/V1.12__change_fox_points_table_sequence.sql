@@ -1,0 +1,1 @@
+ALTER SEQUENCE fh_admin.fox_points_id_seq RENAME TO fox_point_id_seq;

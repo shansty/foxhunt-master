@@ -1,0 +1,22 @@
+.item {
+  width: 33%;
+}
+
+@media only screen and (max-width: 1280px) {
+  .item {
+    width: 100%;
+  }
+}
+
+.scrollable-table {
+  height: 429px;
+  overflow: auto;
+}
+
+#additional-title {
+  padding: 0 0 16px 0;
+}
+
+#additional-padding {
+  padding-top: 48px;
+}

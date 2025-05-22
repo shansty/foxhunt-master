@@ -1,0 +1,1 @@
+ALTER TYPE fh_admin.user_invitation_status ADD VALUE 'FAILED';

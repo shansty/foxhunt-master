@@ -1,0 +1,20 @@
+export const ENTITY = 'auth';
+
+export const GET_TOKENS = `${ENTITY}/getTokens`;
+export const CHECK_DOMAIN = `${ENTITY}/checkDomain`;
+export const USER_AUTHENTICATION = `${ENTITY}/userAuthentication`;
+export const SET_DECLINED_REASON = `${ENTITY}/setDeclinedReason`;
+export const SET_USER_INFO = `${ENTITY}/setUserInfo`;
+export const SET_ORGANIZATION_INFO = `${ENTITY}/setOrganizationInfo`;
+export const REFRESH_TOKEN = `${ENTITY}/refreshToken`;
+export const GET_LOGIN_URL = `${ENTITY}/getLoginUrl`;
+export const LOAD_LOGGED_USER_INFO = `${ENTITY}/loadLoggedUserInfo`;
+export const LOAD_CURRENT_ORGANIZATION = `${ENTITY}/loadCurrentOrganization`;
+export const LOG_OUT = `${ENTITY}/logOut`;
+export const IS_INVITATION_VALID = `${ENTITY}/isInvitationValid`;
+export const SEND_FORGOT_PASSWORD_REQUEST = `${ENTITY}/sendForgotPasswordRequest`;
+export const IS_RESET_PASSWORD_LINK_VALID = `${ENTITY}/isResetPasswordLinkValid`;
+export const RESET_PASSWORD = `${ENTITY}/resetPassword`;
+export const SWITH_DOMAIN = `${ENTITY}/switchDomain`;
+export const GET_LOGGED_USER_GRAVATAR_IMAGE = `${ENTITY}/getLoggedUserGravatarImage`;
+export const GET_ORGANIZATION_ADMIN = `${ENTITY}/getOrganizationDomain`;

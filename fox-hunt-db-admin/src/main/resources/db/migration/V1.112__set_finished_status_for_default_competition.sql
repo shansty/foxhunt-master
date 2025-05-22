@@ -1,0 +1,1 @@
+UPDATE fh_admin.competition AS c SET status = 'FINISHED'::status WHERE c.name = 'Крыжовка' AND c.status = 'RUNNING'::status;

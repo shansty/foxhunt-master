@@ -1,0 +1,22 @@
+FROM node:16.15.0-alpine3.15
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+RUN npm i yalc@1.0.0-pre.53 -g
+
+COPY ./common-front ./common-front
+WORKDIR /app/common-front/bin
+RUN npm run compile-docker
+WORKDIR /app/fox-hunt-front
+COPY ./fox-hunt-front/package*.json ./
+
+ARG SKIP_BUILD
+RUN if [ -z "$SKIP_BUILD" ] || [ "$SKIP_BUILD" != "true" ]; then npm install; fi
+
+COPY ./fox-hunt-front ./
+
+EXPOSE 3000
+
+CMD ["npm", "run", "docker-local"]

@@ -1,0 +1,26 @@
+service: aws-ses-serverless01
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: development
+  region: eu-west-3
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+functions:
+  sendMail:
+    handler: handler.run
+    memorySize: 1024
+    timeout: 5
+    events:
+      - http:
+          path: sendMail
+          method: post
+          integration: lambda
+          cors: true
+          response:
+            headers:
+              Access-Control-Allow-Origin: "'*'"

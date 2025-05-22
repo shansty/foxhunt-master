@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fox_sounds">
+        <item>@raw/sound_of_fox_1</item>
+        <item>@raw/sound_of_fox_2</item>
+        <item>@raw/sound_of_fox_3</item>
+        <item>@raw/sound_of_fox_4</item>
+        <item>@raw/sound_of_fox_5</item>
+    </string-array>
+</resources>

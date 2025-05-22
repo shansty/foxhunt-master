@@ -1,0 +1,1 @@
+ALTER TABLE fh_admin.refresh_token_ids ADD COLUMN creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP;

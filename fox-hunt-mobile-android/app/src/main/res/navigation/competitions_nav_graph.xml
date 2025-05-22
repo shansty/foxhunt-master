@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/competitions"
+    app:startDestination="@id/competitionsViewPagerFragment">
+
+    <fragment
+        android:id="@+id/competitionsViewPagerFragment"
+        android:name="com.foxes.main.presentation.competitions.viewpager.CompetitionsViewPagerFragment"
+        android:label="CompetitionsViewPagerFragment"
+        tools:layout="@layout/fragment_competitions_view_pager" />
+
+    <fragment
+        android:id="@+id/competitionsFragment"
+        android:name="com.foxes.main.presentation.competitions.list.CompetitionsFragment"
+        tools:layout="@layout/fragment_competitions">
+
+        <argument
+            android:name="status"
+            app:argType="com.foxes.main.presentation.competitions.Competition$Status" />
+    </fragment>
+
+</navigation>

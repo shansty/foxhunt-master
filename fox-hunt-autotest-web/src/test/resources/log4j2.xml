@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Properties>
+        <Property name="filename">target/test.log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <MarkerPatternSelector defaultPattern="[%-5level] %msg: Logger=%logger %d{yyyy-MM-dd HH:mm}  Строка: %L %n">
+                    <PatternMatch key="CLASS" pattern="%sn. %msg: Class=%class%n"/>
+                </MarkerPatternSelector>
+            </PatternLayout>
+        </Console>
+        <File name="File" filename="${filename}">
+            <PatternLayout>
+                <MarkerPatternSelector defaultPattern="%sn. %msg: Logger = %logger %L %d{yyyy-MM-dd HH:mm-ss} %n">
+                    <PatternMatch key="CLASS" pattern="%sn. %msg: Class=%class%n"/>
+                </MarkerPatternSelector>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console" />
+<!--            <AppenderRef ref="File" />-->
+        </Root>
+    </Loggers>
+</Configuration>

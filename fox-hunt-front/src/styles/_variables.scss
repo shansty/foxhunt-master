@@ -1,0 +1,26 @@
+$text-md: 18px;
+
+$user-avatar-sm: 50px;
+
+$person-woman-color: #dc919a;
+$person-man-color: #91c0d2;
+$person-unknown-color: #9ea3b4;
+
+$success-color: #00cc00;
+$danger-color: #ff0000;
+
+$startPointColor: #1bad04;
+$disconnectedParticipantColor: #ed4543;
+$finishPointColor: #114d07;
+$foxPointColor: #177bc9;
+$activeFoxPointColor: #ffd21d;
+$centerPointColor: #9400d3;
+
+:export {
+  startMarkerColor: $startPointColor;
+  finishMarkerColor: $finishPointColor;
+  foxMarkerColor: $foxPointColor;
+  activeFoxMarkerColor: $activeFoxPointColor;
+  centerMarkerColor: $centerPointColor;
+  disconnectedParticipantColor: $disconnectedParticipantColor;
+}

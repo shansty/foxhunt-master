@@ -1,0 +1,10 @@
+ALTER TABLE fh_admin.org_user_active_history
+    DROP CONSTRAINT organization_user_active_history_organization_id_fkey;
+ALTER TABLE fh_admin.competition
+    DROP CONSTRAINT fk_organization;
+ALTER TABLE location.organization_location_packages
+    DROP CONSTRAINT organization_location_package_o;
+ALTER TABLE location.organization_locations
+    DROP CONSTRAINT organization_location_organization_id_fkey;
+ALTER TABLE location.organization_favorite_locations
+    DROP CONSTRAINT organization_favorite_location_organization_id_fkey;

@@ -1,0 +1,30 @@
+input_dir: FoxHuntARDF/Resources/
+output_dir: FoxHuntARDF/Resources/SwiftGen
+
+xcassets:
+  inputs:
+  - Colors.xcassets
+  - Images.xcassets
+  outputs:
+    - templateName: swift4
+      output: Assets.swift
+
+      ## Strings
+strings:
+  inputs:
+    - en.lproj
+  outputs:
+    - templateName: structured-swift5
+      params:
+        publicAccess: true
+      output: Strings+Generated.swift
+
+files:
+  inputs: Sounds
+  filter: .+\.mp3$
+  outputs:
+    - templateName: structured-swift5
+      params:
+        publicAccess: true
+      output: Sounds+Generated.swift
+     

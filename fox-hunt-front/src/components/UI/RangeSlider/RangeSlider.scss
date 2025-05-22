@@ -1,0 +1,30 @@
+$thumbWidth: 16px;
+
+.range-slider-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  & .slider-item {
+    flex-basis: auto;
+    font-weight: normal;
+    &:nth-child(2) {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+  input[type='range'] {
+    &::-webkit-slider-thumb {
+      width: $thumbWidth;
+    }
+    &::-moz-range-thumb {
+      width: $thumbWidth;
+    }
+    &::-ms-thumb {
+      width: $thumbWidth;
+    }
+  }
+}
+
+:export {
+  thumbWidth: $thumbWidth;
+}

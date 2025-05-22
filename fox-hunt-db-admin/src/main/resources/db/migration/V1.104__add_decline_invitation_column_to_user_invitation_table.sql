@@ -1,0 +1,1 @@
+ALTER TABLE fh_admin.user_invitation ADD COLUMN declination_reason text;

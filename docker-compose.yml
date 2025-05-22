@@ -1,0 +1,201 @@
+version: "3.8"
+
+services:
+  postgis:
+    image: postgis/postgis:14-master
+    networks:
+      - foxhunt
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=foxhunt
+    restart: unless-stopped
+
+  flyway:
+    image: flyway/flyway:9.3.0-alpine
+    networks:
+      - foxhunt
+    command: -url=jdbc:postgresql://postgis:5432/foxhunt -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} -connectRetries=50 repair migrate info
+    volumes:
+      - "./fox-hunt-db-admin/src/main/resources/db/migration:/flyway/sql"
+    depends_on:
+      - postgis
+
+  #  rabbit is not needed in local environment
+  #  rabbit:
+  #    image: rabbitmq:3-management
+  #    networks:
+  #      - foxhunt
+  #    ports:
+  #      - 5672:5672
+  #      - 25672:25672
+  #      - 15672:15672
+
+  admin-backend:
+    build: foxhunt-admin-backend/
+    entrypoint: java -Dspring.profiles.active=local -jar foxhunt-backend.jar
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      - postgis
+      - flyway
+    profiles:
+      - admin_b
+      - admin_back
+      - admin_front
+      - back
+      - all
+    networks:
+      - foxhunt
+    environment:
+      - POSTGRES_HOST=postgis
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NETWORK_GATEWAY=${NETWORK_GATEWAY}
+
+  admin-front:
+    build:
+      context: ./
+      dockerfile: fox-hunt-front/Dockerfile.local
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - ./fox-hunt-front:/app/fox-hunt-front
+      - /app/fox-hunt-front/node_modules  
+    tty: true
+    restart: unless-stopped
+    profiles:
+      - admin_f
+      - admin_front
+      - all
+    networks:
+      - foxhunt
+    environment:
+      - NODE_ENV=development
+      - SKIP_BUILD=true
+
+  organization-nest-backend:
+    build:
+      context: fox-hunt-organization-backend/
+      target: development
+      dockerfile: Dockerfile
+    command: npm run start:debug
+    expose:
+      - 8082
+    ports:
+      - 8082:8082
+    restart: unless-stopped
+    depends_on:
+      - postgis
+      - flyway
+    profiles:
+      - org_b
+      - org_back
+      - admin_front
+      - org_front
+      - back
+      - all
+    networks:
+      - foxhunt
+    environment:
+      - POSTGRES_HOST=postgis
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NETWORK_GATEWAY=${NETWORK_GATEWAY}
+
+  api-gateway:
+    build:
+      context: fox-hunt-api-gateway/
+      target: development
+      dockerfile: Dockerfile
+    command: npm run start:debug
+    expose:
+      - 8083
+    ports:
+      - 8083:8083
+    restart: unless-stopped
+    profiles:
+      - api_b
+      - org_back
+      - admin_front
+      - org_front
+      - back
+      - all
+    networks:
+      - foxhunt
+    environment:
+      - POSTGRES_HOST=postgis
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NETWORK_GATEWAY=${NETWORK_GATEWAY}
+
+  feature-service:
+    build:
+      context: fox-hunt-feature-service/
+      target: development
+      dockerfile: Dockerfile
+    command: npm run start:debug
+    expose:
+      - 8084
+    ports:
+      - 8084:8084
+    restart: unless-stopped
+    depends_on:
+      - organization-nest-backend
+      - admin-backend
+    profiles:
+      - feature_b
+      - org_back
+      - admin_front
+      - org_front
+      - back
+      - all
+    networks:
+      - foxhunt
+    environment:
+      - POSTGRES_HOST=postgis
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NETWORK_GATEWAY=${NETWORK_GATEWAY}
+
+  organization-front:
+    build:
+      context: ./
+      dockerfile: fox-hunt-organization-front/Dockerfile.local
+    expose:
+      - 3001
+    ports:
+      - 3001:3001
+    restart: unless-stopped
+    profiles:
+      - org_f
+      - org_front
+      - all
+    networks:
+      - foxhunt
+    environment:
+      - NODE_ENV=development
+      - SKIP_BUILD=true
+
+volumes:
+  postgres-data:
+
+networks:
+  foxhunt:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1

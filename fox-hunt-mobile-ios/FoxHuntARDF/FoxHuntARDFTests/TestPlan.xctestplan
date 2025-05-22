@@ -1,0 +1,40 @@
+{
+  "configurations" : [
+    {
+      "id" : "A234A646-2A52-4C5D-B62B-2ED0A22D61D7",
+      "name" : "Configuration 1",
+      "options" : {
+        "commandLineArgumentEntries" : [
+          {
+            "argument" : "CFNETWORK_DIAGNOSTICS=3"
+          }
+        ]
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+
+    ],
+    "environmentVariableEntries" : [
+      {
+        "key" : "CFNETWORK_DIAGNOSTICS",
+        "value" : "3"
+      }
+    ],
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "FoxHuntARDFTests\/testRemoteAPIAuth()"
+      ],
+      "target" : {
+        "containerPath" : "container:FoxHuntARDF.xcodeproj",
+        "identifier" : "D73F9BB0282584CF00D3363A",
+        "name" : "FoxHuntARDFTests"
+      }
+    }
+  ],
+  "version" : 1
+}

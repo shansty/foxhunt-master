@@ -1,0 +1,9 @@
+.regular {
+  background-color: rgb(138, 183, 223);
+  border: blueviolet groove;
+  cursor: pointer;
+  font: inherit;
+  font-weight: normal;
+  padding: 5px;
+  margin: 5px;
+}

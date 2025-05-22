@@ -1,0 +1,2 @@
+ALTER TABLE fh_admin.organizations RENAME TO organization;
+ALTER SEQUENCE fh_admin.organizations_organization_id_seq RENAME TO organization_organization_id_seq;

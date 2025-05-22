@@ -1,0 +1,2 @@
+ALTER SEQUENCE fh_admin.organization_user_active_hist_organization_user_active_hist_seq 
+RENAME TO org_user_active_history_organization_user_active_history_id_seq;
