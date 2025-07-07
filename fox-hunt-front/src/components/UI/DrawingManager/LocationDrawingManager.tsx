@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import './DrawingManager.scss';
-import { ReactComponent as PolygonSVG } from '../../../assets/images/polygon.svg';
+import PolygonSVG from 'src/assets/images/polygon.svg?react';
 import { Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { isFeatureEnabled } from '../../../featureToggles/FeatureTogglesUtils';
@@ -46,7 +46,7 @@ const LocationDrawingManager = (props: LocationDrawingManagerProps) => {
                   isEnabledToDraw ? 'drawingEnabled' : ''
                 }`}
                 onClick={clickOnDrawManager}
-                title={
+                aria-label={
                   isEnabledToDraw
                     ? 'Click To Stop Drawing'
                     : 'Click To Start Drawing'

@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import variables from '../styles/_variables.scss';
+import variables from '../styles/_variables.module.scss';
 
 export const getStartMarkerProps = ({
   coordinates,

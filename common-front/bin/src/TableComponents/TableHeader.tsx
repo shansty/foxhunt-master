@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { useIsMobile } from '../index';
 

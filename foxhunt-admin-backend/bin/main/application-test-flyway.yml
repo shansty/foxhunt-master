@@ -1,0 +1,102 @@
+server:
+  port: 8080
+
+.env:
+  directory: ""
+  filename: .env
+  prefix: ""
+
+postgres:
+  host: ${POSTGRES_HOST}
+  port: ${POSTGRES_PORT}
+  database: ${POSTGRES_DATABASE}
+  user: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+        check_nullability: true
+  data:
+    web:
+      pageable:
+        default-page-size: 25
+        max-page-size: 100
+
+  mvc:
+    async:
+      request-timeout: -1 # timeout is infinite
+  security:
+    oauth2:
+      client:
+        registration:
+          own-credentials:
+            client-secret: verybigsecret
+            access-token-type: customToken
+            refresh-token-type: refreshToken
+          google:
+            client-id: 623623458252-ka0dc676r1mkcqrp6skh4oddn40c4513.apps.googleusercontent.com
+            client-secret: yv2IV0H2WkoUnvAwoc8RfwPs
+            scope: email, profile
+            redirectUrl: http://localhost:3000/login
+            token-type: googleToken
+
+  flyway:
+    enabled: true
+    locations: "filesystem:../fox-hunt-db-admin/src/main/resources/db/migration/"
+    url: jdbc:postgresql://postgis-test:5433/postgis-test
+    user: "test"
+    password: "test"
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator/
+      exposure:
+        include: health, prometheus, info, beans, mappings
+  endpoint:
+    health:
+      show-details: always
+
+rabbitmq:
+  enabled: false
+  host: rabbit
+  queue:
+    result:
+      exchange: resultsExchange
+      routing:
+        key: update
+
+logging:
+  config: 'classpath:logger.xml'
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    path: /api/v1/admin/api-docs
+
+client:
+  feature-service:
+    baseUrl: ${NETWORK_GATEWAY}:8084
+  device-tracker-service:
+    baseUrl: localhost:${server.port}
+  organization-service:
+    baseUrl: ${NETWORK_GATEWAY}:8082
+
+feign:
+  client:
+    config:
+      feature-service:
+        loggerLevel: BASIC
+      device-tracker-service:
+        loggerLevel: BASIC
+      organization-service:
+        loggerLevel: BASIC
+
+foxhunt:
+  competition:
+    participant-disconnect-timeout: 20

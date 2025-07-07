@@ -1,0 +1,54 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "/api/v1/organizations/4"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "id": 4,
+          "name": "Public Organization",
+          "legalAddress": "Belarus",
+          "actualAddress": "Minsk",
+          "organizationDomain": "public",
+          "type": "FREE",
+          "approximateEmployeesAmount": 1,
+          "status": "ACTIVE",
+          "created": "2022-10-10T12:38:48.967Z",
+          "lastStatusChange": "2022-10-10T12:38:48.967Z",
+          "system": true
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/api/v1/organizations/1"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "id": 1,
+          "name": "Radio School",
+          "legalAddress": "ul.Pravdy 5",
+          "actualAddress": "ul.Niepravdy 10",
+          "organizationDomain": "pravda",
+          "type": "FREE",
+          "approximateEmployeesAmount": 10,
+          "status": "ACTIVE",
+          "created": "2022-10-10T12:38:48.967Z",
+          "lastStatusChange": "2022-10-10T12:38:48.967Z",
+          "system": false
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}

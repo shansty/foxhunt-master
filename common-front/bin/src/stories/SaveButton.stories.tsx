@@ -1,4 +1,3 @@
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { SaveButton } from '../ManagementButtons/SaveButton';

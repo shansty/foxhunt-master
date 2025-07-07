@@ -1,5 +1,5 @@
 import { getParticipantMarkerPropsFromTracker } from '../markers';
-import variables from '../styles/_variables.scss';
+import variables from '../styles/_variables.module.scss';
 
 const participantTracker = {
   participant: {

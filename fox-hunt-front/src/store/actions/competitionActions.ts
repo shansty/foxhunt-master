@@ -337,6 +337,9 @@ export const updateCompetition = createAsyncThunk(
         `/${competition.id}`,
         requestCompetition,
       );
+      console.dir({url: competition.id})
+      console.dir({requestCompetition})
+      console.dir({response})
       return response;
     } catch (error) {
       return rejectWithValue(error);

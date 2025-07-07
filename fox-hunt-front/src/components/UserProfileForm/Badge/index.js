@@ -1,7 +1,7 @@
 import { Badge } from '@mui/material';
 import { styled } from '@mui/styles';
 
-import vars from 'src/theme/assets/core/_variables-mui.scss';
+import vars from 'src/theme/assets/core/_variables-mui.module.scss';
 
 export const AvatarBadge = styled(Badge)({
   '& .MuiBadge-badge': {

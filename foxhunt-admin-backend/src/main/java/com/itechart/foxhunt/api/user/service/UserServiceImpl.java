@@ -212,7 +212,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findActiveUserInOrganization(String email, Long organizationId) {
-        log.info("Try to findActiveUserInOrganization in UserDerviceImpl", email, " ", organizationId)
+        log.info("Try to findActiveUserInOrganization in UserDerviceImpl", email, " ", organizationId);
         UserEntity userEntity = userRepository.findActiveByEmailAndOrganizationId(email, organizationId)
             .orElseThrow(() -> new EntityNotFoundException(
                 String.format("User with EMAIL: %s not found in Organization: %s", email, organizationId)));

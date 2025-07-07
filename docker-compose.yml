@@ -66,13 +66,10 @@ services:
     build:
       context: ./
       dockerfile: fox-hunt-front/Dockerfile.local
-    expose:
-      - 3000
-    ports:
-      - 3000:3000
-    volumes:
-      - ./fox-hunt-front:/app/fox-hunt-front
-      - /app/fox-hunt-front/node_modules  
+    # expose:
+    #   - 3000
+    # ports:
+    #   - 3000:3000
     tty: true
     restart: unless-stopped
     profiles:

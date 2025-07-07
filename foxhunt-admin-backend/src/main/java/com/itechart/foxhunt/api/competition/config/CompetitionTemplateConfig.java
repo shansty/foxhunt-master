@@ -38,6 +38,7 @@ public class CompetitionTemplateConfig {
         private Byte foxAmount;
         private String distanceTypeName;
         private Integer foxDuration;
+        private Integer foxRange;
         private Boolean hasSilenceInterval;
         private Double frequency;
         private List<String> participantEmails;

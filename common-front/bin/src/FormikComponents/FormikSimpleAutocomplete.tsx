@@ -1,4 +1,3 @@
-import React from 'react';
 import { FieldAttributes } from 'formik';
 import { Autocomplete } from 'formik-mui';
 import { makeStyles } from '@mui/styles';

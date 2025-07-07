@@ -1,7 +1,7 @@
 import React from 'react';
 import CSS from 'csstype';
 import { Box, Grid } from '@mui/material';
-import vars from 'src/styles/_variables.scss';
+import vars from 'src/styles/_variables.module.scss';
 
 export interface MapLegendProps {
   titleStyles?: CSS.Properties;

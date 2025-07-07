@@ -34,6 +34,7 @@ public interface CompetitionMapper {
 
         Set<User> users = new HashSet<>();
         competitionParticipants
+        
             .forEach(competitionParticipantEntity -> {
                 User user = entityToDomain(participantToUser(competitionParticipantEntity));
                 user.setParticipantNumber(competitionParticipantEntity.getParticipantNumber());

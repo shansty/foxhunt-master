@@ -73,6 +73,10 @@ public class ModifyCompetition {
     @Min(value = 20, message = "Fox duration should be more than 20 seconds")
     private Integer foxDuration;
 
+    @Min(value = 10, message = "Fox range should be more than 10 meters")
+    @Max(value = 3000, message = "Fox range should be less than 10 meters")
+    private Integer foxRange;
+
     private boolean hasSilenceInterval;
 
     @CompetitionFrequency()

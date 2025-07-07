@@ -1,4 +1,3 @@
-import React from 'react';
 import { Paper } from '@mui/material';
 import clsx from 'clsx';
 

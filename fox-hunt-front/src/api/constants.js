@@ -1,17 +1,19 @@
-const API_GATEWAY_IP = !window?.injectEnv?.REACT_APP_PRODUCTION
-  ? process.env.REACT_APP_GATEWAY_IP
-  : window?.injectEnv?.REACT_APP_GATEWAY_IP; // prod url
+const isProd = window?.injectEnv?.REACT_APP_PRODUCTION;
 
-const API_GATEWAY_PORT = !window?.injectEnv?.REACT_APP_PRODUCTION
-  ? process.env.REACT_APP_GATEWAY_PORT
-  : window?.injectEnv?.REACT_APP_GATEWAY_PORT; // prod url
+const API_GATEWAY_IP = !isProd
+  ? import.meta.env.VITE_GATEWAY_IP
+  : window?.injectEnv?.REACT_APP_GATEWAY_IP;
 
-const API_GATEWAY_VERSION = !window?.injectEnv?.REACT_APP_PRODUCTION
-  ? process.env.REACT_APP_GATEWAY_VERSION
+const API_GATEWAY_PORT = !isProd
+  ? import.meta.env.VITE_GATEWAY_PORT
+  : window?.injectEnv?.REACT_APP_GATEWAY_PORT;
+
+const API_GATEWAY_VERSION = !isProd
+  ? import.meta.env.VITE_GATEWAY_VERSION
   : window?.injectEnv?.REACT_APP_GATEWAY_VERSION;
 
-const API_GATEWAY_PREFIX = !window?.injectEnv?.REACT_APP_PRODUCTION
-  ? process.env.REACT_APP_GATEWAY_PREFIX
+const API_GATEWAY_PREFIX = !isProd
+  ? import.meta.env.VITE_GATEWAY_PREFIX
   : window?.injectEnv?.REACT_APP_GATEWAY_PREFIX;
 
 export const BASE_URL = `http://${API_GATEWAY_IP}:${API_GATEWAY_PORT}${API_GATEWAY_PREFIX}/${API_GATEWAY_VERSION}`;

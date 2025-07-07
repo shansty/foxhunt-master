@@ -102,6 +102,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public Competition getCompetitionById(final Long id, final Long organizationId) {
+        log.debug(competitionMapper.entityToDomain(findById(id, organizationId)) + " inside getCompetitionById");
         return competitionMapper.entityToDomain(findById(id, organizationId));
     }
 
@@ -131,8 +132,9 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     public Competition updateById(final ModifyCompetition updatedCompetition, final Long id,
                                   final Long organizationId) {
+                                    log.debug(updatedCompetition + " updatedCompetition in updateById");
         CompetitionEntity competition = findById(id, organizationId);
-
+        log.debug(competition + " competition in updateById");
         Optional.ofNullable(updatedCompetition.getNotes()).ifPresent(competition::setNotes);
         Optional.ofNullable(updatedCompetition.getCoachId()).ifPresent(coachId -> {
             if (!competition.getCoach().getId().equals(coachId)) {
@@ -146,10 +148,11 @@ public class CompetitionServiceImpl implements CompetitionService {
         Optional.ofNullable(updatedCompetition.getStartPoint()).ifPresent(competition::setStartPoint);
         Optional.ofNullable(updatedCompetition.getFinishPoint()).ifPresent(competition::setFinishPoint);
         Optional.ofNullable(updatedCompetition.getFoxDuration()).ifPresent(competition::setFoxDuration);
+        Optional.ofNullable(updatedCompetition.getFoxRange()).ifPresent(competition::setFoxRange);
         Optional.ofNullable(updatedCompetition.getFrequency()).ifPresent(frequency -> competition.setFrequency(BigDecimal.valueOf(frequency)));
         Optional.of(updatedCompetition.isHasSilenceInterval()).ifPresent(competition::setHasSilenceInterval);
         competition.setUpdatedDate(LocalDateTime.now());
-
+        log.debug(competition + " competition_after in updateById");
         return competitionMapper.entityToDomain(competitionRepository.save(competition));
     }
 

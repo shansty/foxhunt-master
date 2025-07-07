@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import './DrawingManager.scss';
-import { ReactComponent as PolygonSVG } from '../../../assets/images/polygon.svg';
+import PolygonSVG from 'src/assets/images/polygon.svg?react';
 import { Add, Remove } from '@mui/icons-material';
 import { Select, MenuItem, Box, ButtonBase } from '@mui/material';
 import { isFeatureEnabled } from '../../../featureToggles/FeatureTogglesUtils';
@@ -26,7 +26,7 @@ const ForbiddenAreaDrawingManager = (
 ) => {
   const [forbiddenAreaDrawing, setForbiddenAreaDrawing] = useState(false);
   const isForbiddenAreaFeatureEnabled = isFeatureEnabled(FORBIDDEN_AREA);
-  const { polygon, turnOffAllForbiddenAreaEditors, isFullscreen } = props;
+  const { polygon = [], turnOffAllForbiddenAreaEditors, isFullscreen } = props;
 
   useEffect(() => {
     if (isForbiddenAreaFeatureEnabled) {
@@ -52,9 +52,7 @@ const ForbiddenAreaDrawingManager = (
               <Select
                 value={props.areaSelect}
                 variant="standard"
-                onChange={(e, index: any) =>
-                  props.setAreaSelect(index.props.value)
-                }
+                onChange={(e) => props.setAreaSelect(e.target.value)}
                 data-testid="select-area"
               >
                 <MenuItem value="notSelected">
@@ -96,10 +94,9 @@ const ForbiddenAreaDrawingManager = (
                     },
                   )
                 }
-                className={`polygonSVG ${
-                  forbiddenAreaDrawing ? 'drawingEnabled' : ''
-                }`}
-                title={
+                className={`polygonSVG ${forbiddenAreaDrawing ? 'drawingEnabled' : ''
+                  }`}
+                aria-label={
                   forbiddenAreaDrawing
                     ? 'Click To Stop Drawing'
                     : 'Click To Start Drawing'

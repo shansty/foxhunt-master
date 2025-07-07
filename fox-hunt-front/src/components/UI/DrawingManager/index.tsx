@@ -10,12 +10,13 @@ import ForbiddenAreaDrawingManager, {
 } from './ForbiddenAreaDrawingManager';
 
 export interface DrawingManagerWrapperProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   drawingManagerDisplay: DrawingManagerDisplayState;
   locationDrawingManagerProps: LocationDrawingManagerProps;
   forbiddenAreaDrawingManagerProps: ForbiddenAreaDrawingManagerProps;
 }
 
+console.log('DrawingManagerWrapper loaded');
 const DrawingManagerWrapper = ({
   children,
   drawingManagerDisplay,

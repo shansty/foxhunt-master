@@ -1,4 +1,3 @@
-import React from 'react';
 import { Field, FieldAttributes, useField } from 'formik';
 
 export function FormikInput({

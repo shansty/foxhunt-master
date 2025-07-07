@@ -20,7 +20,7 @@
     "useUnknownInCatchVariables": false
   },
   "types": ["node", "jest", "@testing-library/jest-dom"],
-  "include": ["./src"],
+  "include": ["./src", "vite.config.js"],
   "env": {
     "node": true,
     "es6": true

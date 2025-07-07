@@ -42,9 +42,9 @@ public class AuthorizationService {
     public AuthenticationInfo validateAuthenticationRequest(AuthenticationRequest request) {
         return handleAuthentication(() -> {
             String email = request.getEmail();
-            log.info("Email is ", email)
+            log.info("Email is ", email);
             Long organizationId = organizationService.getOrganizationIdByDomain(request.getDomain());
-            log.info("OrganizationID is ", organizationId)
+            log.info("OrganizationID is ", organizationId);
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
             User activeUser = userService.findActiveUserInOrganization(email, organizationId);
             return new AuthenticationInfo(activeUser.getEmail(), organizationId, getRoles(activeUser));

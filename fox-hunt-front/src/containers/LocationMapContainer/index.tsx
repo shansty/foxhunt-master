@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { IEvent } from 'yandex-maps';
 
 import useLocationMapContainer from './useLocationMapContainer';
@@ -14,7 +14,7 @@ export interface LocationMapContainerProps {
   onMapClick: (event: IEvent) => void;
   onMapBoundsChange: (event: IEvent) => void;
   zoomValue: number;
-  geometryCenter: GeometryCenter;
+  geometryCenter?: GeometryCenter;
   locationDrawingManagerProps: any;
   forbiddenAreas: ForbiddenArea[];
   selectedForbiddenArea: string | null;
@@ -32,7 +32,7 @@ export interface LocationMapContainerProps {
 }
 
 const LocationMapContainer = ({
-  polygonCoordinates,
+  polygonCoordinates = [],
   setPolygonInstanceRef,
   setForbiddenAreasRef,
   onPolygonClick,
@@ -48,12 +48,22 @@ const LocationMapContainer = ({
   forbiddenAreaDrawingManagerProps,
   hasLocationDrawingManager,
   hasForbiddenAreaDrawingManager,
-  customMarkers,
+  customMarkers = [],
   tooltip,
   children,
   onDragEnd,
 }: LocationMapContainerProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // ✅ Stable fallback for geometryCenter
+  const stableGeometryCenter = useMemo(() => {
+    return geometryCenter ?? {
+      displayMarker: false,
+      coordinates: [0, 0],
+      onDragEnd: () => { },
+    };
+  }, [geometryCenter]);
+
   const {
     onMapLoad,
     renderMarkers,
@@ -62,7 +72,7 @@ const LocationMapContainer = ({
     drawingManagerDisplay,
   } = useLocationMapContainer(
     tooltip,
-    geometryCenter,
+    stableGeometryCenter,
     onPolygonClick,
     setPolygonInstanceRef,
     polygonCoordinates,
@@ -75,54 +85,42 @@ const LocationMapContainer = ({
     onDragEnd,
   );
 
-  const mapProvider = YANDEX;
-
   const onSizeChange = (event: IEvent) => {
     setIsFullscreen(event.get('target').container.isFullscreen() || false);
   };
 
   return (
-    <>
-      {
-        <DrawingManagerWrapper
-          drawingManagerDisplay={drawingManagerDisplay}
-          locationDrawingManagerProps={{
-            ...locationDrawingManagerProps,
-            isFullscreen,
-          }}
-          forbiddenAreaDrawingManagerProps={{
-            ...forbiddenAreaDrawingManagerProps,
-            isFullscreen,
-          }}
-        >
-          <MapContainer
-            zoom={zoomValue}
-            center={geometryCenter}
-            mapProvider={mapProvider}
-            onMapClick={onMapClick}
-            onMapBoundsChange={onMapBoundsChange}
-            onMapLoad={onMapLoad}
-            loadMapInstance={loadMapInstance}
-            onSizeChange={onSizeChange}
-            className={className}
-            drawingManager={drawingManagerDisplay}
-          >
-            {renderMarkers()}
-            {renderPolygon()}
-            {setForbiddenAreasRef && renderForbiddenAreaPolygon()}
-            {children}
-          </MapContainer>
-        </DrawingManagerWrapper>
-      }
-    </>
+    <DrawingManagerWrapper
+      drawingManagerDisplay={drawingManagerDisplay}
+      locationDrawingManagerProps={{
+        ...locationDrawingManagerProps,
+        isFullscreen,
+      }}
+      forbiddenAreaDrawingManagerProps={{
+        ...forbiddenAreaDrawingManagerProps,
+        isFullscreen,
+      }}
+    >
+      <MapContainer
+        zoom={zoomValue}
+        center={stableGeometryCenter}
+        mapProvider={YANDEX}
+        onMapClick={onMapClick}
+        onMapBoundsChange={onMapBoundsChange}
+        onMapLoad={onMapLoad}
+        loadMapInstance={loadMapInstance}
+        onSizeChange={onSizeChange}
+        className={className}
+        drawingManager={drawingManagerDisplay}
+      >
+        {renderMarkers()}
+        {renderPolygon()}
+        {setForbiddenAreasRef && renderForbiddenAreaPolygon()}
+        {children}
+      </MapContainer>
+    </DrawingManagerWrapper>
   );
-};
 
-LocationMapContainer.defaultProps = {
-  polygonCoordinates: [],
-  customMarkers: [],
-  geometryCenter: {},
-  participantTracerList: [],
 };
 
 export default LocationMapContainer;
