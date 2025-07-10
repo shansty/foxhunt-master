@@ -1,20 +1,30 @@
-const isProd = window?.injectEnv?.REACT_APP_PRODUCTION;
+import { getViteEnv } from './utils/getViteEnv';
+const getEnv = () => {
+  const isProd = window?.injectEnv?.REACT_APP_PRODUCTION;
+  const viteEnv = getViteEnv();
 
-const API_GATEWAY_IP = !isProd
-  ? import.meta.env.VITE_GATEWAY_IP
-  : window?.injectEnv?.REACT_APP_GATEWAY_IP;
+  return {
+    API_GATEWAY_IP: isProd
+      ? window?.injectEnv?.REACT_APP_GATEWAY_IP
+      : viteEnv.VITE_GATEWAY_IP ?? '',
+    API_GATEWAY_PORT: isProd
+      ? window?.injectEnv?.REACT_APP_GATEWAY_PORT
+      : viteEnv.VITE_GATEWAY_PORT ?? '',
+    API_GATEWAY_VERSION: isProd
+      ? window?.injectEnv?.REACT_APP_GATEWAY_VERSION
+      : viteEnv.VITE_GATEWAY_VERSION ?? '',
+    API_GATEWAY_PREFIX: isProd
+      ? window?.injectEnv?.REACT_APP_GATEWAY_PREFIX
+      : viteEnv.VITE_GATEWAY_PREFIX ?? '',
+  };
+};
 
-const API_GATEWAY_PORT = !isProd
-  ? import.meta.env.VITE_GATEWAY_PORT
-  : window?.injectEnv?.REACT_APP_GATEWAY_PORT;
-
-const API_GATEWAY_VERSION = !isProd
-  ? import.meta.env.VITE_GATEWAY_VERSION
-  : window?.injectEnv?.REACT_APP_GATEWAY_VERSION;
-
-const API_GATEWAY_PREFIX = !isProd
-  ? import.meta.env.VITE_GATEWAY_PREFIX
-  : window?.injectEnv?.REACT_APP_GATEWAY_PREFIX;
+const {
+  API_GATEWAY_IP,
+  API_GATEWAY_PORT,
+  API_GATEWAY_PREFIX,
+  API_GATEWAY_VERSION,
+} = getEnv();
 
 export const BASE_URL = `http://${API_GATEWAY_IP}:${API_GATEWAY_PORT}${API_GATEWAY_PREFIX}/${API_GATEWAY_VERSION}`;
 

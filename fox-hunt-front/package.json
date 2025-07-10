@@ -63,7 +63,7 @@
     "serve": "vite preview",
     "build-common": "cd ../common-front/bin && npm run compile && cd ../../fox-hunt-front",
     "docker-local": "npm i && vite",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "preinstall": "yalc update",
     "lint": "eslint -- src/",
@@ -160,18 +160,5 @@
         }
       }
     ]
-  },
-  "jest": {
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!common-front|another)"
-    ],
-    "transform": {
-      "^.+\\.js$": "babel-jest",
-      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
-    },
-    "moduleNameMapper": {
-      "^.+.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
-    },
-    "resetMocks": false
   }
 }

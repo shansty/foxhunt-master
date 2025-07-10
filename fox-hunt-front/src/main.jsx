@@ -31,7 +31,7 @@ Axios.interceptors.response.use(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-    <App />
+  <App />,
   // </React.StrictMode>,
   //https://github.com/gribnoysup/react-yandex-maps/issues/333
   //https://stackoverflow.com/questions/61254372/my-react-component-is-rendering-twice-because-of-strict-mode

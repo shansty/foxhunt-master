@@ -1,6 +1,21 @@
-import React from 'react';
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import CreateLocationPageTitle from '.';
+
+jest.mock('common-front', () => ({
+  PageTitle: ({
+    titleHeading,
+    titleDescription,
+  }: {
+    titleHeading: string;
+    titleDescription: string;
+  }) => (
+    <div>
+      <h1>{titleHeading}</h1>
+      <p>{titleDescription}</p>
+    </div>
+  ),
+}));
 
 describe('CreateLocationPageTitle', () => {
   it('should contain title and description', () => {

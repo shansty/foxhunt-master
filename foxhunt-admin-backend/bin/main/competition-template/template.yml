@@ -6,7 +6,7 @@ templates:
     isPrivate: false
     foxAmount: 5
     distanceTypeName: "M5"
-    foxDuration: 60,
+    foxDuration: 60
     foxRange: 3000
     hasSilenceInterval: true
     frequency: 3.5

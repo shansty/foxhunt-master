@@ -34,7 +34,6 @@ export default function useLocationMapContainer(
       forbiddenAreaDrawingManagerDisplay: false,
     });
 
-
   const isForbiddenAreaFeatureEnabled = useMemo(
     () => isFeatureEnabled(FORBIDDEN_AREA),
     [],

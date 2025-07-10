@@ -101,6 +101,9 @@ public class CompetitionController implements CompetitionControllerInterface {
     public ResponseEntity<Competition> create(@RequestBody final ModifyCompetition competition,
             OrganizationId organizationId) {
         log.info("Received request from trainer: {} to add participant: {} to competition: {}");
+        log.info("Creating competition: {}", competition);
+        log.info("Start point: {}", competition.getStartPoint());
+        log.info("FoxPoints: {}", competition.getFoxPoints());
         return new ResponseEntity<>(competitionService.create(competition, organizationId.getId()),
                 HttpStatus.CREATED);
 

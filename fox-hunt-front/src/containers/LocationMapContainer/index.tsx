@@ -57,11 +57,13 @@ const LocationMapContainer = ({
 
   // ✅ Stable fallback for geometryCenter
   const stableGeometryCenter = useMemo(() => {
-    return geometryCenter ?? {
-      displayMarker: false,
-      coordinates: [0, 0],
-      onDragEnd: () => { },
-    };
+    return (
+      geometryCenter ?? {
+        displayMarker: false,
+        coordinates: [0, 0],
+        onDragEnd: () => {},
+      }
+    );
   }, [geometryCenter]);
 
   const {
@@ -120,7 +122,6 @@ const LocationMapContainer = ({
       </MapContainer>
     </DrawingManagerWrapper>
   );
-
 };
 
 export default LocationMapContainer;

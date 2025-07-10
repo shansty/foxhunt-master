@@ -1,7 +1,6 @@
 export const getViteEnv = () => {
-  try {
-    return eval('import.meta.env');
-  } catch {
-    return {}; 
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env;
   }
+  return {};
 };

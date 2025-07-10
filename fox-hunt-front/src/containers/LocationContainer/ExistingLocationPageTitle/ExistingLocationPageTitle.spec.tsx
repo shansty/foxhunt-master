@@ -1,9 +1,44 @@
-import '@testing-library/jest-dom/extend-expect';
-// import '@testing-library/jest-dom';
+import '@testing-library/jest-dom';
 import React from 'react';
 import { screen } from '@testing-library/react';
 import ExistingLocationPageTitle from '.';
 import { renderWithReduxProvider } from 'src/utils/tests/renderWithReduxProvider';
+
+jest.mock('common-front', () => ({
+  PageTitle: ({
+    titleContent,
+    descriptionContent,
+    titleStatus,
+    children,
+  }: {
+    titleContent: React.ReactNode;
+    descriptionContent: React.ReactNode;
+    titleStatus?: string | null;
+    children?: React.ReactNode;
+  }) => (
+    <div data-testid="mocked-page-title">
+      <h1>{titleContent}</h1>
+      <p>{descriptionContent}</p>
+      {titleStatus && <span>{titleStatus}</span>}
+      {children}
+    </div>
+  ),
+  FavIcon: ({
+    handleToggle,
+    starSelected,
+  }: {
+    handleToggle: () => void;
+    starSelected: boolean;
+  }) => (
+    <button
+      data-testid="icon-button"
+      onClick={handleToggle}
+      aria-label={starSelected ? 'Unfavorite' : 'Favorite'}
+    >
+      {starSelected ? '★' : '☆'}
+    </button>
+  ),
+}));
 
 const userWhoCreated = {
   id: 1,
@@ -59,7 +94,6 @@ describe('ExistingLocationPageTitle', () => {
         isFavLocationFeatureEnabled={true}
       />,
     );
-
     const title = screen.getByText('Location: Wild forest');
     expect(title).toBeInTheDocument();
   });

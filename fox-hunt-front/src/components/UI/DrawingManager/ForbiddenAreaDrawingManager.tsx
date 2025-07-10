@@ -94,8 +94,9 @@ const ForbiddenAreaDrawingManager = (
                     },
                   )
                 }
-                className={`polygonSVG ${forbiddenAreaDrawing ? 'drawingEnabled' : ''
-                  }`}
+                className={`polygonSVG ${
+                  forbiddenAreaDrawing ? 'drawingEnabled' : ''
+                }`}
                 aria-label={
                   forbiddenAreaDrawing
                     ? 'Click To Stop Drawing'

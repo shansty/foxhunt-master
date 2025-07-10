@@ -110,7 +110,7 @@ public class CompetitionEntity {
         @Column(name = "fox_duration", nullable = true)
         private Integer foxDuration;
 
-        @Column(name = "fox_range", nullable = false)
+        @Column(name = "fox_range", nullable = true)
         private Integer foxRange;
 
         @Column(name = "expected_competition_duration", nullable = true)

@@ -82,17 +82,15 @@ const MapContainer = ({
   const renderSwitch = (mapProvider: string) => {
     switch (mapProvider) {
       case YANDEX:
-        console.log("Yandemap")
+        console.log('Yandemap');
         return yandexMap;
       default:
-        console.log("DEFAULT")
-        return
-
+        console.log('DEFAULT');
+        return;
     }
   };
   // return renderSwitch(mapProvider);
   return <div>{renderSwitch(mapProvider)}</div>;
 };
-
 
 export default MapContainer;

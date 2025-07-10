@@ -273,7 +273,8 @@ const CreateCompetitionTimeAndLocationPage = (props) => {
   const onPointDragEnd = (event) => {
     const markerId = event.get('target').properties.get('id');
     const markerCoordinates = event.get('target').geometry.getCoordinates();
-    const inLocationArea = polygonRef.current?.geometry.contains(markerCoordinates);
+    const inLocationArea =
+      polygonRef.current?.geometry.contains(markerCoordinates);
     const inForbiddenArea = isPointInForbiddenAreas(markerCoordinates);
     setState({
       ...state,
@@ -314,7 +315,7 @@ const CreateCompetitionTimeAndLocationPage = (props) => {
     const thisIsNotUniqueName = props.competitions.find(
       (el) => el.name === values.name && el.name !== props.competition.name,
     );
-
+    console.dir({thisIsNotUniqueName})
     setState({ ...state, isNotUniqueName: thisIsNotUniqueName });
 
     if (thisIsNotUniqueName) {
@@ -349,17 +350,20 @@ const CreateCompetitionTimeAndLocationPage = (props) => {
       notes,
       startPoint,
     };
+    console.dir({updatedCompetition})
 
     urlId
       ? updateCompetition({ ...updatedCompetition, id }).then(({ payload }) =>
-        goToNextStep(payload),
-      )
+          goToNextStep(payload),
+        )
       : createCompetition(createdCompetition).then(({ payload }) =>
-        goToNextStep(payload),
-      );
+          goToNextStep(payload),
+        );
+        console.dir({message: "After goToNextStep"})
   };
 
   const goToNextStep = (response) => {
+    console.dir({response})
     if (response.status < 400) {
       navigate(buildSettingsCompetitionByIdUrl(response.data.id));
     }
@@ -559,23 +563,25 @@ const CreateCompetitionTimeAndLocationPage = (props) => {
                       )}
                       {state.isMapShown && !isLocationLoading && (
                         <Grid item key={location?.id || 'map'}>
-                            <LocationMapContainer
-                              customMarkers={getStartAndFinishPointProps()}
-                              disabled={disabled}
-                              forbiddenAreas={location.forbiddenAreas}
-                              geometryCenter={{
-                                displayMarker: false,
-                                coordinates: location.center,
-                              }}
-                              onMapClick={addPoint}
-                              onPolygonClick={addPoint}
-                              polygonCoordinates={location.coordinates}
-                              setForbiddenAreasRef={(ref) =>
-                                (forbiddenAreaRef.current = ref)
-                              }
-                              setPolygonInstanceRef={(ref) => (polygonRef.current = ref)}
-                              zoomValue={location.zoom}
-                            />
+                          <LocationMapContainer
+                            customMarkers={getStartAndFinishPointProps()}
+                            disabled={disabled}
+                            forbiddenAreas={location.forbiddenAreas}
+                            geometryCenter={{
+                              displayMarker: false,
+                              coordinates: location.center,
+                            }}
+                            onMapClick={addPoint}
+                            onPolygonClick={addPoint}
+                            polygonCoordinates={location.coordinates}
+                            setForbiddenAreasRef={(ref) =>
+                              (forbiddenAreaRef.current = ref)
+                            }
+                            setPolygonInstanceRef={(ref) =>
+                              (polygonRef.current = ref)
+                            }
+                            zoomValue={location.zoom}
+                          />
                         </Grid>
                       )}
                     </Grid>
@@ -609,7 +615,7 @@ const CreateCompetitionTimeAndLocationPage = (props) => {
           );
         }}
       </Formik>
-    </MainLayout >
+    </MainLayout>
   );
 };
 

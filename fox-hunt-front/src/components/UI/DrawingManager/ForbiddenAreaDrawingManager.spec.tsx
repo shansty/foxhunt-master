@@ -1,9 +1,9 @@
-import '@testing-library/jest-dom/extend-expect';
-// import '@testing-library/jest-dom';
+import '@testing-library/jest-dom';
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import ForbiddenAreaDrawingManager from './ForbiddenAreaDrawingManager';
 import * as FeatureTogglesUtils from '../../../featureToggles/FeatureTogglesUtils';
+
 const defaultProps = {
   addForbiddenArea: jest.fn(),
   areaSelect: '1',
@@ -25,7 +25,7 @@ const defaultProps = {
 
 let mock: any;
 
-beforeEach(() => {
+beforeEach(async () => {
   mock = jest
     .spyOn(FeatureTogglesUtils, 'isFeatureEnabled')
     .mockResolvedValue(true);

@@ -152,10 +152,10 @@ function LaunchCompetitionPage(props) {
   };
 
   const isDistanceExceeded = () => {
-    console.dir({distance: state.distance})
-    console.dir({distanceLength: state.distance})
+    console.dir({ distance: state.distance });
+    console.dir({ distanceLength: state.distance });
     return state.distance > competition.distanceType?.distanceLength;
-  }
+  };
 
   const startCompetition = () => {
     const { foxPoints: foxPointsProps, startParticipants } = state;

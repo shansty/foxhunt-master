@@ -189,7 +189,6 @@ const CompetitionSettingPage = (props) => {
     }
   };
 
-
   const onSave = (values, { setSubmitting }) => {
     setSubmitting(false);
     const {
@@ -201,7 +200,7 @@ const CompetitionSettingPage = (props) => {
       hasSilenceInterval,
       frequency,
     } = values;
-    console.dir({values})
+    console.dir({ values });
     const updatedCompetition = {
       id,
       distanceType: distanceTypes.find(
@@ -213,7 +212,7 @@ const CompetitionSettingPage = (props) => {
       hasSilenceInterval,
       frequency,
     };
-    console.dir({updateCompetition})
+    console.dir({ updateCompetition });
 
     updateCompetition(updatedCompetition).then(({ payload }) =>
       goToNextStep(payload),
@@ -261,10 +260,11 @@ const CompetitionSettingPage = (props) => {
               foxDuration: Yup.number()
                 .required(ERRORS.REQUIRED_FIELD)
                 .min(20)
-                .max(300), foxRange: Yup.number()
-                  .required(ERRORS.REQUIRED_FIELD)
-                  .min(MIN_FOX_RANGE)
-                  .max(MAX_FOX_RANGE),
+                .max(300),
+              foxRange: Yup.number()
+                .required(ERRORS.REQUIRED_FIELD)
+                .min(MIN_FOX_RANGE)
+                .max(MAX_FOX_RANGE),
             })}
           >
             {(formikProps) => {
@@ -399,8 +399,19 @@ const CompetitionSettingPage = (props) => {
                                 onChange={handleChange}
                               />
                             </Grid>
-                            <Grid item container direction={'column'} spacing={2}>
-                              <Grid item container direction={'row'} spacing={1} justifyContent={'center'}>
+                            <Grid
+                              item
+                              container
+                              direction={'column'}
+                              spacing={2}
+                            >
+                              <Grid
+                                item
+                                container
+                                direction={'row'}
+                                spacing={1}
+                                justifyContent={'center'}
+                              >
                                 <Grid item>
                                   <Typography
                                     className="text-black px-2 font-weight-bold"
