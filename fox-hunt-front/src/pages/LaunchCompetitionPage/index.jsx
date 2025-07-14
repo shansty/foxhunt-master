@@ -56,6 +56,7 @@ import { isFeatureEnabled } from 'src/featureToggles/FeatureTogglesUtils';
 import { FORBIDDEN_AREA } from 'src/featureToggles/featureNameConstants';
 import MainLayout from 'src/layouts/MainLayout';
 import { signInRequired } from 'src/hocs/permissions';
+import LatLon from 'geodesy/latlon-spherical.js';
 
 const DISTANCE_TOOLTIP = `Distance is calculated as length of line 
 Start- Fox1 -Fox2- Fox-3 -Fox4-Fox5 - Finish`;
@@ -216,116 +217,130 @@ function LaunchCompetitionPage(props) {
     }));
   };
 
-  const onPointDragEnd = (event) => {
-    const { foxPoints } = state;
-    const { startPoint, finishPoint } = competition;
-    const pointId = event.get('target').properties.get('id');
-    const pointCoordinates = event.get('target').geometry.getCoordinates();
-    const foxPoint = foxPoints[pointId];
-    const isInForbiddenArea = isPointInForbiddenAreas(pointCoordinates);
+ const onPointDragEnd = (event) => {
+  const { foxPoints } = state;
+  const { startPoint, finishPoint } = competition;
+  const pointId = event.get('target').properties.get('id');
+  const pointCoordinates = event.get('target').geometry.getCoordinates();
+  const foxPoint = foxPoints[pointId];
+  const isInForbiddenArea = isPointInForbiddenAreas(pointCoordinates);
 
-    if (
-      polygonRef.current &&
-      polygonRef.current.geometry.contains(pointCoordinates) &&
-      !isInForbiddenArea
-    ) {
-      const updatedFoxPoints = {
-        ...foxPoints,
-        [pointId]: {
-          ...foxPoint,
-          coordinates: pointCoordinates,
-        },
-      };
+  if (
+    polygonRef.current &&
+    polygonRef.current.geometry.contains(pointCoordinates) &&
+    !isInForbiddenArea
+  ) {
+    const range = foxPoint.foxRange || competition.foxRange;
+    const distanceFromOrigin = getDistance(foxPoint.hearingOrigin, pointCoordinates);
+    const outOfBounds = distanceFromOrigin > range
 
-      setState((state) => ({
-        ...state,
-        distance: getCompetitionDistance(
-          finishPoint,
-          startPoint,
-          updatedFoxPoints,
-        ),
-        foxPoints: updatedFoxPoints,
-      }));
-      return;
-    }
-    event.get('target').geometry.setCoordinates(foxPoint.coordinates);
-  };
+    const updatedFoxPoints = {
+      ...foxPoints,
+      [pointId]: {
+        ...foxPoint,
+        coordinates: pointCoordinates,
+        hearingOrigin: outOfBounds ? pointCoordinates : foxPoint.hearingOrigin,
+      },
+    };
 
- function getDistanceBetweenPoints(pointA, pointB) {
-  if (!Array.isArray(pointA) || !Array.isArray(pointB)) return 0;
-  const [lng1, lat1] = pointA;
-  const [lng2, lat2] = pointB;
+    setState((state) => ({
+      ...state,
+      distance: getCompetitionDistance(
+        finishPoint,
+        startPoint,
+        updatedFoxPoints,
+      ),
+      foxPoints: updatedFoxPoints,
+    }));
+    return;
+  }
 
-  const R = 6371000;
+  // Revert position if dropped in invalid location
+  event.get('target').geometry.setCoordinates(foxPoint.coordinates);
+};
+
+
+function getDistance([lng1, lat1], [lng2, lat2]) {
+  const R = 6371000; // Earth radius in meters
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLng = ((lng2 - lng1) * Math.PI) / 180;
-
   const a =
     Math.sin(dLat / 2) ** 2 +
     Math.cos((lat1 * Math.PI) / 180) *
     Math.cos((lat2 * Math.PI) / 180) *
     Math.sin(dLng / 2) ** 2;
-
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-  const getPointsProps = () => {
-    const pointsProps = [];
-    const { foxPoints } = state;
-    const { startPoint, finishPoint } = competition;
+function getAccurateGeodesicMidpoint(origin, current) {
+  const [lng1, lat1] = origin;
+  const [lng2, lat2] = current;
 
-    if (startPoint.length)
-      pointsProps.push(getStartMarkerProps({ coordinates: startPoint }));
-    if (finishPoint.length)
-      pointsProps.push(getFinishMarkerProps({ coordinates: finishPoint }));
+  const p1 = new LatLon(lat1, lng1);
+  const p2 = new LatLon(lat2, lng2);
 
-    Object.values(foxPoints).forEach((markerProps) => {
-      const distanceMoved = getDistanceBetweenPoints(
-        markerProps.hearingOrigin,
-        markerProps.coordinates
-      );
-      const effectiveRadius =
-        distanceMoved < markerProps.foxRange
-          ? markerProps.foxRange - distanceMoved
-          : 0;
+  const midpoint = p1.midpointTo(p2);
+  return [midpoint.lon, midpoint.lat];
+}
 
-      pointsProps.push(markerProps); // 🦊 fox marker
 
-      // 🔊 Dynamic hearing range (green circle)
-      if (effectiveRadius > 0) {
-        pointsProps.push({
-          type: 'circle',
-          id: `${markerProps.id}-hearing`,
-          coordinates: markerProps.coordinates,
-          radius: effectiveRadius,
-          options: {
-            draggable: false,
-            fillColor: '#00FF0011',
-            strokeColor: '#00FF00',
-            strokeOpacity: 0.5,
-            strokeWidth: 2,
-          },
-        });
-      }
 
-      // 🧭 Static range boundary (dashed circle)
+function getPointsProps() {
+  const pointsProps = [];
+  const { foxPoints } = state;
+  const { startPoint, finishPoint } = competition;
+
+  if (startPoint?.length)
+    pointsProps.push(getStartMarkerProps({ coordinates: startPoint }));
+  if (finishPoint?.length)
+    pointsProps.push(getFinishMarkerProps({ coordinates: finishPoint }));
+
+  Object.values(foxPoints).forEach((markerProps) => {
+    const origin = markerProps.hearingOrigin;
+    const current = markerProps.coordinates;
+    const range = markerProps.foxRange || competition.foxRange;
+
+    if (!Array.isArray(origin) || !Array.isArray(current)) return;
+
+    const d = getDistance(origin, current);
+
+    pointsProps.push(markerProps); // Fox marker (T#)
+
+    if (d <= 2 * range) {
+      const greenRadius = range - d / 2;
+      const greenCenter = getAccurateGeodesicMidpoint(origin, current);
+
       pointsProps.push({
         type: 'circle',
-        id: `${markerProps.id}-range-limit`,
-        coordinates: markerProps.hearingOrigin,
-        radius: markerProps.foxRange,
+        id: `${markerProps.id}-hearing`,
+        coordinates: greenCenter,
+        radius: greenRadius,
         options: {
           draggable: false,
-          strokeColor: '#00000055',
-          strokeWidth: 1,
-          strokeStyle: 'dash',
-          fillColor: '#00000000',
+          fillColor: '#00FF0011',
+          strokeColor: '#00FF00',
+          strokeOpacity: 0.5,
+          strokeWidth: 2,
         },
       });
+    }
+    pointsProps.push({
+      type: 'circle',
+      id: `${markerProps.id}-range-limit`,
+      coordinates: origin,
+      radius: range,
+      options: {
+        draggable: false,
+        strokeColor: '#00000055',
+        strokeWidth: 1,
+        strokeStyle: 'dash',
+        fillColor: '#00000000',
+      },
     });
+  });
 
-    return pointsProps;
-  };
+  return pointsProps;
+}
 
 
   const isRunBtnDisabled = () => {
