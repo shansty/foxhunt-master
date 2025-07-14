@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { IEvent } from 'yandex-maps';
-import { Placemark, Polygon } from 'react-yandex-maps';
+import { Placemark, Polygon, Circle } from 'react-yandex-maps';
 
 import { getCenterMarkerProps } from 'src/utils/markers';
 import { getMapCenterCoordinates } from 'src/utils/mapUtils';
@@ -57,20 +57,32 @@ export default function useLocationMapContainer(
     }
   };
 
-  const renderMarkers = () => {
-    const markersProps = [...customMarkers];
-    if (geometryCenter.displayMarker) {
-      markersProps.push(
-        getCenterMarkerProps({
-          coordinates: getMapCenterCoordinates(geometryCenter),
-          onDragEnd: geometryCenter.onDragEnd,
-        }),
+const renderMarkers = () => {
+  const markersProps = [...customMarkers];
+
+  if (geometryCenter.displayMarker) {
+    markersProps.push(
+      getCenterMarkerProps({
+        coordinates: getMapCenterCoordinates(geometryCenter),
+        onDragEnd: geometryCenter.onDragEnd,
+      }),
+    );
+  }
+
+  return markersProps.map((props, index) => {
+    if (props.type === 'circle') {
+      return (
+        <Circle
+          key={`circle-${index}`}
+          geometry={[props.coordinates, props.radius]}
+          options={props.options}
+        />
       );
     }
 
-    return markersProps.map((props) => (
+    return (
       <Placemark
-        key={props.id}
+        key={props.id || `placemark-${index}`}
         geometry={props.coordinates}
         properties={{
           ...props.properties,
@@ -78,10 +90,13 @@ export default function useLocationMapContainer(
           hintContent: props.properties?.hintContent,
         }}
         options={props.options}
+        draggable={props.draggable}
         onDragEnd={onDragEnd}
       />
-    ));
-  };
+    );
+  });
+};
+
 
   const renderPolygon = () => (
     <Polygon

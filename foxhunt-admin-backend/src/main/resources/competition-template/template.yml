@@ -7,7 +7,7 @@ templates:
     foxAmount: 5
     distanceTypeName: "M5"
     foxDuration: 60
-    foxRange: 3000
+    foxRange: 100
     hasSilenceInterval: true
     frequency: 3.5
     participantEmails:
@@ -24,7 +24,7 @@ templates:
     foxAmount: 4
     distanceTypeName: "W5"
     foxDuration: 45
-    foxRange: 3000
+    foxRange: 100
     hasSilenceInterval: false
     frequency: 144
     participantEmails:

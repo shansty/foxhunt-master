@@ -116,7 +116,8 @@ function LaunchCompetitionPage(props) {
   const generateFoxLocation = () => {
     const foxPoints = {};
     const bounds = polygonRef.current.geometry.getBounds();
-    const { startPoint, finishPoint, foxAmount, frequency } = competition;
+    const { startPoint, finishPoint, foxAmount, frequency, foxRange } = competition;
+    console.dir({ competition })
     const pointsMap = new PointsMap([startPoint, finishPoint]);
 
     while (Object.keys(foxPoints).length !== foxAmount) {
@@ -136,11 +137,15 @@ function LaunchCompetitionPage(props) {
           id: foxIndex,
           label: `T${foxIndex}`,
           frequency: foxFrequency,
+          foxRange,
         });
+
         foxPoints[fox.id] = {
           ...fox,
           index: foxIndex,
           frequency: foxFrequency,
+          foxRange,
+          hearingOrigin: coordinates, // 👈 Needed to draw hearing circle
         };
       }
     }
@@ -246,20 +251,82 @@ function LaunchCompetitionPage(props) {
     event.get('target').geometry.setCoordinates(foxPoint.coordinates);
   };
 
+ function getDistanceBetweenPoints(pointA, pointB) {
+  if (!Array.isArray(pointA) || !Array.isArray(pointB)) return 0;
+  const [lng1, lat1] = pointA;
+  const [lng2, lat2] = pointB;
+
+  const R = 6371000;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+    Math.cos((lat2 * Math.PI) / 180) *
+    Math.sin(dLng / 2) ** 2;
+
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
   const getPointsProps = () => {
     const pointsProps = [];
     const { foxPoints } = state;
     const { startPoint, finishPoint } = competition;
+
     if (startPoint.length)
       pointsProps.push(getStartMarkerProps({ coordinates: startPoint }));
     if (finishPoint.length)
       pointsProps.push(getFinishMarkerProps({ coordinates: finishPoint }));
-    if (_.isEmpty(foxPoints)) return pointsProps;
-    const mapedData = _.map(foxPoints, (markerProps) => markerProps).concat(
-      pointsProps,
-    );
-    return _.map(foxPoints, (markerProps) => markerProps).concat(pointsProps);
+
+    Object.values(foxPoints).forEach((markerProps) => {
+      const distanceMoved = getDistanceBetweenPoints(
+        markerProps.hearingOrigin,
+        markerProps.coordinates
+      );
+      const effectiveRadius =
+        distanceMoved < markerProps.foxRange
+          ? markerProps.foxRange - distanceMoved
+          : 0;
+
+      pointsProps.push(markerProps); // 🦊 fox marker
+
+      // 🔊 Dynamic hearing range (green circle)
+      if (effectiveRadius > 0) {
+        pointsProps.push({
+          type: 'circle',
+          id: `${markerProps.id}-hearing`,
+          coordinates: markerProps.coordinates,
+          radius: effectiveRadius,
+          options: {
+            draggable: false,
+            fillColor: '#00FF0011',
+            strokeColor: '#00FF00',
+            strokeOpacity: 0.5,
+            strokeWidth: 2,
+          },
+        });
+      }
+
+      // 🧭 Static range boundary (dashed circle)
+      pointsProps.push({
+        type: 'circle',
+        id: `${markerProps.id}-range-limit`,
+        coordinates: markerProps.hearingOrigin,
+        radius: markerProps.foxRange,
+        options: {
+          draggable: false,
+          strokeColor: '#00000055',
+          strokeWidth: 1,
+          strokeStyle: 'dash',
+          fillColor: '#00000000',
+        },
+      });
+    });
+
+    return pointsProps;
   };
+
 
   const isRunBtnDisabled = () => {
     const isAboutToStart =
@@ -458,7 +525,6 @@ function LaunchCompetitionPage(props) {
 }
 
 LaunchCompetitionPage.propTypes = {
-  // cancelCompetition: PropTypes.func.isRequired,
   competition: PropTypes.shape({
     distanceType: PropTypes.shape({
       distanceLength: PropTypes.number,
@@ -469,6 +535,7 @@ LaunchCompetitionPage.propTypes = {
     finishPoint: PropTypes.arrayOf(PropTypes.number).isRequired,
     foxAmount: PropTypes.number.isRequired,
     foxDuration: PropTypes.number.isRequired,
+    foxRange: PropTypes.number.isRequired,
     hasSilenceInterval: PropTypes.bool.isRequired,
     location: PropTypes.shape({
       center: PropTypes.arrayOf(PropTypes.number),

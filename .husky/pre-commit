@@ -1,7 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-declare -a DIRECTORY_ARRAY=("fox-hunt-front/src" \ 
+declare -a DIRECTORY_ARRAY=("fox-hunt-front/src" "fox-hunt-organization-front/src" \ 
       "fox-hunt-organization-backend/src" "common-front/bin/src" \ 
       "fox-hunt-api-gateway/src" "fox-hunt-feature-service/src")
 
