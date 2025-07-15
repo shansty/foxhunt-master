@@ -14,17 +14,13 @@ function WatchCompetitionManager({
   dialog,
   participantTrackers,
 }) {
-  console.dir({ competition });
   const { location } = competition;
-  console.dir({ location });
   const isMobile = useIsMobile();
 
   const customMarkers = useMemo(
     () => getPointsProps(competition, activeFoxIndex, participantTrackers),
     [competition, activeFoxIndex, participantTrackers],
   );
-
-  console.dir({ customMarkers });
 
   return (
     <Grid item container spacing={2}>

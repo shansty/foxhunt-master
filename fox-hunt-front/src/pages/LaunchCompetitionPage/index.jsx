@@ -245,7 +245,6 @@ function LaunchCompetitionPage(props) {
           updatedFoxPoints,
         ),
       }));
-      console.dir({ state });
     } else {
       const revertCoords = isCircle ? fox.circleCenter : fox.coordinates;
       event.get('target').geometry.setCoordinates(revertCoords);

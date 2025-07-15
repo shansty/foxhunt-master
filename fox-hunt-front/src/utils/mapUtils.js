@@ -27,7 +27,6 @@ export const getPointsProps = (
 ) => {
   const pointsProps = [];
   const { startPoint, finishPoint, foxPoints, foxRange } = competition;
-  console.dir({ competition });
   if (startPoint && startPoint.length)
     pointsProps.push(getStartMarkerProps({ coordinates: startPoint }));
   if (finishPoint && finishPoint.length)

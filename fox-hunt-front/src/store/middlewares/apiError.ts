@@ -45,10 +45,6 @@ export const apiError =
         ['response', 'data', 'message'],
         notificationErrorMessage,
       );
-      console.dir({
-        payload: payload,
-        notificationErrorMessage: notificationErrorMessage,
-      });
       const responseStatus = payload.response.status;
 
       if (

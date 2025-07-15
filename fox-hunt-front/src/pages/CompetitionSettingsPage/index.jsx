@@ -76,11 +76,9 @@ const CompetitionSettingPage = (props) => {
   };
 
   const [state, setState] = useState(initialState);
-  console.dir({ state });
   const navigate = useNavigate();
   const { id } = useParams();
   const competition = useSelector((state) => selectCompetition(state, { id }));
-  console.dir({ competition });
   const distanceTypes = useSelector((state) =>
     selectDistanceTypes(state, { id }),
   );
@@ -200,7 +198,6 @@ const CompetitionSettingPage = (props) => {
       hasSilenceInterval,
       frequency,
     } = values;
-    console.dir({ values });
     const updatedCompetition = {
       id,
       distanceType: distanceTypes.find(
@@ -212,7 +209,6 @@ const CompetitionSettingPage = (props) => {
       hasSilenceInterval,
       frequency,
     };
-    console.dir({ updateCompetition });
 
     updateCompetition(updatedCompetition).then(({ payload }) =>
       goToNextStep(payload),

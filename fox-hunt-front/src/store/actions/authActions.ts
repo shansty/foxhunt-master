@@ -94,9 +94,7 @@ export const getTokens = createAsyncThunk(
 export const checkDomain = createAsyncThunk(
   authTypes.CHECK_DOMAIN,
   async (domain: string, { rejectWithValue }) => {
-    console.dir({ domain });
     try {
-      console.log('Inside try');
       domain
         ? await organizationsAPI.head(`/domain/${domain}`)
         : (domain = (await organizationsAPI.get('/system')).data
@@ -105,7 +103,6 @@ export const checkDomain = createAsyncThunk(
       history.push(buildSignInUrl());
       return domain;
     } catch (error) {
-      console.dir({ error });
       return rejectWithValue(error);
     }
   },

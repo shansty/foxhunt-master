@@ -315,7 +315,6 @@ const CreateCompetitionTimeAndLocationPage = (props) => {
     const thisIsNotUniqueName = props.competitions.find(
       (el) => el.name === values.name && el.name !== props.competition.name,
     );
-    console.dir({ thisIsNotUniqueName });
     setState({ ...state, isNotUniqueName: thisIsNotUniqueName });
 
     if (thisIsNotUniqueName) {
@@ -350,7 +349,6 @@ const CreateCompetitionTimeAndLocationPage = (props) => {
       notes,
       startPoint,
     };
-    console.dir({ updatedCompetition });
 
     urlId
       ? updateCompetition({ ...updatedCompetition, id }).then(({ payload }) =>
@@ -359,11 +357,9 @@ const CreateCompetitionTimeAndLocationPage = (props) => {
       : createCompetition(createdCompetition).then(({ payload }) =>
           goToNextStep(payload),
         );
-    console.dir({ message: 'After goToNextStep' });
   };
 
   const goToNextStep = (response) => {
-    console.dir({ response });
     if (response.status < 400) {
       navigate(buildSettingsCompetitionByIdUrl(response.data.id));
     }
