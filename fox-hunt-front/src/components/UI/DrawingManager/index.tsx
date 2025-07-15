@@ -16,7 +16,6 @@ export interface DrawingManagerWrapperProps {
   forbiddenAreaDrawingManagerProps: ForbiddenAreaDrawingManagerProps;
 }
 
-console.log('DrawingManagerWrapper loaded');
 const DrawingManagerWrapper = ({
   children,
   drawingManagerDisplay,

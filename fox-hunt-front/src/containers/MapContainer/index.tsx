@@ -47,7 +47,6 @@ const MapContainer = ({
   height = HEIGHT,
   width = WIDTH,
 }: MapContainerProps) => {
-  console.count('MapContainer render');
   const isYandexMapEnabled = isFeatureEnabled(YANDEX_MAPS);
   const yandexMap = isYandexMapEnabled && (
     <YMaps query={{ lang: LANG, apikey: YANDEX_KEY }}>
@@ -82,10 +81,8 @@ const MapContainer = ({
   const renderSwitch = (mapProvider: string) => {
     switch (mapProvider) {
       case YANDEX:
-        console.log('Yandemap');
         return yandexMap;
       default:
-        console.log('DEFAULT');
         return;
     }
   };

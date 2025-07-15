@@ -37,10 +37,12 @@ const reduceChildRoutes = (props) => {
   const { items, page, path, depth } = props;
   const hasLinkToPage = !!page.to;
   const hasChildren = !!page.content;
+
+  const uniqueKey = page.key || page.to || `${page.label}-${depth}`;
+
   const defaultProps = {
     depth: depth,
     icon: page.icon,
-    key: page.label,
     label: page.badge,
     title: page.label,
   };
@@ -51,6 +53,7 @@ const reduceChildRoutes = (props) => {
 
     newItem = (
       <SidebarMenuListItem
+        key={uniqueKey}
         isOpen={matchesPath}
         isNested={hasChildren}
         {...defaultProps}
@@ -65,9 +68,9 @@ const reduceChildRoutes = (props) => {
   }
 
   newItem = hasLinkToPage ? (
-    <SidebarMenuListItem href={page.to} {...defaultProps} />
+    <SidebarMenuListItem key={uniqueKey} href={page.to} {...defaultProps} />
   ) : (
-    <SidebarMenuButton {...defaultProps} />
+    <SidebarMenuButton key={uniqueKey} {...defaultProps} />
   );
 
   return [...items, newItem];

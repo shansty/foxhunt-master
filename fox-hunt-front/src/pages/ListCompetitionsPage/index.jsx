@@ -78,7 +78,6 @@ import useErrorMessage from 'src/hooks/useErrorMessage';
 import './styles.scss';
 
 dayjs.extend(localizedFormat);
-console.log('ListCompetitionPage');
 
 function ListCompetitionContainer({
   allSize,
