@@ -302,10 +302,13 @@ export const createCompetition = createAsyncThunk(
   async (competition, { dispatch, rejectWithValue }) => {
     try {
       const requestCompetition = convertToCompetitionForRequest(competition);
-      console.dir({requestCompetition})
-      console.log("Sending competition payload:", JSON.stringify(requestCompetition, null, 2));
+      console.dir({ requestCompetition });
+      console.log(
+        'Sending competition payload:',
+        JSON.stringify(requestCompetition, null, 2),
+      );
       const response = await competitionsAPI.post('/', requestCompetition);
-      console.dir({response})
+      console.dir({ response });
       return response;
     } catch (error) {
       // Address 409 status error han
@@ -316,7 +319,7 @@ export const createCompetition = createAsyncThunk(
             data: { message },
           },
         } = error;
-         console.dir({in_catch: error.response})
+        console.dir({ in_catch: error.response });
         dispatch(enqueueSnackbar(createErrorMessage(message, dispatch)));
       } else {
         return rejectWithValue(error);
@@ -362,6 +365,7 @@ export const startCompetition = createAsyncThunk(
     { dispatch, rejectWithValue },
   ) => {
     try {
+      console.dir({ payload });
       const requestData = {
         ...payload,
         foxPoints: convertCoordinatesToFoxPoints(payload.foxPoints),
@@ -369,7 +373,9 @@ export const startCompetition = createAsyncThunk(
       const response = await activeCompetitionsAPI.patch(`/${id}/start`, {
         ...requestData,
       });
+      console.dir({ response });
       const competition = convertToCompetitionFromResponse(response.data);
+      console.dir({ competition });
       dispatch(getCurrentCompetitions());
       history.push(buildWatchOneCompetitionByIdUrl(id));
       return competition;

@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -33,12 +35,17 @@ public class FoxPointEntity {
     @Column(name = "coordinates", nullable = false, columnDefinition = "geometry(Point,6708)")
     private Point coordinates;
 
+    @Column(name = "circle_center", nullable = false, columnDefinition = "geometry(Point,6708)")
+    private Point circle_center;
+
     @OneToMany(mappedBy = "activeFox", orphanRemoval = true)
-    @ToString.Exclude    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<PathStoryEntity> story;
 
     @OneToMany(mappedBy = "foxPoint", orphanRemoval = true)
-    @ToString.Exclude    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<CompetitionResultEntity> competitionResult;
 
     @Column(name = "frequency", nullable = false, precision = 10, scale = 2)

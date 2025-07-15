@@ -7,14 +7,16 @@ import {
 import { find, get } from 'lodash';
 import { DEFAULT_CENTER_COORDINATES } from 'src/constants/mapConst';
 
-const getFoxPointsProps = (foxPoints = [], activeFoxIndex) =>
-  foxPoints.map(({ id, label, coordinates, index, frequency }) =>
+const getFoxPointsProps = (foxPoints = [], activeFoxIndex, foxRange) =>
+  foxPoints.map(({ id, label, coordinates, circleCenter, index, frequency }) =>
     getFoxMarkerProps({
       coordinates,
+      circleCenter,
       label,
       id,
       isActive: index === activeFoxIndex,
       frequency,
+      foxRange,
     }),
   );
 
@@ -24,7 +26,8 @@ export const getPointsProps = (
   participantTrackers = [],
 ) => {
   const pointsProps = [];
-  const { startPoint, finishPoint, foxPoints } = competition;
+  const { startPoint, finishPoint, foxPoints, foxRange } = competition;
+  console.dir({ competition });
   if (startPoint && startPoint.length)
     pointsProps.push(getStartMarkerProps({ coordinates: startPoint }));
   if (finishPoint && finishPoint.length)
@@ -41,7 +44,9 @@ export const getPointsProps = (
     participantmarkers.forEach((participant) => pointsProps.push(participant));
   }
 
-  return getFoxPointsProps(foxPoints, activeFoxIndex).concat(pointsProps);
+  return getFoxPointsProps(foxPoints, activeFoxIndex, foxRange).concat(
+    pointsProps,
+  );
 };
 
 export const populateParticipantInfoForTrackers = (

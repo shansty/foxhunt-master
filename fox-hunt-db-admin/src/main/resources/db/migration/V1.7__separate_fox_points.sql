@@ -7,10 +7,11 @@ CREATE TABLE fh_admin.fox_points
     competition_id BIGINT REFERENCES fh_admin.competition(id),
     index INT,
     label VARCHAR(40),
-    coordinates GEOMETRY
+    coordinates GEOMETRY,
+    circle_center GEOMETRY
 );
 
-INSERT INTO fh_admin.fox_points(competition_id, index, label, coordinates)
-VALUES (1, 1, 'F1', 'POINT (53.906 27.571)'),
-       (1, 2, 'F2', 'POINT (53.909 27.573)'),
-       (2, 1, 'V1', 'POINT (53.906 27.572)');
+INSERT INTO fh_admin.fox_points(competition_id, index, label, coordinates, circle_center)
+VALUES (1, 1, 'F1', 'POINT (53.906 27.571)', 'POINT (53.906 27.571)'),
+       (1, 2, 'F2', 'POINT (53.909 27.573)', 'POINT (53.909 27.573)'),
+       (2, 1, 'V1', 'POINT (53.906 27.572)', 'POINT (53.906 27.572)');

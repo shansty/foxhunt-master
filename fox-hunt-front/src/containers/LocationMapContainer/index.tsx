@@ -6,6 +6,26 @@ import DrawingManagerWrapper from 'src/components/UI/DrawingManager';
 import MapContainer from '../MapContainer';
 import { YANDEX } from 'src/constants/mapProviderConstants';
 import { ForbiddenArea, Polygon, GeometryCenter } from 'src/types/Location';
+import { Circle } from 'react-yandex-maps';
+
+export type CustomMarker = {
+  id: string | number;
+  coordinates: [number, number];
+  circleCenter?: [number, number];
+  foxRange?: number;
+  onDragEnd?: (event: any) => void;
+  options?: {
+    draggable?: boolean;
+    iconColor?: string;
+    [key: string]: any;
+  };
+  properties?: {
+    iconContent?: string;
+    iconCaption?: string;
+    hintContent?: string;
+    [key: string]: any;
+  };
+};
 
 export interface LocationMapContainerProps {
   polygonCoordinates: number[][];
@@ -25,7 +45,7 @@ export interface LocationMapContainerProps {
   onDragEnd?: (event: IEvent) => void;
   hasLocationDrawingManager?: boolean;
   hasForbiddenAreaDrawingManager?: boolean;
-  customMarkers?: [];
+  customMarkers?: CustomMarker[];
   className?: string;
   children?: React.ReactNode;
   setForbiddenAreasRef?: (id: number | string) => (ref: Polygon) => void;
@@ -91,6 +111,23 @@ const LocationMapContainer = ({
     setIsFullscreen(event.get('target').container.isFullscreen() || false);
   };
 
+  const renderFoxCircles = () =>
+    customMarkers
+      ?.filter(
+        (marker) => marker.circleCenter && marker.foxRange !== undefined,
+      )
+      .map((marker) => (
+        <Circle
+          key={`circle-${marker.id}`}
+          geometry={[marker.circleCenter!, marker.foxRange!]}
+          options={{
+            fillColor: 'rgba(0, 150, 255, 0.1)',
+            strokeColor: '#0096ff',
+            strokeWidth: 2,
+          }}
+        />
+      ));
+
   return (
     <DrawingManagerWrapper
       drawingManagerDisplay={drawingManagerDisplay}
@@ -116,6 +153,7 @@ const LocationMapContainer = ({
         drawingManager={drawingManagerDisplay}
       >
         {renderMarkers()}
+        {renderFoxCircles()}
         {renderPolygon()}
         {setForbiddenAreasRef && renderForbiddenAreaPolygon()}
         {children}

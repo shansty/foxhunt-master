@@ -103,6 +103,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^7.2.1",
     "@types/event-source-polyfill": "^1.0.0",
+    "@types/geodesy": "^2.2.8",
     "@types/jest": "^27.5.2",
     "@types/md5": "^2.3.2",
     "@types/node": "^17.0.45",

@@ -38,13 +38,17 @@ export const apiError =
       dispatch(setError(errors));
       const initialType = createInitialType(type);
       const notificationErrorMessage =
-        ERROR_MESSAGE?.[initialType as keyof typeof ERROR_MESSAGE] || GENERAL_ERROR;
+        ERROR_MESSAGE?.[initialType as keyof typeof ERROR_MESSAGE] ||
+        GENERAL_ERROR;
       const errorMessage = get(
         payload,
         ['response', 'data', 'message'],
         notificationErrorMessage,
       );
-      console.dir({payload: payload, notificationErrorMessage: notificationErrorMessage })
+      console.dir({
+        payload: payload,
+        notificationErrorMessage: notificationErrorMessage,
+      });
       const responseStatus = payload.response.status;
 
       if (

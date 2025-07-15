@@ -1,5 +1,7 @@
 package com.itechart.foxhunt.api.competition.dto;
 
+
+
 import com.itechart.foxhunt.domain.entity.FoxPointEntity;
 import lombok.Builder;
 import lombok.Data;
