@@ -150,6 +150,7 @@ public class ActiveCompetitionJob implements Runnable {
         }
         final int competitionDuration = CompetitionUtils.competitionDuration(competitionEntity);
         final int foxDuration = competitionEntity.getFoxDuration();
+        final int foxRange = competitionEntity.getFoxRange();
 
         if (competitionEndTime == null) {
             competitionEndTime = competitionEntity.getActualStartDate().plusSeconds(competitionDuration);
@@ -165,6 +166,7 @@ public class ActiveCompetitionJob implements Runnable {
                 .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
                 .competitionDuration(competitionDuration)
                 .foxDuration(foxDuration)
+                .foxRange(foxRange)
                 .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
                 .secondsToFoxChange(getSecondsToFoxChange())
                 .build();
@@ -263,6 +265,7 @@ public class ActiveCompetitionJob implements Runnable {
 
         final int competitionDuration = CompetitionUtils.competitionDuration(competitionEntity);
         final int foxDuration = competitionEntity.getFoxDuration();
+        final int foxRange = competitionEntity.getFoxRange();
 
         if (competitionEndTime == null) {
             competitionEndTime = competitionEntity.getActualStartDate().plusSeconds(competitionDuration);
@@ -273,6 +276,7 @@ public class ActiveCompetitionJob implements Runnable {
                 .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
                 .competitionDuration(competitionDuration)
                 .foxDuration(foxDuration)
+                .foxRange(foxRange)
                 .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
                 .secondsToFoxChange(getSecondsToFoxChange())
                 .build();
@@ -285,11 +289,13 @@ public class ActiveCompetitionJob implements Runnable {
     public ActiveCompetition getActiveCompetitionInfo() {
         final int competitionDuration = CompetitionUtils.competitionDuration(competitionEntity);
         final int foxDuration = competitionEntity.getFoxDuration();
+        final int foxRange = competitionEntity.getFoxRange();
 
         return ActiveCompetition.builder()
             .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
             .competitionDuration(competitionDuration)
             .foxDuration(foxDuration)
+            .foxRange(foxRange)
             .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
             .secondsToFoxChange(getSecondsToFoxChange())
             .build();

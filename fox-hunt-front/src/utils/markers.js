@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import variables from '../styles/_variables.scss';
+import variables from '../styles/_variables.module.scss';
 
 export const getStartMarkerProps = ({
   coordinates,
@@ -28,15 +28,19 @@ export const getFinishMarkerProps = ({
 
 export const getFoxMarkerProps = ({
   coordinates,
+  circleCenter,
   draggable = false,
   id,
   label,
   onDragEnd,
   isActive = false,
   frequency,
+  foxRange,
 }) => ({
   id: `T${id}`,
   coordinates,
+  circleCenter,
+  foxRange,
   properties: {
     iconContent: label ? label : `TS${id}`,
     iconCaption: isActive ? 'Active' : undefined,

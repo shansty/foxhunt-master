@@ -1,9 +1,6 @@
 import { ThemeProvider } from '@mui/material/styles';
-import { Provider } from 'react-redux';
-import store from 'src/store';
-
-import '../src/theme/assets/base.scss';
-import MuiTheme from '../src/theme';
+import '../../../fox-hunt-front/src/theme/assets/base.scss';
+import MuiTheme from '../../../fox-hunt-front/src/theme';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -17,8 +14,8 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <Provider store={store}>
-      <ThemeProvider theme={MuiTheme}>{Story()}</ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={MuiTheme}>
+      <Story />
+    </ThemeProvider>
   ),
 ];

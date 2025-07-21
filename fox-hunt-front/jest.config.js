@@ -1,13 +1,18 @@
 module.exports = {
-  moduleDirectories: ['node_modules'],
+  moduleDirectories: ['node_modules', '<rootDir>', '<rootDir>/../common-front'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   moduleNameMapper: {
-    '^.+.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$':
+    '^common-front$': '<rootDir>/../common-front/bin/src',
+    '^common-front/(.*)$': '<rootDir>/../common-front/bin/src/$1',
+    '^.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$':
       'jest-transform-stub',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.svg': '<rootDir>/src/__mocks__/svgrMock.js',
     '#(.*)': '<rootDir>/src/$1',
   },
-  transformIgnorePatterns: ['<rootDir>/node_modules/(?!common-front|another)'],
+  transformIgnorePatterns: [
+    '<rootDir>/node_modules/(?!common-front|chroma-js|another)',
+  ],
   transform: {
     '^.+\\.(ts|tsx|js|jsx)$': 'ts-jest',
     '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$':
@@ -18,6 +23,9 @@ module.exports = {
   globals: {
     'ts-jest': {
       useESM: true,
+      compilerOptions: {
+        jsx: 'react-jsx',
+      },
     },
   },
   testEnvironment: 'jsdom',

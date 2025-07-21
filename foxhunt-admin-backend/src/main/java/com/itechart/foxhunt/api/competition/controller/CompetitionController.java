@@ -57,166 +57,182 @@ public class CompetitionController implements CompetitionControllerInterface {
     @GetMapping
     @Override
     public Page<? extends Competition> findAllAvailable(GetAllCompetitionsRequest competitionsRequest,
-                                                        @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable,
-                                                        OrganizationId organizationId) {
+            @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable,
+            OrganizationId organizationId) {
         return competitionService
-            .findAllAvailable(competitionsRequest, pageable, organizationId.getId(), loggedUserService.getLoggedUser());
+                .findAllAvailable(competitionsRequest, pageable, organizationId.getId(),
+                        loggedUserService.getLoggedUser());
     }
 
     @GetMapping(ApiConstants.COMPETITION_INVITATIONS)
-    @Secured(value = {ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_PARTICIPANT})
+    @Secured(value = { ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_PARTICIPANT })
     @Override
     public List<CompetitionInvitation> getAllInvitationsByCompetitionId(OrganizationId organizationId,
-                                                                        @PathVariable final Long id) {
+            @PathVariable final Long id) {
         User loggedUser = loggedUserService.getLoggedUser();
         return competitionService.getAllInvitationsByCompetitionId(organizationId.getId(), id, loggedUser);
     }
 
     @GetMapping(ApiConstants.ID)
-    @Secured(value = {ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_PARTICIPANT})
+    @Secured(value = { ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_PARTICIPANT })
     @Override
     public Object getById(@PathVariable final Long id,
-                          OrganizationId organizationId) {
+            OrganizationId organizationId) {
+        log.debug(competitionService.getCompetitionById(id, organizationId.getId()) + " inside GetMapping");
         return competitionService.getCompetitionById(id, organizationId.getId());
     }
 
     @GetMapping(ApiConstants.COMPETITION_RESULTS)
     @Override
     public ResponseEntity<Page<PersonalUserResult>> getUserResults(OrganizationId organizationId,
-                                                                   @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+            @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
         UserEntity loggedUser = loggedUserService.getLoggedUserEntity();
         Pageable sortedByStartDatePageable = PageRequest
-            .of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("start_date").descending());
+                .of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("start_date").descending());
 
         return ResponseEntity.ok(competitionService.getUserResults(loggedUser.getId(), organizationId.getId(),
-            sortedByStartDatePageable));
+                sortedByStartDatePageable));
     }
 
     @PostMapping
     @JsonView(Regular.class)
-    @Secured(value = {ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER})
+    @Secured(value = { ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER })
     @Override
     public ResponseEntity<Competition> create(@RequestBody final ModifyCompetition competition,
-                                              OrganizationId organizationId) {
+            OrganizationId organizationId) {
+        log.info("Received request from trainer: {} to add participant: {} to competition: {}");
+        log.info("Creating competition: {}", competition);
+        log.info("Start point: {}", competition.getStartPoint());
+        log.info("FoxPoints: {}", competition.getFoxPoints());
         return new ResponseEntity<>(competitionService.create(competition, organizationId.getId()),
-            HttpStatus.CREATED);
+                HttpStatus.CREATED);
+
     }
 
-    @PostMapping(value = ApiConstants.SUBSCRIBE_COMPETITION, params = {"participantId"})
-    @Secured(value = {ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN})
+    @PostMapping(value = ApiConstants.SUBSCRIBE_COMPETITION, params = { "participantId" })
+    @Secured(value = { ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN })
     @Override
     public ResponseEntity<CompetitionInvitation> subscribe(@PathVariable(ID_PATH_VARIABLE) final Long competitionId,
-                                                           @RequestParam(required = false) Long participantId,
-                                                           OrganizationId organizationId) {
+            @RequestParam(required = false) Long participantId,
+            OrganizationId organizationId) {
         Long loggedUserId = getLoggedUserId();
         log.info("Received request from trainer: {} to add participant: {} to competition: {}",
-            loggedUserId, participantId, competitionId);
+                loggedUserId, participantId, competitionId);
         var createdInvitation = competitionService
-            .subscribe(organizationId.getId(), competitionId, participantId, ApiConstants.SOURCE_TRAINER);
+                .subscribe(organizationId.getId(), competitionId, participantId, ApiConstants.SOURCE_TRAINER);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdInvitation);
     }
 
     @PostMapping(ApiConstants.SUBSCRIBE_COMPETITION)
-    @Secured(value = {ApiConstants.ROLE_PARTICIPANT})
+    @Secured(value = { ApiConstants.ROLE_PARTICIPANT })
     public ResponseEntity<CompetitionInvitation> subscribe(@PathVariable(ID_PATH_VARIABLE) final Long competitionId,
-                                                           OrganizationId organizationId) {
+            OrganizationId organizationId) {
         Long loggedUserId = getLoggedUserId();
         log.info("Received request from participant: {} to subscribe to competition: {}", loggedUserId, competitionId);
         var createdInvitation = competitionService
-            .subscribe(organizationId.getId(), competitionId, loggedUserId, ApiConstants.SOURCE_PARTICIPANT);
+                .subscribe(organizationId.getId(), competitionId, loggedUserId, ApiConstants.SOURCE_PARTICIPANT);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdInvitation);
     }
 
-    @PutMapping(value = ApiConstants.ACCEPT_COMPETITION_INVITATION, params = {"participantId"})
-    @Secured(value = {ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN})
+    @PutMapping(value = ApiConstants.ACCEPT_COMPETITION_INVITATION, params = { "participantId" })
+    @Secured(value = { ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN })
     @Override
-    public ResponseEntity<CompetitionInvitation> acceptInvitation(@PathVariable(ID_PATH_VARIABLE) final Long competitionId,
-                                                                  @RequestParam(required = false) Long participantId,
-                                                                  OrganizationId organizationId) {
+    public ResponseEntity<CompetitionInvitation> acceptInvitation(
+            @PathVariable(ID_PATH_VARIABLE) final Long competitionId,
+            @RequestParam(required = false) Long participantId,
+            OrganizationId organizationId) {
         Long loggedUserId = getLoggedUserId();
         log.info("Received request from trainer: {} to accept user: {} to competition: {}",
-            loggedUserId, participantId, competitionId);
-        var acceptedInvitation =
-            competitionService.acceptInvitation(organizationId.getId(), competitionId, participantId, ApiConstants.SOURCE_TRAINER);
+                loggedUserId, participantId, competitionId);
+        var acceptedInvitation = competitionService.acceptInvitation(organizationId.getId(), competitionId,
+                participantId, ApiConstants.SOURCE_TRAINER);
         return ResponseEntity.ok(acceptedInvitation);
     }
 
     @PutMapping(ApiConstants.ACCEPT_COMPETITION_INVITATION)
-    @Secured(value = {ApiConstants.ROLE_PARTICIPANT})
-    public ResponseEntity<CompetitionInvitation> acceptInvitation(@PathVariable(ID_PATH_VARIABLE) final Long competitionId,
-                                                                  OrganizationId organizationId) {
+    @Secured(value = { ApiConstants.ROLE_PARTICIPANT })
+    public ResponseEntity<CompetitionInvitation> acceptInvitation(
+            @PathVariable(ID_PATH_VARIABLE) final Long competitionId,
+            OrganizationId organizationId) {
         Long loggedUserId = getLoggedUserId();
-        log.info("Received request from participant {} to accept invitation to competition: {}", loggedUserId, competitionId);
-        var acceptedInvitation =
-            competitionService.acceptInvitation(organizationId.getId(), competitionId, loggedUserId, ApiConstants.SOURCE_PARTICIPANT);
+        log.info("Received request from participant {} to accept invitation to competition: {}", loggedUserId,
+                competitionId);
+        var acceptedInvitation = competitionService.acceptInvitation(organizationId.getId(), competitionId,
+                loggedUserId, ApiConstants.SOURCE_PARTICIPANT);
         return ResponseEntity.ok(acceptedInvitation);
     }
 
-    @PutMapping(value = ApiConstants.DECLINE_COMPETITION_INVITATION, params = {"participantId"})
-    @Secured(value = {ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN})
+    @PutMapping(value = ApiConstants.DECLINE_COMPETITION_INVITATION, params = { "participantId" })
+    @Secured(value = { ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN })
     @Override
-    public ResponseEntity<CompetitionInvitation> declineInvitation(@PathVariable(ID_PATH_VARIABLE) final Long competitionId,
-                                                                   @RequestParam(required = false) Long participantId) {
+    public ResponseEntity<CompetitionInvitation> declineInvitation(
+            @PathVariable(ID_PATH_VARIABLE) final Long competitionId,
+            @RequestParam(required = false) Long participantId) {
         Long loggedUserId = getLoggedUserId();
         log.info("Received request from trainer: {} to refuse user: {} participate in competition: {} ",
-            loggedUserId, participantId, competitionId);
+                loggedUserId, participantId, competitionId);
         var declinedInvitation = competitionService.declineInvitation(competitionId, participantId);
         return ResponseEntity.status(HttpStatus.OK).body(declinedInvitation);
     }
 
     @PutMapping(ApiConstants.DECLINE_COMPETITION_INVITATION)
-    @Secured(value = {ApiConstants.ROLE_PARTICIPANT})
-    public ResponseEntity<CompetitionInvitation> declineInvitation(@PathVariable(ID_PATH_VARIABLE) final Long competitionId) {
+    @Secured(value = { ApiConstants.ROLE_PARTICIPANT })
+    public ResponseEntity<CompetitionInvitation> declineInvitation(
+            @PathVariable(ID_PATH_VARIABLE) final Long competitionId) {
         Long loggedUserId = getLoggedUserId();
         log.info("Received request from participant: {} to decline invitation to competition: {} ",
-            loggedUserId, competitionId);
+                loggedUserId, competitionId);
         var declinedInvitation = competitionService.declineInvitation(competitionId, loggedUserId);
         return ResponseEntity.ok(declinedInvitation);
     }
 
-    @PutMapping(value = ApiConstants.PERMANENT_DECLINE_INVITATION, params = {"participantId"})
-    @Secured(value = {ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN})
+    @PutMapping(value = ApiConstants.PERMANENT_DECLINE_INVITATION, params = { "participantId" })
+    @Secured(value = { ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN })
     @Override
-    public ResponseEntity<CompetitionInvitation> declineInvitationPermanently(@PathVariable(ID_PATH_VARIABLE) Long competitionId,
-                                                                              Long participantId,
-                                                                              OrganizationId organizationId) {
+    public ResponseEntity<CompetitionInvitation> declineInvitationPermanently(
+            @PathVariable(ID_PATH_VARIABLE) Long competitionId,
+            Long participantId,
+            OrganizationId organizationId) {
         log.info("Received request from trainer: {} to permanently decline user: {} participate in competition: {} ",
-            getLoggedUserId(), participantId, competitionId);
-        CompetitionInvitation permanentlyDeclinedInvitation =
-            competitionService.declineInvitationPermanently(organizationId.getId(), competitionId, participantId);
+                getLoggedUserId(), participantId, competitionId);
+        CompetitionInvitation permanentlyDeclinedInvitation = competitionService
+                .declineInvitationPermanently(organizationId.getId(), competitionId, participantId);
         return ResponseEntity.ok(permanentlyDeclinedInvitation);
     }
 
     @PatchMapping(ApiConstants.ID)
     @JsonView(Regular.class)
-    @Secured(value = {ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER})
+    @Secured(value = { ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER })
     @Transactional
     @Override
     public ResponseEntity<Competition> updateOne(@RequestBody ModifyCompetition competition,
-                                                 @PathVariable final Long id, OrganizationId organizationId) {
+            @PathVariable final Long id, OrganizationId organizationId) {
+        log.info(competition + " inside PatchMapping");
         if (userAffectsCompetitionWithinItsOrganization(id, organizationId.getId())) {
+            log.info(competitionService.updateById(competition, id, organizationId.getId()) + " if part");
             return ResponseEntity
-                .ok(competitionService.updateById(competition, id, organizationId.getId()));
+                    .ok(competitionService.updateById(competition, id, organizationId.getId()));
         } else {
+            log.info(ResponseEntity.badRequest().build() + " badRequest");
             return ResponseEntity.badRequest().build();
         }
     }
 
     @PatchMapping(ApiConstants.CANCELLATION)
-    @Secured(value = {ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER})
+    @Secured(value = { ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER })
     @Override
     public ResponseEntity<Competition> cancelOne(@Valid @RequestBody CancelCompetitionRequest cancelRequest,
-                                                 @PathVariable Long id,
-                                                 OrganizationId organizationId) {
+            @PathVariable Long id,
+            OrganizationId organizationId) {
         Competition canceledCompetition = competitionService.cancelById(cancelRequest, id, organizationId.getId());
         return ResponseEntity.ok(canceledCompetition);
     }
 
     @DeleteMapping(ApiConstants.ID)
-    @Secured(value = {ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER})
+    @Secured(value = { ApiConstants.ROLE_ORGANIZATION_ADMIN, ApiConstants.ROLE_TRAINER })
     @Override
     public ResponseEntity<Long> deleteOne(@PathVariable final Long id,
-                                          OrganizationId organizationId) {
+            OrganizationId organizationId) {
         if (userAffectsCompetitionWithinItsOrganization(id, organizationId.getId())) {
             competitionService.deleteById(id);
             return ResponseEntity.ok(id);
@@ -226,10 +242,10 @@ public class CompetitionController implements CompetitionControllerInterface {
     }
 
     @DeleteMapping(ApiConstants.COMPETITION_PARTICIPANT)
-    @Secured(value = {ApiConstants.ROLE_PARTICIPANT, ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN})
+    @Secured(value = { ApiConstants.ROLE_PARTICIPANT, ApiConstants.ROLE_TRAINER, ApiConstants.ROLE_ORGANIZATION_ADMIN })
     public ResponseEntity<Long> removeParticipantFromCompetition(@PathVariable final Long id,
-                                                                 @RequestParam(required = false) final Long participantId,
-                                                                 OrganizationId organizationId) {
+            @RequestParam(required = false) final Long participantId,
+            OrganizationId organizationId) {
         UserEntity loggedUser = loggedUserService.getLoggedUserEntity();
         if (userAffectsCompetitionWithinItsOrganization(id, organizationId.getId())) {
             if (!hasRole(loggedUser, Role.PARTICIPANT)) {
@@ -247,11 +263,11 @@ public class CompetitionController implements CompetitionControllerInterface {
         return loggedUserService.getLoggedUserId();
     }
 
-    //TODO: move to service
+    // TODO: move to service
     private boolean hasRole(UserEntity user, Role role) {
         return user.getRoles().stream()
-            .map(RoleEntity::getRole)
-            .anyMatch(userRole -> userRole.equals(role));
+                .map(RoleEntity::getRole)
+                .anyMatch(userRole -> userRole.equals(role));
     }
 
     private boolean userAffectsCompetitionWithinItsOrganization(Long id, Long organizationId) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { DropdownMenu, DropdownMenuItem } from '.';
@@ -28,7 +28,7 @@ const TestActionElement = (props: DropdownMenuItem) => {
   );
 };
 
-const TestRouterElement = (props: { element: JSX.Element }) => {
+const TestRouterElement = (props: { element: ReactNode }) => {
   return (
     <Routes>
       <Route path="/" element={props.element} />

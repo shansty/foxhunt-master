@@ -22,6 +22,7 @@ export const apiError =
   (next: any) =>
   (action: AnyAction) => {
     const { type, payload = {} } = action;
+
     const errors: ErrorState = {};
     const key = createKey(type, 'Error');
     const actionInProgressOrResolved =
@@ -37,7 +38,8 @@ export const apiError =
       dispatch(setError(errors));
       const initialType = createInitialType(type);
       const notificationErrorMessage =
-        ERROR_MESSAGE[initialType] || GENERAL_ERROR;
+        ERROR_MESSAGE?.[initialType as keyof typeof ERROR_MESSAGE] ||
+        GENERAL_ERROR;
       const errorMessage = get(
         payload,
         ['response', 'data', 'message'],

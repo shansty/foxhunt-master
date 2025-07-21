@@ -51,6 +51,7 @@ CREATE TABLE fh_admin.competition
     updated_date TIMESTAMP,
     status STATUS DEFAULT 'SCHEDULED',
     fox_duration INT,
+    fox_range INT,
     has_silence_interval BOOLEAN
 );
 

@@ -1,13 +1,17 @@
 const path = require('path');
 
 module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/preset-create-react-app',
+    '@storybook/addon-webpack5-compiler-babel',
+    '@chromatic-com/storybook',
   ],
+
   refs: {
     'common-front': {
       title: 'Common front components',
@@ -20,17 +24,24 @@ module.exports = {
       expanded: false,
     },
   },
-  framework: '@storybook/react',
+
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
+  },
+
   features: {
     emotionAlias: false,
   },
-  core: {
-    builder: '@storybook/builder-webpack5',
-  },
+
   webpackFinal: async (config) => {
     config.resolve.modules.push(path.resolve(__dirname, '../'));
     config.resolve.modules.push(path.resolve(__dirname, '../node_modules'));
 
     return config;
+  },
+
+  docs: {
+    autodocs: true,
   },
 };

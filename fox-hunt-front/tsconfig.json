@@ -14,15 +14,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noImplicitThis": false,
     "downlevelIteration": true,
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "paths": {
+      "common-front/*": ["../common-front/bin/src/*"],
+      "common-front": ["../common-front/bin/src"]
+    },
+    "types": ["node", "jest", "@testing-library/jest-dom"]
   },
-  "types": ["node", "jest", "@testing-library/jest-dom"],
-  "include": ["./src"],
-  "env": {
-    "node": true,
-    "es6": true
-  }
+  "include": ["./src", "vite.config.js", "src/setupTests.d.ts"]
 }

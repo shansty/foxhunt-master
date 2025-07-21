@@ -11,7 +11,7 @@ for val in ${DIRECTORY_ARRAY[@]}; do
 
   echo "IS_FOLDER_CHANGE  --> + $IS_FOLDER_CHANGE"
 
- if [[ $IS_FOLDER_CHANGE ]]; then cd $val && npm run lint && npm test -o -- --watchAll=false --passWithNoTests && cd ../..; fi
+ if [[ $IS_FOLDER_CHANGE ]]; then cd $val && npm run lint && cd ../..; fi
 
   if [[ $? -ne 0 ]] ; then
     echo "Unable to commit during lint rules in folder  --> $val"

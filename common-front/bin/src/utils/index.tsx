@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 

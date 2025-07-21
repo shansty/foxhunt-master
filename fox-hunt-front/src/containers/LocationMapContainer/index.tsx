@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { IEvent } from 'yandex-maps';
 
 import useLocationMapContainer from './useLocationMapContainer';
@@ -6,6 +6,26 @@ import DrawingManagerWrapper from 'src/components/UI/DrawingManager';
 import MapContainer from '../MapContainer';
 import { YANDEX } from 'src/constants/mapProviderConstants';
 import { ForbiddenArea, Polygon, GeometryCenter } from 'src/types/Location';
+import { Circle } from 'react-yandex-maps';
+
+export type CustomMarker = {
+  id: string | number;
+  coordinates: [number, number];
+  circleCenter?: [number, number];
+  foxRange?: number;
+  onDragEnd?: (event: any) => void;
+  options?: {
+    draggable?: boolean;
+    iconColor?: string;
+    [key: string]: any;
+  };
+  properties?: {
+    iconContent?: string;
+    iconCaption?: string;
+    hintContent?: string;
+    [key: string]: any;
+  };
+};
 
 export interface LocationMapContainerProps {
   polygonCoordinates: number[][];
@@ -14,7 +34,7 @@ export interface LocationMapContainerProps {
   onMapClick: (event: IEvent) => void;
   onMapBoundsChange: (event: IEvent) => void;
   zoomValue: number;
-  geometryCenter: GeometryCenter;
+  geometryCenter?: GeometryCenter;
   locationDrawingManagerProps: any;
   forbiddenAreas: ForbiddenArea[];
   selectedForbiddenArea: string | null;
@@ -25,14 +45,14 @@ export interface LocationMapContainerProps {
   onDragEnd?: (event: IEvent) => void;
   hasLocationDrawingManager?: boolean;
   hasForbiddenAreaDrawingManager?: boolean;
-  customMarkers?: [];
+  customMarkers?: CustomMarker[];
   className?: string;
   children?: React.ReactNode;
   setForbiddenAreasRef?: (id: number | string) => (ref: Polygon) => void;
 }
 
 const LocationMapContainer = ({
-  polygonCoordinates,
+  polygonCoordinates = [],
   setPolygonInstanceRef,
   setForbiddenAreasRef,
   onPolygonClick,
@@ -48,12 +68,24 @@ const LocationMapContainer = ({
   forbiddenAreaDrawingManagerProps,
   hasLocationDrawingManager,
   hasForbiddenAreaDrawingManager,
-  customMarkers,
+  customMarkers = [],
   tooltip,
   children,
   onDragEnd,
 }: LocationMapContainerProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // ✅ Stable fallback for geometryCenter
+  const stableGeometryCenter = useMemo(() => {
+    return (
+      geometryCenter ?? {
+        displayMarker: false,
+        coordinates: [0, 0],
+        onDragEnd: () => {},
+      }
+    );
+  }, [geometryCenter]);
+
   const {
     onMapLoad,
     renderMarkers,
@@ -62,7 +94,7 @@ const LocationMapContainer = ({
     drawingManagerDisplay,
   } = useLocationMapContainer(
     tooltip,
-    geometryCenter,
+    stableGeometryCenter,
     onPolygonClick,
     setPolygonInstanceRef,
     polygonCoordinates,
@@ -75,54 +107,59 @@ const LocationMapContainer = ({
     onDragEnd,
   );
 
-  const mapProvider = YANDEX;
-
   const onSizeChange = (event: IEvent) => {
     setIsFullscreen(event.get('target').container.isFullscreen() || false);
   };
 
-  return (
-    <>
-      {
-        <DrawingManagerWrapper
-          drawingManagerDisplay={drawingManagerDisplay}
-          locationDrawingManagerProps={{
-            ...locationDrawingManagerProps,
-            isFullscreen,
+  const renderFoxCircles = () =>
+    customMarkers
+      ?.filter(
+        (marker) => marker.circleCenter && marker.foxRange !== undefined,
+      )
+      .map((marker) => (
+        <Circle
+          key={`circle-${marker.id}`}
+          geometry={[marker.circleCenter!, marker.foxRange!]}
+          options={{
+            fillColor: 'rgba(0, 150, 255, 0.1)',
+            strokeColor: '#0096ff',
+            strokeWidth: 2,
           }}
-          forbiddenAreaDrawingManagerProps={{
-            ...forbiddenAreaDrawingManagerProps,
-            isFullscreen,
-          }}
-        >
-          <MapContainer
-            zoom={zoomValue}
-            center={geometryCenter}
-            mapProvider={mapProvider}
-            onMapClick={onMapClick}
-            onMapBoundsChange={onMapBoundsChange}
-            onMapLoad={onMapLoad}
-            loadMapInstance={loadMapInstance}
-            onSizeChange={onSizeChange}
-            className={className}
-            drawingManager={drawingManagerDisplay}
-          >
-            {renderMarkers()}
-            {renderPolygon()}
-            {setForbiddenAreasRef && renderForbiddenAreaPolygon()}
-            {children}
-          </MapContainer>
-        </DrawingManagerWrapper>
-      }
-    </>
-  );
-};
+        />
+      ));
 
-LocationMapContainer.defaultProps = {
-  polygonCoordinates: [],
-  customMarkers: [],
-  geometryCenter: {},
-  participantTracerList: [],
+  return (
+    <DrawingManagerWrapper
+      drawingManagerDisplay={drawingManagerDisplay}
+      locationDrawingManagerProps={{
+        ...locationDrawingManagerProps,
+        isFullscreen,
+      }}
+      forbiddenAreaDrawingManagerProps={{
+        ...forbiddenAreaDrawingManagerProps,
+        isFullscreen,
+      }}
+    >
+      <MapContainer
+        zoom={zoomValue}
+        center={stableGeometryCenter}
+        mapProvider={YANDEX}
+        onMapClick={onMapClick}
+        onMapBoundsChange={onMapBoundsChange}
+        onMapLoad={onMapLoad}
+        loadMapInstance={loadMapInstance}
+        onSizeChange={onSizeChange}
+        className={className}
+        drawingManager={drawingManagerDisplay}
+      >
+        {renderMarkers()}
+        {renderFoxCircles()}
+        {renderPolygon()}
+        {setForbiddenAreasRef && renderForbiddenAreaPolygon()}
+        {children}
+      </MapContainer>
+    </DrawingManagerWrapper>
+  );
 };
 
 export default LocationMapContainer;

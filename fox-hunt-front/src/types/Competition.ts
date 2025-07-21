@@ -25,6 +25,7 @@ export interface Competition {
   finishPoint: number[];
   foxAmount: number;
   foxDuration: number;
+  foxRange: number;
   foxPoints: FoxPoint[];
   frequency: number;
   hasSilenceInterval: boolean;

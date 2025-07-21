@@ -42,10 +42,10 @@ const MapContainer = ({
   loadMapInstance,
   className,
   drawingManager,
-  mapProvider,
+  mapProvider = YANDEX,
   children,
-  height,
-  width,
+  height = HEIGHT,
+  width = WIDTH,
 }: MapContainerProps) => {
   const isYandexMapEnabled = isFeatureEnabled(YANDEX_MAPS);
   const yandexMap = isYandexMapEnabled && (
@@ -83,15 +83,11 @@ const MapContainer = ({
       case YANDEX:
         return yandexMap;
       default:
+        return;
     }
   };
+  // return renderSwitch(mapProvider);
   return <div>{renderSwitch(mapProvider)}</div>;
-};
-
-MapContainer.defaultProps = {
-  height: HEIGHT,
-  width: WIDTH,
-  mapProvider: YANDEX,
 };
 
 export default MapContainer;

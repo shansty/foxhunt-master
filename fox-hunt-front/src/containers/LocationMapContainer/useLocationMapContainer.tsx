@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { IEvent } from 'yandex-maps';
-import { Placemark, Polygon } from 'react-yandex-maps';
+import { Placemark, Polygon, Circle } from 'react-yandex-maps';
 
 import { getCenterMarkerProps } from 'src/utils/markers';
 import { getMapCenterCoordinates } from 'src/utils/mapUtils';
@@ -13,6 +13,7 @@ import {
   DrawingManagerDisplayState,
 } from 'src/types/Location';
 import { STROKE_COLORS, POLYGON_OPTIONS } from 'src/constants/mapConst';
+import { Troubleshoot } from '@mui/icons-material';
 
 export default function useLocationMapContainer(
   tooltip: string,
@@ -68,19 +69,41 @@ export default function useLocationMapContainer(
       );
     }
 
-    return markersProps.map((props) => (
-      <Placemark
-        key={props.id}
-        geometry={props.coordinates}
-        properties={{
-          ...props.properties,
-          id: props.id,
-          hintContent: props.properties?.hintContent,
-        }}
-        options={props.options}
-        onDragEnd={onDragEnd}
-      />
-    ));
+    return markersProps.flatMap((props) => {
+      const elements = [
+        <Placemark
+          key={props.id}
+          geometry={props.coordinates}
+          properties={{
+            ...props.properties,
+            id: props.id,
+            hintContent: props.properties?.hintContent,
+          }}
+          options={props.options}
+          onDragEnd={onDragEnd}
+        />,
+      ];
+
+      if (props.circle) {
+        elements.push(
+          <Circle
+            key={props.circle.id}
+            geometry={[props.circle.center, props.circle.radius]}
+            properties={{ id: props.circle.id }}
+            onDragEnd={onDragEnd}
+            options={{
+              draggable: Troubleshoot,
+              fillColor: 'rgba(0, 150, 255, 0.1)',
+              strokeColor: '#0096ff',
+              strokeOpacity: 0.6,
+              strokeWidth: 2,
+            }}
+          />,
+        );
+      }
+
+      return elements;
+    });
   };
 
   const renderPolygon = () => (

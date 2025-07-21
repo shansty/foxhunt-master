@@ -43,8 +43,8 @@ VALUES ('W4', 5, 4000);
 INSERT INTO fh_admin.distance_type(name, max_number_of_fox, distance_length)
 VALUES ('W5', 5, 6000);
 
-INSERT INTO fh_admin.competition (name, notes, coach, creator, location_id, distance_type, fox_amount, fox_points, start_point, finish_point, start_date, created_date, updated_date, status, fox_duration, has_silence_interval)
-VALUES ('comp1', 'Fake competition', 'Fox Coach', 'george1', 1, 2, 2, 'MULTIPOINT ((53.906 27.571), (53.909 27.573))', 'POINT (53.905 27.570)', 'POINT (53.910 27.567)','2020-04-12T21:30:59.000', '2020-02-01T17:25:00.000', '2020-02-02T18:18:59.000', 'SCHEDULED', 60, 'true');
+INSERT INTO fh_admin.competition (name, notes, coach, creator, location_id, distance_type, fox_amount, fox_points, start_point, finish_point, start_date, created_date, updated_date, status, fox_duration, fox_range, has_silence_interval)
+VALUES ('comp1', 'Fake competition', 'Fox Coach', 'george1', 1, 2, 2, 'MULTIPOINT ((53.906 27.571), (53.909 27.573))', 'POINT (53.905 27.570)', 'POINT (53.910 27.567)','2020-04-12T21:30:59.000', '2020-02-01T17:25:00.000', '2020-02-02T18:18:59.000', 'SCHEDULED', 60, 1000,'true');
 
-INSERT INTO fh_admin.competition (name, notes, coach, creator, location_id, distance_type, fox_amount, fox_points, start_point, finish_point, start_date, created_date, updated_date, status, fox_duration, has_silence_interval)
-VALUES ('comp2', 'Best competition ever!', 'Fox Coach', 'george1', 2, 3, 1, 'MULTIPOINT ((53.906 27.572))', 'POINT (53.905 27.570)', 'POINT (53.910 27.567)','2020-04-12T21:30:59.000', '2020-01-03T09:59:00.000', '2020-02-03T14:11:00.000', 'FINISHED', 120, 'false');
+INSERT INTO fh_admin.competition (name, notes, coach, creator, location_id, distance_type, fox_amount, fox_points, start_point, finish_point, start_date, created_date, updated_date, status, fox_duration, fox_range, has_silence_interval)
+VALUES ('comp2', 'Best competition ever!', 'Fox Coach', 'george1', 2, 3, 1, 'MULTIPOINT ((53.906 27.572))', 'POINT (53.905 27.570)', 'POINT (53.910 27.567)','2020-04-12T21:30:59.000', '2020-01-03T09:59:00.000', '2020-02-03T14:11:00.000', 'FINISHED', 120, 3000, 'false');

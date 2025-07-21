@@ -67,11 +67,11 @@ WHERE dt."name" = 'M5'
 ),comp1 as (
 INSERT INTO fh_admin.competition(
 	 name, notes, creator, location_id, distance_type, fox_amount, start_point, finish_point, start_date, created_date, updated_date, status,
-	fox_duration, has_silence_interval, coach_id, actual_start_date, actual_finish_date, closing_active_fox, reason_to_stop, expected_competition_duration)
+	fox_duration, fox_range, has_silence_interval, coach_id, actual_start_date, actual_finish_date, closing_active_fox, reason_to_stop, expected_competition_duration)
 SELECT  'Крыжовка','Крыжовка Слева - Зима', 'admin', loc_1.id, dist_M5_id.id, 5,
 ST_GeomFromText('POINT(553.950607 27.314374)'), ST_GeomFromText('POINT(53.952992 27.312944)'),
 current_timestamp - (30 * interval '1 minute'),current_timestamp - (60 * interval '1 minute'),
-current_timestamp - (30 * interval '1 minute'), 'RUNNING', 60, true, alex_id.id,
+current_timestamp - (30 * interval '1 minute'), 'RUNNING', 60, 3000, true, alex_id.id,
 current_timestamp - (30 * interval '1 minute'), NULL, NULL, NULL, NULL
 FROM loc_1,dist_M5_id,alex_id RETURNING id
 )

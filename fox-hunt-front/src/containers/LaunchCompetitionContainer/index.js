@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import dayjs from 'dayjs';
 import { getPathLength } from 'geolib';
-import { compare } from 'color-difference';
 
 import { compareByNumber } from 'src/utils';
 import {
@@ -9,6 +8,8 @@ import {
   COMPARE_COLOR_VALUE_MAX,
   STROKE_COLORS,
 } from 'src/constants/mapConst';
+import chroma from 'chroma-js';
+
 export { PointsMap } from './PointsMap';
 
 export const getParticipantName = (participant) =>
@@ -53,6 +54,10 @@ export const convertStartPairsForRender = (startPairs) =>
         participant2: _.get(participant2, ['name'], ''),
       }))
     : [];
+
+function compare(color1, color2) {
+  return chroma.deltaE(color1, color2);
+}
 
 const getStartParticipantsMap = (startPairs, competition) => {
   const colors = Object.values(STROKE_COLORS);

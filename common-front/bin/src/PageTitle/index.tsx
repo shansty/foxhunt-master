@@ -1,11 +1,11 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { Paper, Typography } from '@mui/material';
 
 export interface PageTitleProps {
   titleHeading?: string;
   titleDescription?: string;
-  titleContent?: JSX.Element;
-  descriptionContent?: JSX.Element;
+  titleContent?: ReactNode;
+  descriptionContent?: ReactNode;
   titleStatus?: string;
 }
 

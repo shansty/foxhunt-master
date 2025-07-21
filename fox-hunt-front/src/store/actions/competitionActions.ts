@@ -302,10 +302,15 @@ export const createCompetition = createAsyncThunk(
   async (competition, { dispatch, rejectWithValue }) => {
     try {
       const requestCompetition = convertToCompetitionForRequest(competition);
+      console.log(
+        'Sending competition payload:',
+        JSON.stringify(requestCompetition, null, 2),
+      );
       const response = await competitionsAPI.post('/', requestCompetition);
       return response;
     } catch (error) {
-      // Address 409 status error handling
+      // Address 409 status error han
+      // dling
       if (error.response.status === 409) {
         const {
           response: {

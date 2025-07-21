@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@mui/material/styles';
-
 import '../../../fox-hunt-front/src/theme/assets/base.scss';
 import MuiTheme from '../../../fox-hunt-front/src/theme';
 
@@ -14,5 +13,9 @@ export const parameters = {
 };
 
 export const decorators = [
-  (Story) => <ThemeProvider theme={MuiTheme}>{Story()}</ThemeProvider>,
+  (Story) => (
+    <ThemeProvider theme={MuiTheme}>
+      <Story />
+    </ThemeProvider>
+  ),
 ];

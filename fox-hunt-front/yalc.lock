@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "common-front": {
-      "signature": "ace14d6a49799cae883c64a66b037436",
+      "signature": "554706e6b395c8fdfff33fe073be0a92",
       "replaced": "file:.yalc/common-front"
     }
   }

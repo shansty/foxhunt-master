@@ -3,6 +3,8 @@ import { User } from 'src/types/User';
 import { DEFAULT_CENTER_COORDINATES } from './mapConst';
 export const MIN_FOX_DURATION = 20;
 export const MAX_FOX_DURATION = 300;
+export const MIN_FOX_RANGE = 10;
+export const MAX_FOX_RANGE = 3000;
 export const FOX_FREQUENCY_144_MGZ = 144;
 export const FOX_FREQUENCY_3_5_MGZ = 3.5;
 export const DEFAULT_MAX_NUMBER_OF_FOXES = 5;

@@ -1,8 +1,8 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { CircularProgress, Box } from '@mui/material';
 
 export interface LoaderProps {
-  children: JSX.Element | JSX.Element[];
+  children: ReactNode | ReactNode[];
   isLoading: boolean;
   size?: number;
   thickness?: number;

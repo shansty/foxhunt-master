@@ -29,6 +29,7 @@ public class CompetitionWithInvitationInfo extends Competition {
         this.setParticipants(competition.getParticipants());
         this.setStatus(competition.getStatus());
         this.setFoxDuration(competition.getFoxDuration());
+        this.setFoxRange(competition.getFoxRange());
         this.setExpectedCompetitionDuration(competition.getExpectedCompetitionDuration());
         this.setHasSilenceInterval(competition.isHasSilenceInterval());
         this.setActualStartDate(competition.getActualStartDate());
@@ -57,6 +58,7 @@ public class CompetitionWithInvitationInfo extends Competition {
         this.setParticipants(competition.getParticipants());
         this.setStatus(competition.getStatus());
         this.setFoxDuration(competition.getFoxDuration());
+        this.setFoxRange(competition.getFoxRange());
         this.setExpectedCompetitionDuration(competition.getExpectedCompetitionDuration());
         this.setHasSilenceInterval(competition.isHasSilenceInterval());
         this.setActualStartDate(competition.getActualStartDate());

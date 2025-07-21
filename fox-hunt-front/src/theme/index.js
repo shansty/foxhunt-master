@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 import typography from './typography';
 
-import vars from '../theme/assets/core/_variables-mui.scss';
+import vars from '../theme/assets/core/_variables-mui.module.scss';
 
 const MuiTheme = createTheme({
   palette: {

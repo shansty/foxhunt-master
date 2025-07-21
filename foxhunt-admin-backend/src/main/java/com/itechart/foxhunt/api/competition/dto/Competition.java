@@ -87,6 +87,11 @@ public class Competition {
     @Min(value = 20, message = "Fox duration should be more than 20 seconds")
     private Integer foxDuration;
 
+    @NotNull(message = "Fox range must be set")
+    @Min(value = 10, message = "Fox range should be more than 10 meters")
+    @Max(value = 3000, message = "Fox range should be less than 3000 meters")
+    private Integer foxRange;
+
     @Size(max = 9, message = "Duration format cannot exceed 9 characters")
     private String expectedCompetitionDuration;
 

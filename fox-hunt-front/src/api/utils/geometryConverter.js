@@ -11,6 +11,7 @@ export const convertFoxPointsToCoordinates = (foxPoints) =>
     ? foxPoints.map((foxPoint) => ({
         ...foxPoint,
         coordinates: convertPointToCoordinates(foxPoint.coordinates),
+        circleCenter: convertPointToCoordinates(foxPoint.circleCenter),
       }))
     : null;
 
@@ -27,6 +28,7 @@ export const convertCoordinatesToFoxPoints = (foxPoints) =>
     ? foxPoints.map((foxPoint) => ({
         ...foxPoint,
         coordinates: convertCoordinatesToPoint(foxPoint.coordinates),
+        circleCenter: convertCoordinatesToPoint(foxPoint.circleCenter),
       }))
     : null;
 
