@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   CardContent,
+  FormControlLabel,
   FormLabel,
   Grid,
   Step,
@@ -56,6 +57,7 @@ import { isFeatureEnabled } from 'src/featureToggles/FeatureTogglesUtils';
 import { FORBIDDEN_AREA } from 'src/featureToggles/featureNameConstants';
 import MainLayout from 'src/layouts/MainLayout';
 import { signInRequired } from 'src/hocs/permissions';
+import Checkbox from '@mui/material/Checkbox';
 
 const DISTANCE_TOOLTIP = `Distance is calculated as length of line 
 Start- Fox1 -Fox2- Fox-3 -Fox4-Fox5 - Finish`;
@@ -71,6 +73,7 @@ const initialState = {
 function LaunchCompetitionPage(props) {
   const { isCompetitionLoading, loggedUser, getCompetitionById } = props;
   const [state, setState] = useState(initialState);
+  const [isFoxRangeEnabled, setIsFoxRangeEnabled] = useState(true);
   const forbiddenAreaRef = useRef();
   const polygonRef = useRef();
   const navigate = useNavigate();
@@ -267,6 +270,7 @@ function LaunchCompetitionPage(props) {
         center: fox.circleCenter ?? fox.coordinates,
         radius: foxRange,
         id: `circle-${fox.id}`,
+        isVisible: isFoxRangeEnabled,
       },
     }));
 
@@ -402,6 +406,15 @@ function LaunchCompetitionPage(props) {
                       {isDistanceExceeded() && '. Maximum length exceeded!'}
                     </FormLabel>
                   </Tooltip>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isFoxRangeEnabled}
+                        onChange={(e) => setIsFoxRangeEnabled(e.target.checked)}
+                      />
+                    }
+                    label="Show Fox Ranges"
+                  />
 
                   <Grid item>
                     <Button
@@ -432,6 +445,7 @@ function LaunchCompetitionPage(props) {
                       if (!polygonRef.current) polygonRef.current = ref;
                     }}
                     zoomValue={zoom}
+                    isFoxRangeEnabled={isFoxRangeEnabled}
                   />
 
                   {renderReadinessMessage()}

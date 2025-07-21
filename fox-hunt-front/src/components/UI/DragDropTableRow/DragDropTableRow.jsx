@@ -25,7 +25,7 @@ const DragDropTableRow = (props) => {
                 >
                   {(provided) => (
                     <TableRow
-                      ref={provided.innerRef}
+                      ref={provided.innerRef}otal Distance 
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >

@@ -36,6 +36,7 @@ export const getFoxMarkerProps = ({
   isActive = false,
   frequency,
   foxRange,
+  isFoxRangeVisible = true,
 }) => ({
   id: `T${id}`,
   coordinates,
@@ -53,6 +54,7 @@ export const getFoxMarkerProps = ({
       : variables.foxMarkerColor,
   },
   onDragEnd,
+  isVisible: isFoxRangeVisible,
 });
 
 export const getCenterMarkerProps = ({
@@ -99,29 +101,29 @@ export const getParticipantMarkerPropsFromTracker = (
     properties: {
       hintContent: activeTracker?.isDisconnected
         ? ` ${get(participantTracker, [
-            'participant',
-            'participantNumber',
-          ])} - ${get(
-            participantTracker,
-            ['participant', 'firstName'],
-            '',
-          )} ${get(
-            participantTracker,
-            ['participant', 'lastName'],
-            '',
-          )} is disconnected`
+          'participant',
+          'participantNumber',
+        ])} - ${get(
+          participantTracker,
+          ['participant', 'firstName'],
+          '',
+        )} ${get(
+          participantTracker,
+          ['participant', 'lastName'],
+          '',
+        )} is disconnected`
         : ` ${get(participantTracker, [
-            'participant',
-            'participantNumber',
-          ])} - ${get(
-            participantTracker,
-            ['participant', 'firstName'],
-            '',
-          )} ${get(
-            participantTracker,
-            ['participant', 'lastName'],
-            '',
-          )} is active`,
+          'participant',
+          'participantNumber',
+        ])} - ${get(
+          participantTracker,
+          ['participant', 'firstName'],
+          '',
+        )} ${get(
+          participantTracker,
+          ['participant', 'lastName'],
+          '',
+        )} is active`,
       iconContent: activeTracker?.isDisconnected
         ? 'D'
         : get(participantTracker, ['participant', 'participantNumber']),
