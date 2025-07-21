@@ -20,7 +20,13 @@ function WatchCompetitionManager({
   const [isFoxRangeEnabled, setIsFoxRangeEnabled] = useState(true);
 
   const customMarkers = useMemo(
-    () => getPointsProps(competition, activeFoxIndex, participantTrackers, isFoxRangeEnabled),
+    () =>
+      getPointsProps(
+        competition,
+        activeFoxIndex,
+        participantTrackers,
+        isFoxRangeEnabled,
+      ),
     [competition, activeFoxIndex, participantTrackers, isFoxRangeEnabled],
   );
 
