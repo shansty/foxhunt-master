@@ -59,7 +59,7 @@ export default function useLocationMapContainer(
     }
   };
 
-  console.log(isFoxRangeEnabled)
+  console.log(isFoxRangeEnabled);
 
   const renderMarkers = () => {
     const markersProps = [...customMarkers];
@@ -96,12 +96,14 @@ export default function useLocationMapContainer(
             onDragEnd={onDragEnd}
             options={{
               draggable: true,
-              fillColor: props.circle.isVisible ? 'rgba(0, 150, 255, 0.1)' : 'rgba(0,0,0,0)',
+              fillColor: props.circle.isVisible
+                ? 'rgba(0, 150, 255, 0.1)'
+                : 'rgba(0,0,0,0)',
               strokeColor: props.circle.isVisible ? '#0096ff' : 'rgba(0,0,0,0)',
               strokeOpacity: isFoxRangeEnabled ? 0.6 : 0,
               strokeWidth: isFoxRangeEnabled ? 2 : 0,
             }}
-          />
+          />,
         );
       }
 

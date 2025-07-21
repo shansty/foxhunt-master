@@ -7,7 +7,12 @@ import {
 import { find, get } from 'lodash';
 import { DEFAULT_CENTER_COORDINATES } from 'src/constants/mapConst';
 
-const getFoxPointsProps = (foxPoints = [], activeFoxIndex, foxRange, isFoxRangeEnabled = true) =>
+const getFoxPointsProps = (
+  foxPoints = [],
+  activeFoxIndex,
+  foxRange,
+  isFoxRangeEnabled = true,
+) =>
   foxPoints.map(({ id, label, coordinates, circleCenter, index, frequency }) =>
     getFoxMarkerProps({
       coordinates,
@@ -17,7 +22,7 @@ const getFoxPointsProps = (foxPoints = [], activeFoxIndex, foxRange, isFoxRangeE
       isActive: index === activeFoxIndex,
       frequency,
       foxRange,
-      isFoxRangeVisible: isFoxRangeEnabled, 
+      isFoxRangeVisible: isFoxRangeEnabled,
     }),
   );
 
@@ -45,9 +50,12 @@ export const getPointsProps = (
     participantmarkers.forEach((participant) => pointsProps.push(participant));
   }
 
-  return getFoxPointsProps(foxPoints, activeFoxIndex, foxRange, isFoxRangeEnabled).concat(
-    pointsProps,
-  );
+  return getFoxPointsProps(
+    foxPoints,
+    activeFoxIndex,
+    foxRange,
+    isFoxRangeEnabled,
+  ).concat(pointsProps);
 };
 
 export const populateParticipantInfoForTrackers = (
