@@ -49,6 +49,7 @@ export interface LocationMapContainerProps {
   className?: string;
   children?: React.ReactNode;
   setForbiddenAreasRef?: (id: number | string) => (ref: Polygon) => void;
+  isFoxRangeEnabled: boolean;
 }
 
 const LocationMapContainer = ({
@@ -72,8 +73,11 @@ const LocationMapContainer = ({
   tooltip,
   children,
   onDragEnd,
+  isFoxRangeEnabled
+
 }: LocationMapContainerProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  console.log(isFoxRangeEnabled)
 
   // ✅ Stable fallback for geometryCenter
   const stableGeometryCenter = useMemo(() => {
@@ -81,7 +85,7 @@ const LocationMapContainer = ({
       geometryCenter ?? {
         displayMarker: false,
         coordinates: [0, 0],
-        onDragEnd: () => {},
+        onDragEnd: () => { },
       }
     );
   }, [geometryCenter]);
@@ -105,6 +109,7 @@ const LocationMapContainer = ({
     hasForbiddenAreaDrawingManager,
     customMarkers,
     onDragEnd,
+    isFoxRangeEnabled, 
   );
 
   const onSizeChange = (event: IEvent) => {
@@ -118,12 +123,12 @@ const LocationMapContainer = ({
       )
       .map((marker) => (
         <Circle
-          key={`circle-${marker.id}`}
+          key={`circle-${marker.id}-${isFoxRangeEnabled}`}
           geometry={[marker.circleCenter!, marker.foxRange!]}
           options={{
-            fillColor: 'rgba(0, 150, 255, 0.1)',
-            strokeColor: '#0096ff',
-            strokeWidth: 2,
+            fillColor: isFoxRangeEnabled ? 'rgba(0, 150, 255, 0.1)' : 'rgba(0, 0, 0, 0)',
+            strokeColor: isFoxRangeEnabled ? '#0096ff' : 'rgba(0, 0, 0, 0)',
+            strokeWidth: isFoxRangeEnabled ? 2 : 0,
           }}
         />
       ));

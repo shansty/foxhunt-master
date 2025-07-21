@@ -28,6 +28,7 @@ export default function useLocationMapContainer(
   hasForbiddenAreaDrawingManager?: boolean,
   customMarkers?: any,
   onDragEnd?: (event: IEvent) => void,
+  isFoxRangeEnabled?: boolean,
 ) {
   const [drawingManagerDisplay, setDrawingManagerDisplay] =
     useState<DrawingManagerDisplayState>({
@@ -57,6 +58,8 @@ export default function useLocationMapContainer(
       });
     }
   };
+
+  console.log(isFoxRangeEnabled)
 
   const renderMarkers = () => {
     const markersProps = [...customMarkers];
@@ -92,13 +95,13 @@ export default function useLocationMapContainer(
             properties={{ id: props.circle.id }}
             onDragEnd={onDragEnd}
             options={{
-              draggable: Troubleshoot,
-              fillColor: 'rgba(0, 150, 255, 0.1)',
-              strokeColor: '#0096ff',
-              strokeOpacity: 0.6,
-              strokeWidth: 2,
+              draggable: true,
+              fillColor: props.circle.isVisible ? 'rgba(0, 150, 255, 0.1)' : 'rgba(0,0,0,0)',
+              strokeColor: props.circle.isVisible ? '#0096ff' : 'rgba(0,0,0,0)',
+              strokeOpacity: isFoxRangeEnabled ? 0.6 : 0,
+              strokeWidth: isFoxRangeEnabled ? 2 : 0,
             }}
-          />,
+          />
         );
       }
 
