@@ -151,6 +151,7 @@ public class ActiveCompetitionJob implements Runnable {
         final int competitionDuration = CompetitionUtils.competitionDuration(competitionEntity);
         final int foxDuration = competitionEntity.getFoxDuration();
         final int foxRange = competitionEntity.getFoxRange();
+        final boolean foxoringEnabled = competitionEntity.isFoxoringEnabled();
 
         if (competitionEndTime == null) {
             competitionEndTime = competitionEntity.getActualStartDate().plusSeconds(competitionDuration);
@@ -167,6 +168,7 @@ public class ActiveCompetitionJob implements Runnable {
                 .competitionDuration(competitionDuration)
                 .foxDuration(foxDuration)
                 .foxRange(foxRange)
+                .foxoringEnabled(foxoringEnabled)
                 .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
                 .secondsToFoxChange(getSecondsToFoxChange())
                 .build();
@@ -266,6 +268,8 @@ public class ActiveCompetitionJob implements Runnable {
         final int competitionDuration = CompetitionUtils.competitionDuration(competitionEntity);
         final int foxDuration = competitionEntity.getFoxDuration();
         final int foxRange = competitionEntity.getFoxRange();
+        final boolean foxoringEnabled = competitionEntity.isFoxoringEnabled();
+
 
         if (competitionEndTime == null) {
             competitionEndTime = competitionEntity.getActualStartDate().plusSeconds(competitionDuration);
@@ -277,6 +281,7 @@ public class ActiveCompetitionJob implements Runnable {
                 .competitionDuration(competitionDuration)
                 .foxDuration(foxDuration)
                 .foxRange(foxRange)
+                .foxoringEnabled(foxoringEnabled)
                 .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
                 .secondsToFoxChange(getSecondsToFoxChange())
                 .build();
@@ -290,12 +295,15 @@ public class ActiveCompetitionJob implements Runnable {
         final int competitionDuration = CompetitionUtils.competitionDuration(competitionEntity);
         final int foxDuration = competitionEntity.getFoxDuration();
         final int foxRange = competitionEntity.getFoxRange();
+        final boolean foxoringEnabled = competitionEntity.isFoxoringEnabled();
+
 
         return ActiveCompetition.builder()
             .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
             .competitionDuration(competitionDuration)
             .foxDuration(foxDuration)
             .foxRange(foxRange)
+            .foxoringEnabled(foxoringEnabled)
             .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
             .secondsToFoxChange(getSecondsToFoxChange())
             .build();

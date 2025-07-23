@@ -58,6 +58,7 @@ import { FORBIDDEN_AREA } from 'src/featureToggles/featureNameConstants';
 import MainLayout from 'src/layouts/MainLayout';
 import { signInRequired } from 'src/hocs/permissions';
 import Checkbox from '@mui/material/Checkbox';
+import { getDistance } from 'geolib';
 
 const DISTANCE_TOOLTIP = `Distance is calculated as length of line 
 Start- Fox1 -Fox2- Fox-3 -Fox4-Fox5 - Finish`;
@@ -214,45 +215,69 @@ function LaunchCompetitionPage(props) {
     }));
   };
 
-  const onPointDragEnd = (event) => {
-    const { foxPoints } = state;
-    const { startPoint, finishPoint } = competition;
+function getDistanceBetweenPoints(p1, p2) {
+  return getDistance(
+    { latitude: p1[1], longitude: p1[0] },
+    { latitude: p2[1], longitude: p2[0] },
+  );
+}
 
-    const pointId = event.get('target').properties.get('id');
-    const newCoords = event.get('target').geometry.getCoordinates();
+const onPointDragEnd = (event) => {
+  const { foxPoints } = state;
+  const { startPoint, finishPoint, foxRange } = competition;
 
-    const isCircle = pointId.startsWith('circle-');
-    const foxId = isCircle ? pointId.replace('circle-', '') : pointId;
+  const pointId = event.get('target').properties.get('id');
+  const newCoords = event.get('target').geometry.getCoordinates();
 
-    const fox = foxPoints[foxId];
-    const isInForbiddenArea = isPointInForbiddenAreas(newCoords);
-    const isInsidePolygon = polygonRef.current?.geometry.contains(newCoords);
+  const isCircle = pointId.startsWith('circle-');
+  const foxId = isCircle ? pointId.replace('circle-', '') : pointId;
 
-    if (isInsidePolygon && !isInForbiddenArea) {
-      const updatedFoxPoints = {
-        ...foxPoints,
-        [foxId]: {
-          ...fox,
-          ...(isCircle
-            ? { circleCenter: newCoords }
-            : { coordinates: newCoords, circleCenter: newCoords }),
-        },
-      };
+  const fox = foxPoints[foxId];
+  const isInForbiddenArea = isPointInForbiddenAreas(newCoords);
+  const isInsidePolygon = polygonRef.current?.geometry.contains(newCoords);
 
-      setState((state) => ({
-        ...state,
-        foxPoints: updatedFoxPoints,
-        distance: getCompetitionDistance(
-          finishPoint,
-          startPoint,
-          updatedFoxPoints,
-        ),
-      }));
+  if (isInsidePolygon && !isInForbiddenArea) {
+    let updatedFox = { ...fox };
+
+    if (isCircle) {
+      // Check if fox remains inside new circle center
+      const distance = getDistanceBetweenPoints(newCoords, fox.coordinates);
+
+      if (distance <= foxRange) {
+        // Valid circle move
+        updatedFox.circleCenter = newCoords;
+      } else {
+        // Invalid – fox outside the circle – revert
+        event.get('target').geometry.setCoordinates(fox.circleCenter);
+        return;
+      }
     } else {
-      const revertCoords = isCircle ? fox.circleCenter : fox.coordinates;
-      event.get('target').geometry.setCoordinates(revertCoords);
+      // Fox marker moved – update both fox and circle center
+      updatedFox.coordinates = newCoords;
+      updatedFox.circleCenter = newCoords;
     }
-  };
+
+    const updatedFoxPoints = {
+      ...foxPoints,
+      [foxId]: updatedFox,
+    };
+
+    setState((prevState) => ({
+      ...prevState,
+      foxPoints: updatedFoxPoints,
+      distance: getCompetitionDistance(
+        finishPoint,
+        startPoint,
+        updatedFoxPoints
+      ),
+    }));
+  } else {
+    // Invalid area – revert to previous
+    const revertCoords = isCircle ? fox.circleCenter : fox.coordinates;
+    event.get('target').geometry.setCoordinates(revertCoords);
+  }
+};
+
 
   const getPointsProps = () => {
     const pointsProps = [];
@@ -332,6 +357,7 @@ function LaunchCompetitionPage(props) {
       disabled = false;
     }
   }
+  console.dir({competition})
 
   return (
     <MainLayout>
@@ -406,7 +432,7 @@ function LaunchCompetitionPage(props) {
                       {isDistanceExceeded() && '. Maximum length exceeded!'}
                     </FormLabel>
                   </Tooltip>
-                  <FormControlLabel
+                  {competition.foxoringEnabled && <FormControlLabel
                     control={
                       <Checkbox
                         checked={isFoxRangeEnabled}
@@ -414,7 +440,7 @@ function LaunchCompetitionPage(props) {
                       />
                     }
                     label="Show Fox Ranges"
-                  />
+                  />}
 
                   <Grid item>
                     <Button
@@ -435,6 +461,7 @@ function LaunchCompetitionPage(props) {
                       coordinates: center,
                       displayMarker: false,
                     }}
+                    foxoringEnabled={competition.foxoringEnabled}
                     onDragEnd={onPointDragEnd}
                     polygonCoordinates={coordinates}
                     setForbiddenAreasRef={(ref) => {

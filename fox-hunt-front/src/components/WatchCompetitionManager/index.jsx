@@ -32,7 +32,7 @@ function WatchCompetitionManager({
 
   return (
     <>
-      <FormControlLabel
+      {competition.foxoringEnabled && <FormControlLabel
         sx={{ ml: 1 }}
         control={
           <Checkbox
@@ -41,7 +41,7 @@ function WatchCompetitionManager({
           />
         }
         label="Show Fox Ranges"
-      />
+      />}
       <Grid item container spacing={2}>
         <Grid item xs={12} md={dialog ? 12 : 9} xl={dialog ? 12 : 10}>
           <LocationMapContainer
@@ -54,6 +54,7 @@ function WatchCompetitionManager({
             polygonCoordinates={location.coordinates}
             zoomValue={location.zoom}
             isFoxRangeEnabled={isFoxRangeEnabled}
+            foxoringEnabled={competition.foxoringEnabled}
           >
             <ParticipantTracerLines
               competition={competition}

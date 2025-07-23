@@ -8,7 +8,8 @@ public enum FeatureType {
     FAVORITE_LOCATION_MANAGEMENT,
     FORBIDDEN_AREA,
     HELP_CONTENT_MANAGEMENT,
-    COMPETITION_TEMPLATE_MANAGEMENT;
+    COMPETITION_TEMPLATE_MANAGEMENT,
+    FOXORING_COMPETITION_TYPE;
 
     public static FeatureType parse(String feature) throws IllegalArgumentException {
         if (feature == null || feature.isBlank()) {

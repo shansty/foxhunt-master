@@ -2,6 +2,7 @@ package com.itechart.foxhunt.api.competition.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -91,6 +92,8 @@ public class Competition {
     @Min(value = 10, message = "Fox range should be more than 10 meters")
     @Max(value = 3000, message = "Fox range should be less than 3000 meters")
     private Integer foxRange;
+
+    private boolean foxoringEnabled;
 
     @Size(max = 9, message = "Duration format cannot exceed 9 characters")
     private String expectedCompetitionDuration;

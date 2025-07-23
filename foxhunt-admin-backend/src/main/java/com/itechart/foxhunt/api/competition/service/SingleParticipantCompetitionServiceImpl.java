@@ -53,6 +53,7 @@ public class SingleParticipantCompetitionServiceImpl implements
         competition.setFoxAmount(spCompetition.getFoxAmount());
         competition.setFoxDuration(60);// 1 min
         competition.setFoxRange(3000); //default for ARDF
+        competition.setFoxoringEnabled(false);
         competition.setFrequency(spCompetition.getFrequency());
         competition.setHasSilenceInterval(spCompetition.isHasSilenceInterval());
         competition.setStatus(CompetitionStatus.RUNNING);

@@ -77,6 +77,8 @@ public class ModifyCompetition {
     @Max(value = 3000, message = "Fox range should be less than 10 meters")
     private Integer foxRange;
 
+    private boolean foxoringEnabled;
+
     private boolean hasSilenceInterval;
 
     @CompetitionFrequency()

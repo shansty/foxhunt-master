@@ -14,6 +14,8 @@ public class ActiveCompetition {
 
     private final long foxRange;
 
+    private final boolean foxoringEnabled;
+
     private final long secondsToFoxChange;
 
     private final long secondsToCompetitionEnd;

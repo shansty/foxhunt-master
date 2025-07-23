@@ -151,6 +151,7 @@ public class CompetitionServiceImpl implements CompetitionService {
         Optional.ofNullable(updatedCompetition.getFoxRange()).ifPresent(competition::setFoxRange);
         Optional.ofNullable(updatedCompetition.getFrequency()).ifPresent(frequency -> competition.setFrequency(BigDecimal.valueOf(frequency)));
         Optional.of(updatedCompetition.isHasSilenceInterval()).ifPresent(competition::setHasSilenceInterval);
+        Optional.of(updatedCompetition.isFoxoringEnabled()).ifPresent(competition::setFoxoringEnabled);
         competition.setUpdatedDate(LocalDateTime.now());
         log.debug(competition + " competition_after in updateById");
         return competitionMapper.entityToDomain(competitionRepository.save(competition));

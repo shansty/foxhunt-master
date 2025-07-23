@@ -1,6 +1,6 @@
 templates:
   - templateId: 1
-    name: "TEST 3.5"
+    name: "Foxoring TEST 3.5"
     notes: "Template competition"
     locationName: "Зеленое"
     isPrivate: false
@@ -8,6 +8,7 @@ templates:
     distanceTypeName: "M5"
     foxDuration: 60
     foxRange: 100
+    foxoringEnabled: true
     hasSilenceInterval: true
     frequency: 3.5
     participantEmails:
@@ -17,14 +18,15 @@ templates:
       - "Boris.Frolov@foxhunt.com"
 
   - templateId: 2
-    name: "TEST 144"
+    name: "ARDF TEST 144"
     notes: "Template competition"
     locationName: "Детская Железная Дорога"
     isPrivate: false
     foxAmount: 4
     distanceTypeName: "W5"
     foxDuration: 45
-    foxRange: 100
+    foxRange: 3000
+    foxoringEnabled: false
     hasSilenceInterval: false
     frequency: 144
     participantEmails:

@@ -31,8 +31,8 @@ const initialState: CompetitionSliceState = {
   invitations: [],
   currentCompetitions: [],
   competitionTemplates: [
-    { name: 'TEST 3.5', id: '1' },
-    { name: 'TEST 144', id: '2' },
+    { name: 'Foxoring TEST 3.5', id: '1' },
+    { name: 'ARDF TEST 144', id: '2' },
   ],
   size: 0,
   gameState: {},

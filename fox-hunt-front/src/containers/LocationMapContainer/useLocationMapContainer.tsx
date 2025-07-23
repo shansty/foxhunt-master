@@ -29,6 +29,7 @@ export default function useLocationMapContainer(
   customMarkers?: any,
   onDragEnd?: (event: IEvent) => void,
   isFoxRangeEnabled?: boolean,
+  foxoringEnabled?: boolean,
 ) {
   const [drawingManagerDisplay, setDrawingManagerDisplay] =
     useState<DrawingManagerDisplayState>({
@@ -59,7 +60,8 @@ export default function useLocationMapContainer(
     }
   };
 
-  console.log(isFoxRangeEnabled);
+   console.dir({foxoringEnabled, isFoxRangeEnabled});
+
 
   const renderMarkers = () => {
     const markersProps = [...customMarkers];
@@ -72,10 +74,12 @@ export default function useLocationMapContainer(
       );
     }
 
-    return markersProps.flatMap((props) => {
+    return markersProps.flatMap((props, index) => {
+      const placemarkKey = props.id ?? `placemark-${index}`;
+
       const elements = [
         <Placemark
-          key={props.id}
+          key={placemarkKey}
           geometry={props.coordinates}
           properties={{
             ...props.properties,
@@ -87,7 +91,7 @@ export default function useLocationMapContainer(
         />,
       ];
 
-      if (props.circle) {
+      if (props.circle && foxoringEnabled) {
         elements.push(
           <Circle
             key={props.circle.id}
@@ -130,9 +134,9 @@ export default function useLocationMapContainer(
 
   const renderForbiddenAreaPolygon = () =>
     isForbiddenAreaFeatureEnabled &&
-    forbiddenAreas.map((area) => (
+    forbiddenAreas.map((area, index) => (
       <Polygon
-        key={area.id}
+        key={area.id ?? `forbidden-${index}`}
         onClick={onPolygonClick}
         instanceRef={setForbiddenAreasRef?.(area.id)}
         geometry={[area.polygon]}

@@ -191,6 +191,7 @@ export const competition = {
     startPoint: null,
     status: '',
     updatedDate: null,
+    foxoringEnabled: false,
   },
   propTypes: PropTypes.shape({
     actualStartDate: PropTypes.string,
@@ -216,5 +217,6 @@ export const competition = {
     startPoint: PropTypes.arrayOf(PropTypes.number),
     status: PropTypes.string,
     updatedDate: PropTypes.string,
+    foxoringEnabled: PropTypes.bool,
   }),
 };

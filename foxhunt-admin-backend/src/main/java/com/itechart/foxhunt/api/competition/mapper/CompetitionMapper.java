@@ -17,7 +17,7 @@ import java.util.Set;
     componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
     uses = {CompetitionLocationMapper.class}
 )
-public interface CompetitionMapper {
+public interface CompetitionMapper { 
 
     @Mapping(source = "participants", target = "participants", qualifiedByName = "participantsToUsers")
     Competition entityToDomain(CompetitionEntity competitionEntity);

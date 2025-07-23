@@ -113,6 +113,9 @@ public class CompetitionEntity {
         @Column(name = "fox_range", nullable = true)
         private Integer foxRange;
 
+        @Column(name = "foxoring_enabled", nullable = false)
+        private boolean foxoringEnabled = false;
+
         @Column(name = "expected_competition_duration", nullable = true)
         private String expectedCompetitionDuration;
 

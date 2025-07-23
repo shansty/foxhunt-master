@@ -52,6 +52,8 @@ import { ERRORS } from 'src/constants/commonConst';
 import FormikSlider from 'src/components/UI/FormikSlider/index';
 import MainLayout from 'src/layouts/MainLayout';
 import { signInRequired } from 'src/hocs/permissions';
+import { isFeatureEnabled } from 'src/featureToggles/FeatureTogglesUtils';
+import { FOXORING_COMPETITION_TYPE } from 'src/featureToggles/featureNameConstants';
 
 const CompetitionSettingPage = (props) => {
   const {
@@ -106,6 +108,7 @@ const CompetitionSettingPage = (props) => {
       initialValues.foxDuration = MIN_FOX_DURATION;
       initialValues.hasSilenceInterval = false;
       initialValues.foxRange = competition.foxRange || MAX_FOX_RANGE;
+      initialValues.foxoringEnabled = competition.foxoringEnabled ?? false;
     }
   }
 
@@ -197,6 +200,7 @@ const CompetitionSettingPage = (props) => {
       foxRange,
       hasSilenceInterval,
       frequency,
+      foxoringEnabled,
     } = values;
     const updatedCompetition = {
       id,
@@ -208,7 +212,9 @@ const CompetitionSettingPage = (props) => {
       foxRange,
       hasSilenceInterval,
       frequency,
+      foxoringEnabled
     };
+    console.dir({ updatedCompetition })
 
     updateCompetition(updatedCompetition).then(({ payload }) =>
       goToNextStep(payload),
@@ -257,10 +263,18 @@ const CompetitionSettingPage = (props) => {
                 .required(ERRORS.REQUIRED_FIELD)
                 .min(20)
                 .max(300),
-              foxRange: Yup.number()
-                .required(ERRORS.REQUIRED_FIELD)
-                .min(MIN_FOX_RANGE)
-                .max(MAX_FOX_RANGE),
+              foxoringEnabled: Yup.boolean(),
+              ...(isFeatureEnabled(FOXORING_COMPETITION_TYPE) && {
+                foxRange: Yup.number()
+                  .when('foxoringEnabled', {
+                    is: true,
+                    then: Yup.number()
+                      .required(ERRORS.REQUIRED_FIELD)
+                      .min(MIN_FOX_RANGE)
+                      .max(MAX_FOX_RANGE),
+                    otherwise: Yup.number().notRequired(),
+                  }),
+              }),
             })}
           >
             {(formikProps) => {
@@ -395,42 +409,59 @@ const CompetitionSettingPage = (props) => {
                                 onChange={handleChange}
                               />
                             </Grid>
-                            <Grid
-                              item
-                              container
-                              direction={'column'}
-                              spacing={2}
-                            >
-                              <Grid
-                                item
-                                container
-                                direction={'row'}
-                                spacing={1}
-                                justifyContent={'center'}
-                              >
+                            {isFeatureEnabled(FOXORING_COMPETITION_TYPE) && (
+                              <>
                                 <Grid item>
-                                  <Typography
-                                    className="text-black px-2 font-weight-bold"
-                                    component="div"
-                                  >
-                                    Fox range (Meters):
-                                  </Typography>
+                                  <Field
+                                    component={CheckboxWithLabel}
+                                    id="foxoringEnabled"
+                                    type="checkbox"
+                                    name="foxoringEnabled"
+                                    Label={{ label: 'Create foxoring competition type' }}
+                                  />
                                 </Grid>
-                              </Grid>
-                              <Grid item>
-                                <FormikSlider
-                                  name="foxRange"
-                                  disabled={disabled}
-                                  min={MIN_FOX_RANGE}
-                                  max={MAX_FOX_RANGE}
-                                  step={10}
-                                  value={values.foxRange}
-                                  onChange={setFieldValue}
-                                  isValid={touched.foxRange && !errors.foxRange}
-                                  isInvalid={errors.foxRange}
-                                />
-                              </Grid>
-                            </Grid>
+
+                                {values.foxoringEnabled && (
+                                  <Grid
+                                    item
+                                    container
+                                    direction={'column'}
+                                    spacing={2}
+                                  >
+                                    <Grid
+                                      item
+                                      container
+                                      direction={'row'}
+                                      spacing={1}
+                                      justifyContent={'center'}
+                                    >
+                                      <Grid item>
+                                        <Typography
+                                          className="text-black px-2 font-weight-bold"
+                                          component="div"
+                                        >
+                                          Fox range (Meters):
+                                        </Typography>
+                                      </Grid>
+                                    </Grid>
+                                    <Grid item>
+                                      <FormikSlider
+                                        name="foxRange"
+                                        disabled={disabled}
+                                        min={MIN_FOX_RANGE}
+                                        max={MAX_FOX_RANGE}
+                                        step={10}
+                                        value={values.foxRange}
+                                        onChange={setFieldValue}
+                                        isValid={touched.foxRange && !errors.foxRange}
+                                        isInvalid={errors.foxRange}
+                                      />
+                                    </Grid>
+                                  </Grid>
+                                )}
+                              </>
+                            )}
+
                           </Grid>
                         </Grid>
                         <Grid

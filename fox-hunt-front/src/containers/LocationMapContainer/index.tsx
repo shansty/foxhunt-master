@@ -49,7 +49,8 @@ export interface LocationMapContainerProps {
   className?: string;
   children?: React.ReactNode;
   setForbiddenAreasRef?: (id: number | string) => (ref: Polygon) => void;
-  isFoxRangeEnabled: boolean;
+  isFoxRangeEnabled?: boolean;
+  foxoringEnabled?: boolean;
 }
 
 const LocationMapContainer = ({
@@ -74,9 +75,9 @@ const LocationMapContainer = ({
   children,
   onDragEnd,
   isFoxRangeEnabled,
+  foxoringEnabled,
 }: LocationMapContainerProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  console.log(isFoxRangeEnabled);
 
   // ✅ Stable fallback for geometryCenter
   const stableGeometryCenter = useMemo(() => {
@@ -84,7 +85,7 @@ const LocationMapContainer = ({
       geometryCenter ?? {
         displayMarker: false,
         coordinates: [0, 0],
-        onDragEnd: () => {},
+        onDragEnd: () => { },
       }
     );
   }, [geometryCenter]);
@@ -109,14 +110,20 @@ const LocationMapContainer = ({
     customMarkers,
     onDragEnd,
     isFoxRangeEnabled,
+    foxoringEnabled,
   );
+
+  
+  console.dir({foxoringEnabled, isFoxRangeEnabled});
 
   const onSizeChange = (event: IEvent) => {
     setIsFullscreen(event.get('target').container.isFullscreen() || false);
   };
 
-  const renderFoxCircles = () =>
-    customMarkers
+  const renderFoxCircles = () => {
+    if (!foxoringEnabled) return null; 
+
+    return customMarkers
       ?.filter((marker) => marker.circleCenter && marker.foxRange !== undefined)
       .map((marker) => (
         <Circle
@@ -131,6 +138,7 @@ const LocationMapContainer = ({
           }}
         />
       ));
+  };
 
   return (
     <DrawingManagerWrapper

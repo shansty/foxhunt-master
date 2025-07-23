@@ -139,6 +139,7 @@ function ListCompetitionContainer({
     ...getDates(item),
     title: item.name,
   }));
+  console.dir({competitions})
   const isCompetitionsLoading = useSelector(currentCompetitionsLoaderSelector);
   const isCompetitionByDateLoading = useSelector(
     competitionByDateLoaderSelector,
@@ -223,14 +224,20 @@ function ListCompetitionContainer({
 
   const handleToggleModal = () => setCancelModalOpen(!isOpenCancelModal);
 
-  function getCompetitionTooltipColor(status) {
-    return clsx({
-      '#1faa00': status === STATUS_RUNNING,
-      '#9e9e9e': status === STATUS_FINISHED,
-      '#0277bd': status === STATUS_SCHEDULED,
-      '#c62828': status === STATUS_CANCELED,
-    });
-  }
+ function getCompetitionTooltipColor(status, foxoringEnabled) {
+  return clsx({
+    '#104c21ff': foxoringEnabled && status === STATUS_RUNNING,  
+    '#393839ff': foxoringEnabled && status === STATUS_FINISHED,  
+    '#1e2070ff': foxoringEnabled && status === STATUS_SCHEDULED,
+    '#740404ff': foxoringEnabled && status === STATUS_CANCELED,  
+
+    '#1faa00': !foxoringEnabled && status === STATUS_RUNNING,
+    '#9e9e9e': !foxoringEnabled && status === STATUS_FINISHED,
+    '#0277bd': !foxoringEnabled && status === STATUS_SCHEDULED,
+    '#c62828': !foxoringEnabled && status === STATUS_CANCELED,
+  });
+}
+
 
   const changePager = (pager = { page: 0, rowsPerPage: 25 }) => {
     setState({ ...state, pager: { ...state.pager, ...pager } });
@@ -250,7 +257,7 @@ function ListCompetitionContainer({
       {...restProps}
       style={{
         ...style,
-        backgroundColor: getCompetitionTooltipColor(restProps.data.status),
+        backgroundColor: getCompetitionTooltipColor(restProps.data.status, restProps.data.foxoringEnabled),
       }}
     >
       {children}
@@ -264,7 +271,7 @@ function ListCompetitionContainer({
     >
       <div
         style={{
-          backgroundColor: getCompetitionTooltipColor(appointmentData.status),
+          backgroundColor: getCompetitionTooltipColor(appointmentData.status, appointmentData.foxoringEnabled),
           width: '32px',
           height: '32px',
           borderRadius: '50%',
