@@ -45,7 +45,6 @@ public class ActiveTrackerJob implements Runnable {
         if (!activeTrackers.isEmpty()) {
             trackersSse.forEach(sseEmitter -> {
                 List<ParticipantTracker> participantTrackers = buildParticipantTrackerList(activeTrackers);
-                log.warn("ParticipantTrackers are", participantTrackers);
                 sendEvent(sseEmitter, NotificationType.CURRENT_LOCATION, participantTrackers);
             });
         }

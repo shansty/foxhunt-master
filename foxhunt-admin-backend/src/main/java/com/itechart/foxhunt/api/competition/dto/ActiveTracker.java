@@ -44,6 +44,14 @@ public class ActiveTracker {
                 : null;
     }
 
+     public ActiveTracker(Long participantId, LocalDateTime gameTime, Geometry currentLocation, Boolean isDisconnected, Long listenableFoxId) {
+        this.participantId = participantId;
+        this.gameTime = gameTime;
+        this.currentLocation = (Point) currentLocation;
+        this.isDisconnected = isDisconnected;
+        this.listenableFoxId = listenableFoxId;
+    }
+
     private Long participantId;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

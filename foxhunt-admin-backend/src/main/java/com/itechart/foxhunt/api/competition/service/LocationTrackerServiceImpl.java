@@ -197,6 +197,8 @@ public class LocationTrackerServiceImpl implements LocationTrackerService {
         Point currentPlace = activeTracker.getCurrentLocation();
         FoxPointEntity listenableFox = findListenableFox(currentPlace, userLocationTrackerId.getCompetition());
         activeTracker.setListenableFoxId(listenableFox != null ? listenableFox.getId() : null);
+        log.warn("activeTracker= {}", activeTracker);
+        log.warn("activeTracker.setListenableFoxId= {}", activeTracker.getListenableFoxId());
         PathStoryEntity pathStoryEntity = PathStoryEntity.builder()
                 .locationTrackerEntity(userLocationTrackerId)
                 .currentPlace(activeTracker.getCurrentLocation())
@@ -205,13 +207,6 @@ public class LocationTrackerServiceImpl implements LocationTrackerService {
                 .listenableFox(listenableFox)
                 .isDisconnected(false)
                 .build();
-        log.warn(
-                "PathStoryEntity: locationTrackerId={}, currentPlace={}, gameTime={}, timeToFoxChange={}, listenableFoxId={}",
-                userLocationTrackerId.getId(),
-                activeTracker.getCurrentLocation(),
-                LocalDateTime.now(),
-                activeTracker.getActiveFoxInfo().getTimeToChangeActiveFox(),
-                listenableFox != null ? listenableFox.getId() : null);
         if (activeTracker.getActiveFoxInfo().getFoxPoint() != null) {
             pathStoryEntity.setActiveFox(activeTracker.getActiveFoxInfo().getFoxPoint());
 

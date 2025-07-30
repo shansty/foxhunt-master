@@ -206,8 +206,11 @@ public class ActiveCompetitionController {
                 .results(userResultList)
                 .build());
         }
+        log.warn("Before active competition inside GetMapping(ID)");
 
         ActiveCompetition activeCompetition = activeCompetitionService.getActiveCompetitionInfo(id);
+        log.warn("After active competition inside GetMapping(ID)");
+            log.warn("Before active competition inside GetMapping(ID)");
         List<ActiveTracker> activeTrackers = locationTrackerService
             .getLastParticipantTrackersForCompetition(id,
                 DEFAULT_TRACKER_QUANTITY);

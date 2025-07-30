@@ -20,14 +20,16 @@ public interface LocationTrackerRepository extends JpaRepository<LocationTracker
     List<ActiveTracker> findTrackersByCompetitionId(Long competitionId);
 
     @Query("SELECT new com.itechart.foxhunt.api.competition.dto.ActiveTracker(" +
-            "l.participant.id, p.gameTime, p.currentPlace, p, p.isDisconnected) " +
-            "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id " +
-            "WHERE l.competition.id = ?1 AND p.rank <= ?2")
+           "l.participant.id, p.gameTime, p.currentPlace, p.isDisconnected, f.id) " +
+           "FROM LocationTrackerEntity l " +
+           "INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id " +
+           "LEFT JOIN p.listenableFox f " + 
+           "WHERE l.competition.id = ?1 AND p.rank <= ?2")
     List<ActiveTracker> findTrackersByCompetitionId(Long competitionId, long lastTrackerQuantity);
 
     @Query("SELECT l.participant.id AS participantId, p.gameTime AS gameTime, p.currentPlace AS currentLocation, p AS pathStory, "
             +
-            "p.isDisconnected AS isDisconnected, p.listenableFox.id AS listenableFoxId " +
+            "p.isDisconnected AS isDisconnected " +
             "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id WHERE l" +
             ".competition.id = ?1 AND l.participant.id = ?2 AND  p.rank <=?3 AND p.rank >?4 " +
             "ORDER BY p.rank asc")
