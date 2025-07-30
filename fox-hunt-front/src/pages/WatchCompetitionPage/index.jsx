@@ -84,6 +84,21 @@ const WatchCompetitionPage = (props) => {
   } = useActiveFox({});
 
   const { competitionExpired } = useExpiredCompetition({});
+  useEffect(() => {
+  if (participantTrackers?.length) {
+    participantTrackers.forEach((participant) => {
+      participant.trackerList?.forEach((tracker) => {
+        if (tracker.listenableFoxId !== null && tracker.listenableFoxId !== undefined) {
+          console.log(
+            `Non-null listenableFoxId for participant ${participant.participantId} at ${tracker.gameTime}:`,
+            tracker.listenableFoxId
+          );
+        }
+      });
+    });
+  }
+}, [participantTrackers]);
+
 
   const steps = getAllCompetitionSteps();
   const completedStep = getCompletedStep(competition);

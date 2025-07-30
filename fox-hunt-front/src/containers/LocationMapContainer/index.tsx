@@ -113,8 +113,7 @@ const LocationMapContainer = ({
     foxoringEnabled,
   );
 
-  
-  console.dir({foxoringEnabled, isFoxRangeEnabled});
+
 
   const onSizeChange = (event: IEvent) => {
     setIsFullscreen(event.get('target').container.isFullscreen() || false);

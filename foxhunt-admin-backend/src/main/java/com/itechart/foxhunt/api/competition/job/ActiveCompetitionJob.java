@@ -44,7 +44,7 @@ public class ActiveCompetitionJob implements Runnable {
     private final Map<Long, SseEmitter> awaitingSubscribers = new HashMap<>();
 
     public ActiveCompetitionJob(CompetitionEntity competitionEntity, ThreadPoolTaskScheduler threadPoolTaskScheduler,
-                                CompetitionResultService competitionResultService) {
+            CompetitionResultService competitionResultService) {
         this.competitionEntity = competitionEntity;
         this.threadPoolTaskScheduler = threadPoolTaskScheduler;
         this.competitionResultService = competitionResultService;
@@ -53,11 +53,11 @@ public class ActiveCompetitionJob implements Runnable {
     public void initializeCompetition(CompetitionEntity competition) {
         this.competitionEntity = competition;
         // Populating foxPointIndexes with indexes, which have gotten from frontend
-        this.foxPointIndexes.add(0);    // Adding index for silence interval
+        this.foxPointIndexes.add(0); // Adding index for silence interval
         this.foxPointIndexes.addAll(this.competitionEntity.getFoxPoints().stream()
-            .map(FoxPointEntity::getIndex)
-            .sorted()
-            .collect(Collectors.toList()));
+                .map(FoxPointEntity::getIndex)
+                .sorted()
+                .collect(Collectors.toList()));
         // Populating participants Map<startPosition, List of userIds>
         competition.getParticipants().forEach(competitionParticipant -> {
             Long startPosition = competitionParticipant.getStartPosition();
@@ -83,15 +83,15 @@ public class ActiveCompetitionJob implements Runnable {
     private void setReadyToStartNotification(SseEmitter client, Long timeToStart) {
         if (timeToStart > ReadyToStartJob.READY_TIME_SECONDS) {
             threadPoolTaskScheduler.schedule(new ReadyToStartJob(client, competitionEntity.getStartDate()),
-                LocalDateTime.now().plusSeconds(timeToStart - ReadyToStartJob.READY_TIME_SECONDS)
-                    .atZone(ZoneId.systemDefault()).toInstant());
+                    LocalDateTime.now().plusSeconds(timeToStart - ReadyToStartJob.READY_TIME_SECONDS)
+                            .atZone(ZoneId.systemDefault()).toInstant());
         }
     }
 
     private long getStartTimeDelay(Long startPosition) {
         return (startPosition - 1)
-            * (competitionEntity.getFoxPoints().size() + (competitionEntity.isHasSilenceInterval() ? 1 : 0))
-            * competitionEntity.getFoxDuration();
+                * (competitionEntity.getFoxPoints().size() + (competitionEntity.isHasSilenceInterval() ? 1 : 0))
+                * competitionEntity.getFoxDuration();
     }
 
     public synchronized void addClient(final SseEmitter client, final UserEntity subscriber) {
@@ -104,8 +104,8 @@ public class ActiveCompetitionJob implements Runnable {
             if (getStartPositionForCompetition(competitionEntity, subscriber) > foxCycleIndex) {
                 long startTimeDelay = getStartTimeDelay(getStartPositionForCompetition(competitionEntity, subscriber));
                 long timeToStart = Duration
-                    .between(LocalDateTime.now(), competitionEntity.getStartDate().plusSeconds(startTimeDelay))
-                    .getSeconds();
+                        .between(LocalDateTime.now(), competitionEntity.getStartDate().plusSeconds(startTimeDelay))
+                        .getSeconds();
                 sendTimeToStart(client, timeToStart, competitionEntity.getActualStartDate());
                 setReadyToStartNotification(client, timeToStart);
                 awaitingSubscribers.put(subscriber.getId(), client);
@@ -161,17 +161,18 @@ public class ActiveCompetitionJob implements Runnable {
         currentFoxEndTime = LocalDateTime.now().plusSeconds(competitionEntity.getFoxDuration());
 
         if (competitionEndTime.isBefore(LocalDateTime.now())) {
-            sendEventToAllActiveSubscribers(NotificationType.COMPETITION_IS_EXPIRED.name(), new ExpiredCompetition(true));
+            sendEventToAllActiveSubscribers(NotificationType.COMPETITION_IS_EXPIRED.name(),
+                    new ExpiredCompetition(true));
         } else {
             ActiveCompetition activeCompetitionInfo = ActiveCompetition.builder()
-                .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
-                .competitionDuration(competitionDuration)
-                .foxDuration(foxDuration)
-                .foxRange(foxRange)
-                .foxoringEnabled(foxoringEnabled)
-                .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
-                .secondsToFoxChange(getSecondsToFoxChange())
-                .build();
+                    .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
+                    .competitionDuration(competitionDuration)
+                    .foxDuration(foxDuration)
+                    .foxRange(foxRange)
+                    .foxoringEnabled(foxoringEnabled)
+                    .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
+                    .secondsToFoxChange(getSecondsToFoxChange())
+                    .build();
             sendEventToAllActiveSubscribers(NotificationType.ACTIVE_FOX.name(), activeCompetitionInfo);
         }
     }
@@ -181,7 +182,7 @@ public class ActiveCompetitionJob implements Runnable {
         activeSubscribers.values().forEach(client -> {
             try {
                 client.send(SseEmitter.event().name(notificationType)
-                    .data(data));
+                        .data(data));
             } catch (Exception e) {
                 deadClients.add(client);
             }
@@ -195,7 +196,8 @@ public class ActiveCompetitionJob implements Runnable {
     private void participantExpirationManager() {
         final long diff = ChronoUnit.SECONDS.between(LocalDateTime.now(), competitionEndTime);
 
-        if (diff <= CompetitionUtils.participantTime(competitionEntity) && competitionEntity.getActualFinishDate() == null) {
+        if (diff <= CompetitionUtils.participantTime(competitionEntity)
+                && competitionEntity.getActualFinishDate() == null) {
             final Set<Long> participantIds = competitionResultService.participantFinishWhenExpired(competitionEntity);
 
             if (participantIds != null) {
@@ -230,8 +232,8 @@ public class ActiveCompetitionJob implements Runnable {
     private void sendParticipantStartNotification(SseEmitter client) {
         try {
             client.send(SseEmitter.event()
-                .name(NotificationType.PARTICIPANT_START.name())
-                .data(""));
+                    .name(NotificationType.PARTICIPANT_START.name())
+                    .data(""));
         } catch (Exception e) {
             log.error(String.format("Can't send PARTICIPANT_START notification as %s", e.getMessage()));
         }
@@ -248,7 +250,7 @@ public class ActiveCompetitionJob implements Runnable {
     private void sendCompetitionStartNotification(SseEmitter client, Long timeToStart, LocalDateTime startMoment) {
         try {
             client.send(SseEmitter.event().name(NotificationType.COMPETITION_START.name())
-                .data(new TimeToStartNotification(timeToStart, startMoment)));
+                    .data(new TimeToStartNotification(timeToStart, startMoment)));
         } catch (Exception e) {
             log.error(String.format("Can't send COMPETITION_START notification as %s", e.getMessage()));
         }
@@ -257,7 +259,7 @@ public class ActiveCompetitionJob implements Runnable {
     private void sendClosedNotification(SseEmitter client) {
         try {
             client.send(SseEmitter.event().name(NotificationType.COMPETITION_CLOSED.name())
-                .data(new ClosedCompetitionNotification(LocalDateTime.now())));
+                    .data(new ClosedCompetitionNotification(LocalDateTime.now())));
         } catch (Exception e) {
             log.error(String.format("Can't send COMPETITION_CLOSED notification as %s", e.getMessage()));
         }
@@ -270,21 +272,20 @@ public class ActiveCompetitionJob implements Runnable {
         final int foxRange = competitionEntity.getFoxRange();
         final boolean foxoringEnabled = competitionEntity.isFoxoringEnabled();
 
-
         if (competitionEndTime == null) {
             competitionEndTime = competitionEntity.getActualStartDate().plusSeconds(competitionDuration);
         }
 
         try {
             ActiveCompetition activeCompetitionInfo = ActiveCompetition.builder()
-                .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
-                .competitionDuration(competitionDuration)
-                .foxDuration(foxDuration)
-                .foxRange(foxRange)
-                .foxoringEnabled(foxoringEnabled)
-                .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
-                .secondsToFoxChange(getSecondsToFoxChange())
-                .build();
+                    .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
+                    .competitionDuration(competitionDuration)
+                    .foxDuration(foxDuration)
+                    .foxRange(foxRange)
+                    .foxoringEnabled(foxoringEnabled)
+                    .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
+                    .secondsToFoxChange(getSecondsToFoxChange())
+                    .build();
             client.send(SseEmitter.event().name(NotificationType.ACTIVE_FOX.name()).data(activeCompetitionInfo));
         } catch (Exception e) {
             log.error(String.format("Can't send ACTIVE_FOX notification as %s", e.getMessage()));
@@ -297,22 +298,21 @@ public class ActiveCompetitionJob implements Runnable {
         final int foxRange = competitionEntity.getFoxRange();
         final boolean foxoringEnabled = competitionEntity.isFoxoringEnabled();
 
-
         return ActiveCompetition.builder()
-            .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
-            .competitionDuration(competitionDuration)
-            .foxDuration(foxDuration)
-            .foxRange(foxRange)
-            .foxoringEnabled(foxoringEnabled)
-            .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
-            .secondsToFoxChange(getSecondsToFoxChange())
-            .build();
+                .activeFoxIndex(foxPointIndexes.get(activeFoxIndex))
+                .competitionDuration(competitionDuration)
+                .foxDuration(foxDuration)
+                .foxRange(foxRange)
+                .foxoringEnabled(foxoringEnabled)
+                .secondsToCompetitionEnd(getSecondsToCompetitionEnd())
+                .secondsToFoxChange(getSecondsToFoxChange())
+                .build();
     }
 
     private void sendTimeToStart(final SseEmitter client, long timeToStart, LocalDateTime startMoment) {
         try {
             client.send(SseEmitter.event().name(NotificationType.INITIAL_NOTIFICATION.name())
-                .data(new TimeToStartNotification(timeToStart, startMoment)));
+                    .data(new TimeToStartNotification(timeToStart, startMoment)));
         } catch (Exception e) {
             log.error(String.format("Can't send INITIAL_NOTIFICATION notification as %s", e.getMessage()));
         }
@@ -324,16 +324,14 @@ public class ActiveCompetitionJob implements Runnable {
 
     public ActiveFoxInfo getActiveFoxInfo() {
         FoxPointEntity activeFoxPoint = competitionEntity.getFoxPoints().stream()
-            .filter(fox -> fox.getIndex() == activeFoxIndex)
-            .findFirst()
-            .orElse(null);
+                .filter(fox -> fox.getIndex() == activeFoxIndex)
+                .findFirst()
+                .orElse(null);
 
         long timeToFoxChange = LocalDateTime.now().until(currentFoxEndTime, ChronoUnit.SECONDS);
-        return
-            ActiveFoxInfo.builder().foxPoint(activeFoxPoint).timeToChangeActiveFox(timeToFoxChange).build();
+        return ActiveFoxInfo.builder().foxPoint(activeFoxPoint).timeToChangeActiveFox(timeToFoxChange).build();
 
     }
-
 
     public void sendResultToSubscribers(CompetitionResult competitionResult) {
 
@@ -347,7 +345,7 @@ public class ActiveCompetitionJob implements Runnable {
     private void sendCompetitionResultNotification(SseEmitter client, CompetitionResult competitionResult) {
         try {
             client.send(SseEmitter.event().name(NotificationType.COMPETITION_RESULT.name())
-                .data(competitionResult));
+                    .data(competitionResult));
         } catch (Exception e) {
             log.error(String.format("Can't send COMPETITION_RESULT notification as %s", e.getMessage()));
         }
@@ -358,6 +356,6 @@ public class ActiveCompetitionJob implements Runnable {
     }
 
     private long getSecondsToFoxChange() {
-        return Duration.between( LocalDateTime.now(), currentFoxEndTime).getSeconds();
+        return Duration.between(LocalDateTime.now(), currentFoxEndTime).getSeconds();
     }
 }

@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -30,7 +31,7 @@ public class ActiveTracker {
     }
 
     public ActiveTracker(Long participantId, LocalDateTime gameTime, Geometry currentLocation,
-                         PathStoryEntity pathStoryEntity, Boolean isDisconnected) {
+            PathStoryEntity pathStoryEntity, Boolean isDisconnected) {
         this.participantId = participantId;
         this.gameTime = gameTime;
         this.currentLocation = (Point) currentLocation;
@@ -38,6 +39,9 @@ public class ActiveTracker {
         this.activeFoxInfo = ActiveFoxInfo.builder().foxPointIndex(foxIndex).build();
         this.rank = pathStoryEntity.getRank();
         this.isDisconnected = isDisconnected;
+        this.listenableFoxId = pathStoryEntity.getListenableFox() != null
+                ? pathStoryEntity.getListenableFox().getId()
+                : null;
     }
 
     private Long participantId;
@@ -49,7 +53,10 @@ public class ActiveTracker {
 
     private Point currentLocation;
     private Long competitionId;
-    private  ActiveFoxInfo activeFoxInfo;
+    private ActiveFoxInfo activeFoxInfo;
     private Boolean isDisconnected;
     private Long rank;
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    private Long listenableFoxId;
 }

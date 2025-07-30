@@ -14,32 +14,34 @@ public interface LocationTrackerRepository extends JpaRepository<LocationTracker
 
     List<LocationTrackerEntity> findAllByCompetitionId(Long competitionId);
 
-    @Query("SELECT new com.itechart.foxhunt.api.competition.dto.ActiveTracker(l.participant.id, p.gameTime, p.currentPlace, p.isDisconnected) " +
-        "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id WHERE l.competition.id = ?1")
+    @Query("SELECT new com.itechart.foxhunt.api.competition.dto.ActiveTracker(l.participant.id, p.gameTime, p.currentPlace, p.isDisconnected) "
+            +
+            "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id WHERE l.competition.id = ?1")
     List<ActiveTracker> findTrackersByCompetitionId(Long competitionId);
 
-    @Query("SELECT new com.itechart.foxhunt.api.competition.dto.ActiveTracker(l.participant.id, p.gameTime, p.currentPlace, p.isDisconnected) " +
-        "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id WHERE l" +
-        ".competition.id = ?1 AND p.rank <= ?2")
+    @Query("SELECT new com.itechart.foxhunt.api.competition.dto.ActiveTracker(" +
+            "l.participant.id, p.gameTime, p.currentPlace, p, p.isDisconnected) " +
+            "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id " +
+            "WHERE l.competition.id = ?1 AND p.rank <= ?2")
     List<ActiveTracker> findTrackersByCompetitionId(Long competitionId, long lastTrackerQuantity);
 
-    @Query("SELECT l.participant.id AS participantId, p.gameTime AS gameTime, p.currentPlace AS currentLocation, p AS pathStory, " +
-        "p.isDisconnected AS isDisconnected " +
-        "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id WHERE l" +
-        ".competition.id = ?1 AND l.participant.id = ?2 AND  p.rank <=?3 AND p.rank >?4 " +
-        "ORDER BY p.rank asc")
+    @Query("SELECT l.participant.id AS participantId, p.gameTime AS gameTime, p.currentPlace AS currentLocation, p AS pathStory, "
+            +
+            "p.isDisconnected AS isDisconnected, p.listenableFox.id AS listenableFoxId " +
+            "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id WHERE l" +
+            ".competition.id = ?1 AND l.participant.id = ?2 AND  p.rank <=?3 AND p.rank >?4 " +
+            "ORDER BY p.rank asc")
     List<ActiveTrackerProjection> findTrackersByCompetitionIdAndParticipantIds(Long competitionId, Long participantId,
-                                                                               long startPosition, long endPosition);
+            long startPosition, long endPosition);
 
     @Query("SELECT count(p.id)" +
-        "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id WHERE l" +
-        ".competition.id = ?1 AND l.participant.id = ?2 ")
+            "FROM LocationTrackerEntity l INNER JOIN PathStoryEntity p ON l.id = p.locationTrackerEntity.id WHERE l" +
+            ".competition.id = ?1 AND l.participant.id = ?2 ")
     Long countTrackersByCompetitionIdAndParticipantIds(Long competitionId, Long participantId);
 
     @Query("SELECT  l " +
-        "FROM LocationTrackerEntity l " +
-        "WHERE l.competition.id = ?1 and l.participant.id = ?2")
+            "FROM LocationTrackerEntity l " +
+            "WHERE l.competition.id = ?1 and l.participant.id = ?2")
     LocationTrackerEntity findTrackerIdByCompetitionIdAndUserId(Long competitionId, Long participantId);
 
 }
-
