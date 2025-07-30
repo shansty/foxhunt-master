@@ -21,7 +21,6 @@ export const useSseMessage = (
     (event) => {
       const data = parseEventMessage(event);
       if (data) setMessage(sseDataConverter(data));
-      console.log("🔥 incoming SSE event data:", data);
     },
     [sseDataConverter],
   );

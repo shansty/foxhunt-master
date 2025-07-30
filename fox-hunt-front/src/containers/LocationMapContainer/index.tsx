@@ -25,6 +25,7 @@ export type CustomMarker = {
     hintContent?: string;
     [key: string]: any;
   };
+  listenedFox?: boolean; 
 };
 
 export interface LocationMapContainerProps {
@@ -114,30 +115,36 @@ const LocationMapContainer = ({
   );
 
 
-
   const onSizeChange = (event: IEvent) => {
     setIsFullscreen(event.get('target').container.isFullscreen() || false);
   };
 
-  const renderFoxCircles = () => {
-    if (!foxoringEnabled) return null; 
+const renderFoxCircles = () => {
+  if (!foxoringEnabled) return null; 
 
-    return customMarkers
-      ?.filter((marker) => marker.circleCenter && marker.foxRange !== undefined)
-      .map((marker) => (
-        <Circle
-          key={`circle-${marker.id}-${isFoxRangeEnabled}`}
-          geometry={[marker.circleCenter!, marker.foxRange!]}
-          options={{
-            fillColor: isFoxRangeEnabled
-              ? 'rgba(0, 150, 255, 0.1)'
-              : 'rgba(0, 0, 0, 0)',
-            strokeColor: isFoxRangeEnabled ? '#0096ff' : 'rgba(0, 0, 0, 0)',
-            strokeWidth: isFoxRangeEnabled ? 2 : 0,
-          }}
-        />
-      ));
-  };
+  return customMarkers
+    ?.filter((marker) => marker.circleCenter && marker.foxRange !== undefined)
+    .map((marker) => (
+      <Circle
+        key={`circle-${marker.id}-${isFoxRangeEnabled}`}
+        geometry={[marker.circleCenter!, marker.foxRange!]}
+        options={{
+          fillColor: isFoxRangeEnabled
+            ? marker.listenedFox 
+              ? 'rgba(0, 255, 0, 0.1)'   
+              : 'rgba(0, 150, 255, 0.1)'
+            : 'rgba(0, 0, 0, 0)',
+          strokeColor: isFoxRangeEnabled
+            ? marker.listenedFox
+              ? '#00ff00'
+              : '#0096ff'
+            : 'rgba(0, 0, 0, 0)',
+          strokeWidth: isFoxRangeEnabled ? 2 : 0,
+        }}
+      />
+    ));
+};
+
 
   return (
     <DrawingManagerWrapper
