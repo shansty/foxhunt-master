@@ -1,39 +1,30 @@
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import FallbackComponent, {
-  FallbackComponentProps,
-} from 'src/components/FallbackComponent';
+import FallbackComponent, { FallbackComponentProps } from 'src/components/FallbackComponent';
 
-export default {
+const meta: Meta<typeof FallbackComponent> = {
   title: 'FallbackComponent',
   component: FallbackComponent,
   decorators: [
     (Story) => (
       <MemoryRouter>
-        <div
-          style={{
-            margin: '20em',
-          }}
-        >
+        <div style={{ margin: '20em' }}>
           <Story />
         </div>
       </MemoryRouter>
     ),
   ],
-} as ComponentMeta<typeof FallbackComponent>;
-
-const Template: ComponentStory<typeof FallbackComponent> = (
-  args: FallbackComponentProps,
-) => {
-  return <FallbackComponent {...args} />;
 };
+export default meta;
 
-export const CustomArgs = Template.bind({});
+type Story = StoryObj<typeof FallbackComponent>;
 
-CustomArgs.args = {
-  resetErrorBoundary: () => {
-    console.log('resetErrorBoundary');
+export const CustomArgs: Story = {
+  args: {
+    resetErrorBoundary: () => {
+      console.log('resetErrorBoundary');
+    },
   },
 };

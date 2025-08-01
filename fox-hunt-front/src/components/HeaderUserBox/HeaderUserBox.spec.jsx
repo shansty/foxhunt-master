@@ -4,8 +4,16 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
 import HeaderUserBox from './HeaderUserBox';
+
+jest.mock('src/api/utils/getViteEnv', () => ({
+  getViteEnv: () => ({
+    VITE_GATEWAY_IP: 'localhost',
+    VITE_GATEWAY_PORT: '8083',
+    VITE_GATEWAY_VERSION: 'v1',
+    VITE_GATEWAY_PREFIX: '',
+  }),
+}));
 
 describe('HeaderUserBox', () => {
   const mockStore = configureMockStore([thunk]);

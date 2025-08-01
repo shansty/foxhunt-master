@@ -18,10 +18,6 @@
     "noImplicitThis": false,
     "downlevelIteration": true,
     "useUnknownInCatchVariables": false,
-    "paths": {
-      "common-front/*": ["../common-front/bin/src/*"],
-      "common-front": ["../common-front/bin/src"]
-    },
     "types": ["node", "jest", "@testing-library/jest-dom"]
   },
   "include": ["./src", "vite.config.js", "src/setupTests.d.ts"]

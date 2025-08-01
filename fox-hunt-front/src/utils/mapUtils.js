@@ -7,7 +7,6 @@ import {
 import { find, get } from 'lodash';
 import { DEFAULT_CENTER_COORDINATES } from 'src/constants/mapConst';
 
-
 const getLatestTracker = (trackerList = []) => {
   if (!Array.isArray(trackerList) || trackerList.length === 0) return undefined;
   return trackerList.reduce((latest, current) => {
@@ -30,8 +29,7 @@ const getListenedFoxIds = (participantTrackers = []) => {
   });
 
   return listenedFoxIds;
-};;
-
+};
 
 const getFoxPointsProps = (
   foxPoints = [],
@@ -40,20 +38,22 @@ const getFoxPointsProps = (
   isFoxRangeEnabled = true,
   listenedFoxIds = new Set(),
 ) =>
-  foxPoints.map(({ id, label, coordinates, circleCenter, index, frequency }) => {
-    const isListened = listenedFoxIds.has(Number(id));
-    return getFoxMarkerProps({
-      coordinates,
-      circleCenter,
-      label,
-      id,
-      isActive: index === activeFoxIndex,
-      frequency,
-      foxRange,
-      isFoxRangeVisible: isFoxRangeEnabled,
-      listenedFox: isListened, 
-    });
-  });
+  foxPoints.map(
+    ({ id, label, coordinates, circleCenter, index, frequency }) => {
+      const isListened = listenedFoxIds.has(Number(id));
+      return getFoxMarkerProps({
+        coordinates,
+        circleCenter,
+        label,
+        id,
+        isActive: index === activeFoxIndex,
+        frequency,
+        foxRange,
+        isFoxRangeVisible: isFoxRangeEnabled,
+        listenedFox: isListened,
+      });
+    },
+  );
 
 export const getPointsProps = (
   competition,
@@ -85,7 +85,7 @@ export const getPointsProps = (
     activeFoxIndex,
     foxRange,
     isFoxRangeEnabled,
-    listenedFoxIds
+    listenedFoxIds,
   ).concat(pointsProps);
 };
 

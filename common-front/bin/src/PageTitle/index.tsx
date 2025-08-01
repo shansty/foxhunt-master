@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { Paper, Typography } from '@mui/material';
 
 export interface PageTitleProps {
@@ -9,7 +9,7 @@ export interface PageTitleProps {
   titleStatus?: string;
 }
 
-export function PageTitle(props: PageTitleProps) {
+export const PageTitle: FC<PageTitleProps> = (props) => {
   const {
     titleHeading,
     titleDescription,

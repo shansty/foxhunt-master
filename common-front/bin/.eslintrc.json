@@ -14,7 +14,7 @@
         "es2021": true
     },
     "globals": {
-      "JSX": true
+        "JSX": true
     },
     "plugins": [
         "react",
@@ -30,7 +30,8 @@
     },
     "rules": {
         "require-jsdoc": "off",
-        "prettier/prettier": ["error"],
+        "prettier/prettier": "off",
+        "react/react-in-jsx-scope": "off",
         "no-unused-vars": "off",
         "max-len": [
             1,

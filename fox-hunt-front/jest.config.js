@@ -2,8 +2,8 @@ module.exports = {
   moduleDirectories: ['node_modules', '<rootDir>', '<rootDir>/../common-front'],
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   moduleNameMapper: {
-    '^common-front$': '<rootDir>/../common-front/bin/src',
-    '^common-front/(.*)$': '<rootDir>/../common-front/bin/src/$1',
+    '^react$': '<rootDir>/node_modules/react',
+    '^react-dom$': '<rootDir>/node_modules/react-dom',
     '^.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$':
       'jest-transform-stub',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
@@ -14,9 +14,9 @@ module.exports = {
     '<rootDir>/node_modules/(?!common-front|chroma-js|another)',
   ],
   transform: {
-    '^.+\\.(ts|tsx|js|jsx)$': 'ts-jest',
-    '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$':
-      'jest-transform-stub',
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest',
+    '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     '^.+\\.svg$': '<rootDir>/svgTransform.js',
   },
   preset: 'ts-jest/presets/default-esm',
