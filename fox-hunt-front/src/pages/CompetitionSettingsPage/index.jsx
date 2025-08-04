@@ -212,9 +212,9 @@ const CompetitionSettingPage = (props) => {
       foxRange,
       hasSilenceInterval,
       frequency,
-      foxoringEnabled
+      foxoringEnabled,
     };
-    console.dir({ updatedCompetition })
+    console.dir({ updatedCompetition });
 
     updateCompetition(updatedCompetition).then(({ payload }) =>
       goToNextStep(payload),
@@ -265,15 +265,14 @@ const CompetitionSettingPage = (props) => {
                 .max(300),
               foxoringEnabled: Yup.boolean(),
               ...(isFeatureEnabled(FOXORING_COMPETITION_TYPE) && {
-                foxRange: Yup.number()
-                  .when('foxoringEnabled', {
-                    is: true,
-                    then: Yup.number()
-                      .required(ERRORS.REQUIRED_FIELD)
-                      .min(MIN_FOX_RANGE)
-                      .max(MAX_FOX_RANGE),
-                    otherwise: Yup.number().notRequired(),
-                  }),
+                foxRange: Yup.number().when('foxoringEnabled', {
+                  is: true,
+                  then: Yup.number()
+                    .required(ERRORS.REQUIRED_FIELD)
+                    .min(MIN_FOX_RANGE)
+                    .max(MAX_FOX_RANGE),
+                  otherwise: Yup.number().notRequired(),
+                }),
               }),
             })}
           >
@@ -417,7 +416,9 @@ const CompetitionSettingPage = (props) => {
                                     id="foxoringEnabled"
                                     type="checkbox"
                                     name="foxoringEnabled"
-                                    Label={{ label: 'Create foxoring competition type' }}
+                                    Label={{
+                                      label: 'Create foxoring competition type',
+                                    }}
                                   />
                                 </Grid>
 
@@ -453,7 +454,9 @@ const CompetitionSettingPage = (props) => {
                                         step={10}
                                         value={values.foxRange}
                                         onChange={setFieldValue}
-                                        isValid={touched.foxRange && !errors.foxRange}
+                                        isValid={
+                                          touched.foxRange && !errors.foxRange
+                                        }
                                         isInvalid={errors.foxRange}
                                       />
                                     </Grid>
@@ -461,7 +464,6 @@ const CompetitionSettingPage = (props) => {
                                 )}
                               </>
                             )}
-
                           </Grid>
                         </Grid>
                         <Grid

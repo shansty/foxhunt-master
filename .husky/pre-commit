@@ -1,8 +1,9 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-declare -a DIRECTORY_ARRAY=("fox-hunt-front/src" "fox-hunt-organization-front/src" \ 
-      "fox-hunt-organization-backend/src" "common-front/bin/src" \ 
+# Original list of directories
+declare -a DIRECTORY_ARRAY=("fox-hunt-front/src" "fox-hunt-organization-front/src" \
+      "fox-hunt-organization-backend/src" "common-front/bin/src" \
       "fox-hunt-api-gateway/src" "fox-hunt-feature-service/src")
 
 for val in ${DIRECTORY_ARRAY[@]}; do
@@ -11,10 +12,24 @@ for val in ${DIRECTORY_ARRAY[@]}; do
 
   echo "IS_FOLDER_CHANGE  --> + $IS_FOLDER_CHANGE"
 
- if [[ $IS_FOLDER_CHANGE ]]; then cd $val && npm run lint && cd ../..; fi
-
-  if [[ $? -ne 0 ]] ; then
-    echo "Unable to commit during lint rules in folder  --> $val"
-    exit 1
+  # CHANGED: Only run npm commands if package.json exists in the folder!
+  if [[ $IS_FOLDER_CHANGE ]]; then
+    if [[ -f $val/package.json ]]; then    # <--- CHANGE: check for package.json before npm run lint
+      cd $val
+      npm run lint
+      if [[ $? -ne 0 ]]; then             # <--- CHANGE: check lint result separately
+        echo "Unable to commit during lint rules in folder  --> $val"
+        exit 1
+      fi
+      npm test -o -- --watchAll=false --passWithNoTests
+      if [[ $? -ne 0 ]]; then             # <--- CHANGE: check test result separately
+        echo "Unable to commit during tests in folder  --> $val"
+        exit 1
+      fi
+      cd ../..
+    else
+      echo "Skipping $val: No package.json"   # <--- CHANGE: log that this folder is skipped
+    fi
   fi
+
 done

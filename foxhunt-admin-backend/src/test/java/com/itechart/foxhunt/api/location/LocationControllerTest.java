@@ -42,7 +42,7 @@ public class LocationControllerTest {
 
     @MockBean
     OrganizationLocationService organizationLocationService;
-
+ 
     @MockBean
     LoggedUserService loggedUserService;
 

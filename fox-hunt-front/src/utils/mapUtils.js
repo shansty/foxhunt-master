@@ -7,23 +7,52 @@ import {
 import { find, get } from 'lodash';
 import { DEFAULT_CENTER_COORDINATES } from 'src/constants/mapConst';
 
+const getLatestTracker = (trackerList = []) => {
+  if (!Array.isArray(trackerList) || trackerList.length === 0) return undefined;
+  return trackerList.reduce((latest, current) => {
+    return !latest || current.gameTime > latest.gameTime ? current : latest;
+  }, undefined);
+};
+
+const getListenedFoxIds = (participantTrackers = []) => {
+  const listenedFoxIds = new Set();
+
+  participantTrackers.forEach((pt) => {
+    const latestTracker = getLatestTracker(pt.trackerList);
+    if (
+      latestTracker &&
+      latestTracker.listenableFoxId !== null &&
+      latestTracker.listenableFoxId !== undefined
+    ) {
+      listenedFoxIds.add(Number(latestTracker.listenableFoxId));
+    }
+  });
+
+  return listenedFoxIds;
+};
+
 const getFoxPointsProps = (
   foxPoints = [],
   activeFoxIndex,
   foxRange,
   isFoxRangeEnabled = true,
+  listenedFoxIds = new Set(),
 ) =>
-  foxPoints.map(({ id, label, coordinates, circleCenter, index, frequency }) =>
-    getFoxMarkerProps({
-      coordinates,
-      circleCenter,
-      label,
-      id,
-      isActive: index === activeFoxIndex,
-      frequency,
-      foxRange,
-      isFoxRangeVisible: isFoxRangeEnabled,
-    }),
+  foxPoints.map(
+    ({ id, label, coordinates, circleCenter, index, frequency }) => {
+      const isListened = listenedFoxIds.has(Number(id));
+      return getFoxMarkerProps({
+        coordinates,
+        circleCenter,
+        label,
+        id,
+        isActive: index === activeFoxIndex,
+        frequency,
+        foxRange,
+        isFoxRangeVisible: isFoxRangeEnabled,
+        listenedFox: isListened,
+      });
+    },
   );
 
 export const getPointsProps = (
@@ -49,12 +78,14 @@ export const getPointsProps = (
     );
     participantmarkers.forEach((participant) => pointsProps.push(participant));
   }
+  const listenedFoxIds = getListenedFoxIds(participantTrackers);
 
   return getFoxPointsProps(
     foxPoints,
     activeFoxIndex,
     foxRange,
     isFoxRangeEnabled,
+    listenedFoxIds,
   ).concat(pointsProps);
 };
 

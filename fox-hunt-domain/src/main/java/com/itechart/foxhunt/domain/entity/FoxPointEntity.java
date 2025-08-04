@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
@@ -36,8 +37,8 @@ public class FoxPointEntity {
     private Point coordinates;
 
     @Column(name = "circle_center", nullable = false, columnDefinition = "geometry(Point,6708)")
-    private Point circle_center;
-
+    private Point circleCenter;
+    
     @OneToMany(mappedBy = "activeFox", orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -50,5 +51,4 @@ public class FoxPointEntity {
 
     @Column(name = "frequency", nullable = false, precision = 10, scale = 2)
     private BigDecimal frequency;
-
 }

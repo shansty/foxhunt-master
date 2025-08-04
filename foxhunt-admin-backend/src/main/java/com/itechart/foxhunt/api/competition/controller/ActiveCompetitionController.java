@@ -206,7 +206,6 @@ public class ActiveCompetitionController {
                 .results(userResultList)
                 .build());
         }
-
         ActiveCompetition activeCompetition = activeCompetitionService.getActiveCompetitionInfo(id);
         List<ActiveTracker> activeTrackers = locationTrackerService
             .getLastParticipantTrackersForCompetition(id,

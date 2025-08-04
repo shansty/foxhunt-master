@@ -1,4 +1,4 @@
-import { getViteEnv } from './utils/getViteEnv';
+import { getViteEnv } from 'src/api/utils/getViteEnv';
 const getEnv = () => {
   const isProd = window?.injectEnv?.REACT_APP_PRODUCTION;
   const viteEnv = getViteEnv();

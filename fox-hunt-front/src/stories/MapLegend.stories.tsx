@@ -1,29 +1,24 @@
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import MapLegend from 'src/components/UI/MapLegend';
 
-export default {
+
+const meta: Meta<typeof MapLegend> = {
   title: 'MapLegend',
   component: MapLegend,
-} as ComponentMeta<typeof MapLegend>;
-
-const Template: ComponentStory<typeof MapLegend> = (args: any) => {
-  return <MapLegend {...args} />;
 };
+export default meta;
 
-export const EmptyArgs = Template.bind({});
-export const ColumnDirection = Template.bind({});
-export const RowDirection = Template.bind({});
-export const TitleMargin = Template.bind({});
+type Story = StoryObj<typeof MapLegend>;
 
-EmptyArgs.args = {};
-ColumnDirection.args = {
-  direction: 'column',
+export const EmptyArgs: Story = {};
+export const ColumnDirection: Story = {
+  args: { direction: 'column' },
 };
-RowDirection.args = {
-  direction: 'row',
+export const RowDirection: Story = {
+  args: { direction: 'row' },
 };
-TitleMargin.args = {
-  titleStyles: { fontSize: '2rem', marginBottom: '1rem' },
+export const TitleMargin: Story = {
+  args: { titleStyles: { fontSize: '2rem', marginBottom: '1rem' } },
 };

@@ -7,6 +7,17 @@ import {
   INVITE_TO_COMPETITION_BY_USER_ID,
 } from '../types/competitionsTypes';
 
+
+jest.mock('src/api/utils/getViteEnv', () => ({
+  getViteEnv: () => ({
+    VITE_GATEWAY_IP: 'localhost',
+    VITE_GATEWAY_PORT: '8083',
+    VITE_GATEWAY_VERSION: 'v1',
+    VITE_GATEWAY_PREFIX: '',
+  }),
+}));
+
+
 const declineInvitation = {
   competitionId: 14,
   createdAt: '2022-12-22T11:49:49',
@@ -68,8 +79,8 @@ describe('declineInvitationToCompetitionByUserIdThunk', () => {
 
     await thunk(
       dispatch,
-      () => {},
-      () => {},
+      () => { },
+      () => { },
     );
     const { calls } = dispatch.mock;
     const [start, end] = calls;
@@ -95,8 +106,8 @@ describe('inviteToCompetitionByUserIdThunk', () => {
 
     await thunk(
       dispatch,
-      () => {},
-      () => {},
+      () => { },
+      () => { },
     );
     const { calls } = dispatch.mock;
     const [start, end] = calls;

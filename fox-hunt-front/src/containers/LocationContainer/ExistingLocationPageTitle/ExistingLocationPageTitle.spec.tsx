@@ -4,6 +4,15 @@ import { screen } from '@testing-library/react';
 import ExistingLocationPageTitle from '.';
 import { renderWithReduxProvider } from 'src/utils/tests/renderWithReduxProvider';
 
+jest.mock('src/api/utils/getViteEnv', () => ({
+  getViteEnv: () => ({
+    VITE_GATEWAY_IP: 'localhost',
+    VITE_GATEWAY_PORT: '8083',
+    VITE_GATEWAY_VERSION: 'v1',
+    VITE_GATEWAY_PREFIX: '',
+  }),
+}));
+
 jest.mock('common-front', () => ({
   PageTitle: ({
     titleContent,
@@ -39,6 +48,7 @@ jest.mock('common-front', () => ({
     </button>
   ),
 }));
+
 
 const userWhoCreated = {
   id: 1,

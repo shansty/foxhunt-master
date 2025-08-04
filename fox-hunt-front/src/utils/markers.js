@@ -37,6 +37,7 @@ export const getFoxMarkerProps = ({
   frequency,
   foxRange,
   isFoxRangeVisible = true,
+  listenedFox,
 }) => ({
   id: `T${id}`,
   coordinates,
@@ -55,6 +56,7 @@ export const getFoxMarkerProps = ({
   },
   onDragEnd,
   isVisible: isFoxRangeVisible,
+  listenedFox,
 });
 
 export const getCenterMarkerProps = ({

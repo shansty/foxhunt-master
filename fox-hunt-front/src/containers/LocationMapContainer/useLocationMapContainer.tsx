@@ -60,9 +60,6 @@ export default function useLocationMapContainer(
     }
   };
 
-   console.dir({foxoringEnabled, isFoxRangeEnabled});
-
-
   const renderMarkers = () => {
     const markersProps = [...customMarkers];
     if (geometryCenter.displayMarker) {

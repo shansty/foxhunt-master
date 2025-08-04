@@ -32,16 +32,18 @@ function WatchCompetitionManager({
 
   return (
     <>
-      {competition.foxoringEnabled && <FormControlLabel
-        sx={{ ml: 1 }}
-        control={
-          <Checkbox
-            checked={isFoxRangeEnabled}
-            onChange={(e) => setIsFoxRangeEnabled(e.target.checked)}
-          />
-        }
-        label="Show Fox Ranges"
-      />}
+      {competition.foxoringEnabled && (
+        <FormControlLabel
+          sx={{ ml: 1 }}
+          control={
+            <Checkbox
+              checked={isFoxRangeEnabled}
+              onChange={(e) => setIsFoxRangeEnabled(e.target.checked)}
+            />
+          }
+          label="Show Fox Ranges"
+        />
+      )}
       <Grid item container spacing={2}>
         <Grid item xs={12} md={dialog ? 12 : 9} xl={dialog ? 12 : 10}>
           <LocationMapContainer

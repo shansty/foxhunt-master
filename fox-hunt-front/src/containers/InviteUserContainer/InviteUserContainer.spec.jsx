@@ -5,6 +5,15 @@ import { Provider } from 'react-redux';
 import store from 'src/store';
 import InviteUserContainer from './index';
 
+jest.mock('src/api/utils/getViteEnv', () => ({
+  getViteEnv: () => ({
+    VITE_GATEWAY_IP: 'localhost',
+    VITE_GATEWAY_PORT: '8083',
+    VITE_GATEWAY_VERSION: 'v1',
+    VITE_GATEWAY_PREFIX: '',
+  }),
+}));
+
 const defaultProps = {
   handleClickClose: jest.fn(),
   pager: { page: 0, rowsPerPage: 10 },

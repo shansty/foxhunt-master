@@ -32,7 +32,7 @@ public class FoxPoint {
 
     @NotNull(message = "Fox Point circle center must be set")
     @JsonProperty("circleCenter")
-    private Point circle_center;
+    private Point circleCenter;
 
     @CompetitionFrequency(precision = 0.1)
     private Double frequency;

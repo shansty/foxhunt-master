@@ -11,4 +11,5 @@ public interface ActiveTrackerProjection {
     Geometry getCurrentLocation();
     PathStoryEntity getPathStory();
     Boolean getIsDisconnected();
+    Long getListenableFoxId();
 }
