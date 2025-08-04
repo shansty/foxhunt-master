@@ -171,7 +171,7 @@ const WatchCompetitionPage = (props) => {
   if (!competition) {
     return <></>;
   }
-
+  console.dir({participantTrackers})
   const { name, createdBy } = competition;
   const title = `Competition: ${name}`;
   const description = `Created by ${createdBy.firstName} ${createdBy.lastName}`;
